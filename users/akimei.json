@@ -416,7 +416,48 @@
    "name": "Hungry Jack Meals",
    "note": "",
    "fields": [],
-   "entries": []
+   "entries": [
+    {
+     "name": "Bacon Deluxe",
+     "details": {}
+    },
+    {
+     "name": "Big Jack",
+     "details": {}
+    },
+    {
+     "name": "Hanky Panky",
+     "details": {}
+    },
+    {
+     "name": "Hash Brown",
+     "details": {}
+    },
+    {
+     "name": "Jack's Fried Chicken",
+     "details": {}
+    },
+    {
+     "name": "Milo Thickshake",
+     "details": {}
+    },
+    {
+     "name": "Shaker Fries",
+     "details": {}
+    },
+    {
+     "name": "Storm",
+     "details": {}
+    },
+    {
+     "name": "TendCrisp Chicken",
+     "details": {}
+    },
+    {
+     "name": "Whopper",
+     "details": {}
+    }
+   ]
   }
  ],
  "extra": {}
