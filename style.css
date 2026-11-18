@@ -161,3 +161,24 @@ dialog.add h2 { margin: 0 0 10px; font-size: 1.1rem; }
 button:disabled { opacity: 0.6; cursor: default; }
 .form.login { max-width: 380px; margin-top: 4px; }
 .form.login h2 { margin: 0; font-size: 1.1rem; }
+/* Account menu (top right), the "working on" bar, the admin console */
+body { position: relative; }
+#account { position: absolute; top: 12px; right: 16px; z-index: 5; }
+.menu summary { list-style: none; cursor: pointer; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--card); font-size: 0.85rem; max-width: 46vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.menu summary::-webkit-details-marker { display: none; }
+.menu summary::after { content: " ▾"; color: var(--muted); }
+.menu-list { position: absolute; right: 0; margin-top: 6px; min-width: 190px; display: grid; padding: 4px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); }
+.menu-list a, .menu-list span { padding: 9px 10px; border-radius: 6px; color: var(--text); text-decoration: none; font-size: 0.95rem; }
+.menu-list a:hover { background: var(--head); }
+.working { margin: 0; padding: 8px 16px; background: var(--accent); color: var(--on-accent); font-size: 0.9rem; }
+.working a { color: inherit; font-weight: 600; }
+.adminsec { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+.adminsec h3 { margin: 0 0 8px; font-size: 1rem; }
+.player { padding: 10px 0; border-top: 1px solid var(--line); }
+.player:first-of-type { border-top: 0; padding-top: 0; }
+.player form { margin-top: 6px; }
+.player .row .field { flex: 1; min-width: 140px; width: auto; padding: 6px 10px; }
+.badge { margin-left: 4px; padding: 1px 7px; border-radius: 999px; background: var(--accent); color: var(--on-accent);
+  font-size: 0.72rem; font-weight: 600; vertical-align: middle; }

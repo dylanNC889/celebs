@@ -5,7 +5,8 @@
    "salt": "Go8oVLRMofWgSXdP+UkgYg==",
    "iter": 250000,
    "iv": "HCWF/M3k2FZVdOF+",
-   "key": "4EFz29rRv8NveqAJrynq+JGiOZUn2XV4PZfeB2iMrVZv15inYzBblZqzamyCu7tNmX/QnqRxipjrbxBL1b7Oj6GHwkvNr5nMirqc7xBioBH/8e01JIErFWsUa5wTxWeOPTx/cTkRDrVt+b7klA=="
+   "key": "4EFz29rRv8NveqAJrynq+JGiOZUn2XV4PZfeB2iMrVZv15inYzBblZqzamyCu7tNmX/QnqRxipjrbxBL1b7Oj6GHwkvNr5nMirqc7xBioBH/8e01JIErFWsUa5wTxWeOPTx/cTkRDrVt+b7klA==",
+   "admin": true
   },
   {
    "name": "SidewaysAsian",

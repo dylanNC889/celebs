@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Adds a player to users.json, or resets their password: python3 tools/users.py TOKEN_FILE NAME PASSWORD
+# (admins can also do both on the page, in the admin console)
 # (run in the repo folder; needs the Python "cryptography" package).
 #
 # Each player's entry holds the shared GitHub token (fine-grained, only this repo, Contents: read and
@@ -35,7 +36,7 @@ def main():
     entry = lock(name, password, token)
     for i, u in enumerate(users["users"]):
         if u["name"].lower() == name.lower():
-            users["users"][i] = entry
+            users["users"][i] = dict(u, **entry)  # keeps other settings such as "admin"
             break
     else:
         users["users"].append(entry)

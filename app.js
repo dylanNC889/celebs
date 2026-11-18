@@ -15,6 +15,9 @@
 //    with it (PBKDF2-SHA256 + AES-GCM). This is simple, not secure: the repo is public, so anyone can
 //    read users' files, and anyone who guesses a password gets the token, which can change the repo.
 //  - Owner sign-in: a GitHub token typed in; changes the shared topics (data.json on main) for everyone.
+// Players with "admin": true in users.json get the admin console (?admin): work on the shared topics or any
+// player's additions, reset passwords, make or remove admins, add or remove players. (Every player holds the
+// same token, so admin is a page-level privilege, not a security boundary.)
 // Tokens stay in this browser (localStorage) until logging out. A question is a text field in the
 // "Questions" group with a filter and no card, so each one becomes a filter of its answers.
 //
@@ -44,9 +47,14 @@ let OVER = null;    // the player's own additions (users/<name>.json on the user
 let OVER_SHA = null;
 let DATA = null;    // what the pages show: BASE, or BASE with the player's additions merged in
 
+const SHARED = "*shared*";  // TARGET value: an admin player working on the shared topics
+let ADMIN = false;         // the logged-in player is an admin
+let TARGET = null;         // admins: whose data the pages show and change (null = their own, SHARED, or a name)
+const editingBase = () => MODE === "admin" || (MODE === "user" && TARGET === SHARED);
+const whose = () => (TARGET && TARGET !== SHARED ? TARGET : USER);  // the player whose additions are shown
 const canEdit = () => MODE !== "view";
-const mine = x => MODE === "admin" || (MODE === "user" && !!x && !!x.own);  // may rename or remove it
-const ownFlag = () => (MODE === "user" ? { own: true } : {});
+const mine = x => editingBase() || (MODE === "user" && !!x && !!x.own);  // may rename or remove it
+const ownFlag = () => (editingBase() ? {} : { own: true });
 
 class Bad extends Error {}  // a change that can't be made; the message is shown as is
 
@@ -459,7 +467,7 @@ function entryOf(topic, wanted) {
 }
 const sortEntries = topic => topic.entries.sort((a, b) => byLower(a.name, b.name));
 function mustOwn(thing, what) {
-  if (MODE === "user" && !thing.own) throw new Bad(`${what} is shared with everyone, so it can't be changed here. You can add your own names, topics and questions.`);
+  if (!editingBase() && !thing.own) throw new Bad(`${what} is shared with everyone, so it can't be changed here. You can add your own names, topics and questions.`);
 }
 
 const OPS = {
@@ -664,13 +672,14 @@ async function loadData() {
       const base = await readFile(FILE, BRANCH);
       BASE = base.data;
       SHA = base.sha;
-      if (MODE === "user") {
-        const over = await readFile(userFile(USER), USER_BRANCH);
+      if (MODE === "user" && !editingBase()) {
+        const over = await readFile(userFile(whose()), USER_BRANCH);
         OVER = over ? over.data : emptyOver();
         OVER_SHA = over ? over.sha : null;
         DATA = merge(BASE, OVER);
       } else {
         DATA = BASE;
+        OVER = null;
       }
       return;
     } catch (err) {
@@ -691,14 +700,16 @@ async function put(path, branch, data, sha, message) {
 
 async function commit(change) {
   for (let attempt = 0; attempt < 3; attempt++) {
-    if (attempt || !BASE || (MODE === "admin" && !SHA) || (MODE === "user" && !OVER)) await loadData();
-    const copy = MODE === "user" ? merge(BASE, OVER) : copyOf(BASE);
+    const player = !editingBase();
+    if (attempt || !BASE || (!player && !SHA) || (player && !OVER)) await loadData();
+    const copy = player ? merge(BASE, OVER) : copyOf(BASE);
     const result = change(copy);  // throws Bad before anything is sent
+    const by = MODE === "user" ? `${USER}${whose() !== USER && player ? ` for ${whose()}` : ""}: ` : "";
     let r;
-    if (MODE === "user") {
+    if (player) {
       const next = split(BASE, copy);
       if (serialise(next) === serialise(OVER)) return result;  // nothing to save
-      r = await put(userFile(USER), USER_BRANCH, next, OVER_SHA, `${USER}: ${result.message || "update"}`);
+      r = await put(userFile(whose()), USER_BRANCH, next, OVER_SHA, by + (result.message || "update"));
       if (r.ok) {
         OVER = next;
         OVER_SHA = (await r.json()).content.sha;
@@ -707,7 +718,7 @@ async function commit(change) {
       }
     } else {
       if (serialise(copy) === serialise(BASE)) return result;
-      r = await put(FILE, BRANCH, copy, SHA, result.message || "Update");
+      r = await put(FILE, BRANCH, copy, SHA, by + (result.message || "Update"));
       if (r.ok) {
         BASE = DATA = copy;
         SHA = (await r.json()).content.sha;
@@ -766,8 +777,10 @@ async function logIn(name, password) {
   const user = users.find(u => same(u.name, name.trim()));
   const token = user && await unlock(user, password);
   if (!token) throw new Error("Wrong username or password.");
-  MODE = "user"; USER = user.name; TOKEN = token;
+  MODE = "user"; USER = user.name; TOKEN = token; ADMIN = !!user.admin;
   store("ch-mode", "user"); store("ch-user", user.name); store("ch-token", token); store("ch-login", null);
+  store("ch-admin", ADMIN ? "1" : null);
+  setTarget(null);
   OVER = null;
   await loadData();
 }
@@ -777,9 +790,142 @@ async function changePassword(password) {
   const list = users.data.users || [];
   const i = list.findIndex(u => same(u.name, USER));
   if (i < 0) throw new Error("You're not in the list of players any more.");
-  list[i] = await lock(list[i].name, password, TOKEN);
+  list[i] = Object.assign({}, list[i], await lock(list[i].name, password, TOKEN));  // keeps "admin"
   const r = await put(USERS_FILE, BRANCH, users.data, users.sha, `${USER}: change password`);
   if (!r.ok) throw new Error(`GitHub answered HTTP ${r.status}. Try again.`);
+}
+
+// ---- Admin console ----
+
+const PLAYER_NAME = /^[A-Za-z0-9_-]{2,30}$/;
+
+function setTarget(t) {
+  TARGET = t || null;
+  try { if (TARGET) sessionStorage.setItem("ch-target", TARGET); else sessionStorage.removeItem("ch-target"); } catch (e) {}
+}
+
+async function editUsers(change, message) {  // change users.json: fresh copy, again if someone saved first
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const file = await readFile(USERS_FILE, BRANCH);
+    const data = file.data;
+    data.users = data.users || [];
+    await change(data.users);
+    const r = await put(USERS_FILE, BRANCH, data, file.sha, `${USER}: ${message}`);
+    if (r.ok) return;
+    if (r.status !== 409) throw new Error(`GitHub answered HTTP ${r.status}.`);
+  }
+  throw new Error("Someone else changed the players at the same moment. Try again.");
+}
+
+function playerIndex(users, name) {
+  const i = users.findIndex(u => same(u.name, name));
+  if (i < 0) throw new Bad(`There's no player called ${name}.`);
+  return i;
+}
+
+async function adminAction(action, form) {
+  if (MODE !== "user" || !ADMIN) throw new Bad("Only admins can do that.");
+  const name = (form.name || "").trim(), password = form.password || "";
+  if ((action === "add" || action === "password") && password.length < 6) throw new Bad("Use at least 6 characters for the password.");
+  if (action === "add") {
+    if (!PLAYER_NAME.test(name)) throw new Bad("Use 2 to 30 letters, digits, - or _ for the username.");
+    await editUsers(async users => {
+      if (users.some(u => same(u.name, name))) throw new Bad(`There's already a player called ${name}.`);
+      users.push(await lock(name, password, TOKEN));
+    }, `add player ${name}`);
+    return `Added ${name}.`;
+  }
+  if (action === "password") {
+    await editUsers(async users => {
+      const i = playerIndex(users, name);
+      users[i] = Object.assign({}, users[i], await lock(users[i].name, password, TOKEN));
+    }, `reset ${name}'s password`);
+    return `${name}'s password is changed.`;
+  }
+  if (same(name, USER)) throw new Bad("You can't change that for yourself.");
+  if (action === "admin") {
+    const on = form.value === "1";
+    await editUsers(async users => {
+      const u = users[playerIndex(users, name)];
+      if (on) u.admin = true; else delete u.admin;
+    }, on ? `make ${name} an admin` : `remove ${name} as admin`);
+    return on ? `${name} is now an admin.` : `${name} is no longer an admin.`;
+  }
+  if (action === "remove") {
+    await editUsers(async users => { users.splice(playerIndex(users, name), 1); }, `remove player ${name}`);
+    const file = await readFile(userFile(name), USER_BRANCH);
+    if (file) await gh("DELETE", `/repos/${OWNER}/${REPO}/contents/${userFile(name)}`,
+      { message: `${USER}: remove ${name}'s additions`, sha: file.sha, branch: USER_BRANCH });
+    if (TARGET && same(TARGET, name)) { setTarget(null); await loadData(); }
+    return `Removed ${name}.`;
+  }
+  throw new Bad("Unknown admin action.");
+}
+
+function summary(over) {  // what a player has added, in a few words
+  const topics = (over.topics || []).length;
+  let names = (over.topics || []).reduce((n, t) => n + (t.entries || []).length, 0), questions = 0, answers = 0;
+  for (const t of over.topics || []) questions += (t.fields || []).filter(isQuestion).length;
+  for (const x of Object.values(over.extra || {})) {
+    names += (x.entries || []).length;
+    questions += (x.fields || []).length;
+    answers += Object.values(x.answers || {}).reduce((n, a) => n + Object.keys(a).length, 0);
+  }
+  const parts = [[topics, "topic", "topics"], [names, "name", "names"], [questions, "question", "questions"],
+    [answers, "answer on shared names", "answers on shared names"]].filter(([n]) => n).map(([n, one, many]) => `${n} ${n === 1 ? one : many}`);
+  return parts.length ? parts.join(", ") : "nothing added yet";
+}
+
+function adminPage() {
+  const header = "<h1>Celebrity Heads</h1>" + tabs(null) + "<h2>Admin console</h2>";
+  if (MODE !== "user" || !ADMIN) {
+    return { title: "Admin · Celebrity Heads", category: "", header, content: '<p class="empty">Only admins can open this.</p>' };
+  }
+  return { title: "Admin · Celebrity Heads", category: "", header,
+    content: '<div id="admin-body"><p class="count">Loading the players…</p></div>', init: initAdmin };
+}
+
+async function initAdmin() {
+  const box = $("admin-body");
+  try {
+    const users = (await readFile(USERS_FILE, BRANCH)).data.users || [];
+    const added = await Promise.all(users.map(async u => {
+      const f = await readFile(userFile(u.name), USER_BRANCH);
+      return f ? summary(f.data) : "nothing added yet";
+    }));
+    if (!document.body.contains(box)) return;  // moved to another page meanwhile
+    box.innerHTML = adminBody(users, added);
+  } catch (err) {
+    box.innerHTML = `<p class="empty">Couldn't load the players: ${esc(err.message)}</p>`;
+  }
+}
+
+function adminBody(users, added) {
+  const chip = (value, label) => `<button type="button" class="chip" data-target="${esc(value)}" ` +
+    `aria-pressed="${(TARGET || "") === value}">${esc(label)}</button>`;
+  const others = users.filter(u => !same(u.name, USER));
+  const work = '<section class="adminsec"><h3>Work on</h3><p class="note">Pick whose data the topic pages show and change. ' +
+    "The bar at the top says which, until you switch back.</p><div class=\"chips\">" +
+    chip("", `My own (${USER})`) + chip(SHARED, "Shared topics (everyone)") +
+    others.map(u => chip(u.name, `${u.name}'s`)).join("") + "</div></section>";
+  const players = users.map((u, i) => {
+    const me = same(u.name, USER);
+    const keep = hidden({ name: u.name });
+    return `<div class="player"><p class="qtext">${esc(u.name)}${u.admin ? ' <span class="badge">admin</span>' : ""}` +
+      `${me ? ' <span class="missing">(you)</span>' : ""}<br><span class="missing">${esc(added[i])}</span></p>` +
+      `<form data-admin="password" class="row">${keep}<input class="field" name="password" type="password" minlength="6" ` +
+      `required autocomplete="new-password" placeholder="New password" aria-label="New password for ${esc(u.name)}">` +
+      '<button class="btn">Set password</button></form>' +
+      (me ? "" : `<div class="row"><form data-admin="admin">${keep}${hidden({ value: u.admin ? "0" : "1" })}` +
+        `<button class="btn">${u.admin ? "Remove admin" : "Make admin"}</button></form>` +
+        `<form data-admin="remove" data-confirm="Remove ${esc(u.name)} and everything they've added?">${keep}` +
+        '<button class="btn danger">Remove player</button></form></div>') + "</div>";
+  }).join("");
+  const add = '<section class="adminsec"><h3>Add a player</h3><form data-admin="add" class="form">' +
+    '<label>Username<input class="field" name="name" required pattern="[A-Za-z0-9_\\-]{2,30}" autocomplete="off" autocapitalize="off"></label>' +
+    '<label>Password<input class="field" name="password" type="password" minlength="6" required autocomplete="new-password"></label>' +
+    '<div class="row"><button class="btn primary">Add player</button></div></form></section>';
+  return work + `<section class="adminsec"><h3>Players</h3>${players}</section>` + add;
 }
 
 // ---- The page ----
@@ -818,15 +964,26 @@ function initLogin() {
 function render() {
   const params = new URLSearchParams(location.search);
   const page = MODE === "view" ? loginPage() : params.has("n") ? entryPage(params) : params.has("ask") ? questionPage(params)
-    : params.has("new") ? newTopicPage() : listPage(params);
+    : params.has("new") ? newTopicPage() : params.has("admin") ? adminPage() : listPage(params);
   document.title = page.title;
   document.body.dataset.category = page.category;
   $("head").innerHTML = page.header;
   $("main").innerHTML = page.content;
   const login = store("ch-login");
-  $("foot").innerHTML = (MODE === "user" ? `Logged in as ${esc(USER)} · <a href="#" id="password">Change password</a> · <a href="#" id="signout">Log out</a>`
-    : MODE === "admin" ? `Editing the shared topics${login ? ` (GitHub: ${esc(login)})` : ""} · <a href="#" id="signout">Sign out</a>`
-    : '<a href="#" id="signin">Owner sign-in</a>') + `<br>${esc(RIOT_NOTICE)}`;
+  $("account").innerHTML = MODE === "user"
+    ? `<details class="menu"><summary>${esc(USER)}${ADMIN ? " · admin" : ""}</summary><div class="menu-list">` +
+      (ADMIN ? '<a href="?admin">Admin console</a>' : "") +
+      '<a href="#" id="password">Change password</a><a href="#" id="signout">Log out</a></div></details>'
+    : MODE === "admin"
+      ? `<details class="menu"><summary>Owner</summary><div class="menu-list">` +
+        (login ? `<span class="missing">GitHub: ${esc(login)}</span>` : "") + '<a href="#" id="signout">Sign out</a></div></details>'
+      : "";
+  const working = MODE === "user" && TARGET;
+  $("working").hidden = !working;
+  $("working").innerHTML = !working ? "" : (TARGET === SHARED
+    ? "Working on the <b>shared topics</b>: changes show for everyone"
+    : `Working on <b>${esc(TARGET)}</b>'s additions`) + ' · <a href="#" id="mine">Back to mine</a>';
+  $("foot").innerHTML = (MODE === "view" ? '<a href="#" id="signin">Owner sign-in</a><br>' : "") + esc(RIOT_NOTICE);
   if (page.init) page.init();
   const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
   if (target) target.scrollIntoView();
@@ -1002,9 +1159,10 @@ async function save(op, form) {
 }
 
 function logOut() {
-  MODE = "view"; USER = null; TOKEN = null; SHA = null; OVER = null; OVER_SHA = null;
+  MODE = "view"; USER = null; TOKEN = null; SHA = null; OVER = null; OVER_SHA = null; ADMIN = false;
+  setTarget(null);
   DATA = BASE;
-  for (const k of ["ch-mode", "ch-user", "ch-token", "ch-login"]) store(k, null);
+  for (const k of ["ch-mode", "ch-user", "ch-token", "ch-login", "ch-admin"]) store(k, null);
 }
 
 async function signIn(token) {
@@ -1024,8 +1182,26 @@ function start() {
   TOKEN = store("ch-token") || null;
   MODE = TOKEN ? (store("ch-mode") === "user" && store("ch-user") ? "user" : "admin") : "view";
   USER = MODE === "user" ? store("ch-user") : null;
-  document.addEventListener("click", e => {
+  ADMIN = MODE === "user" && store("ch-admin") === "1";
+  try { TARGET = ADMIN ? sessionStorage.getItem("ch-target") : null; } catch (e) { TARGET = null; }
+  document.addEventListener("click", async e => {
+    const menu = document.querySelector("details.menu[open]");
+    if (menu && !menu.contains(e.target)) menu.open = false;  // a click elsewhere closes the account menu
+    const pick = e.target.closest("[data-target]");
+    if (pick) {
+      setTarget(pick.dataset.target);
+      flash("Loading…");
+      try { await loadData(); go("?"); flash(TARGET ? "Switched. The bar at the top shows whose data this is." : "Back to your own.", false, 2500); }
+      catch (err) { flash(err.message, true); }
+      return;
+    }
     const a = e.target.closest("a");
+    if (a && a.closest("details.menu")) a.closest("details.menu").open = false;
+    if (a && a.id === "mine") {
+      e.preventDefault(); setTarget(null); flash("Loading…");
+      try { await loadData(); render(); flash("Back to your own.", false, 2000); } catch (err) { flash(err.message, true); }
+      return;
+    }
     if (a && a.id === "signin") { e.preventDefault(); $("signin-box").showModal(); $("token").focus(); return; }
     if (a && a.id === "password") { e.preventDefault(); $("password-box").showModal(); $("new-password").focus(); return; }
     if (a && a.id === "signout") { e.preventDefault(); logOut(); render(); flash("Logged out.", false, 2500); return; }
@@ -1035,8 +1211,21 @@ function start() {
     e.preventDefault();
     go(href);
   });
-  document.addEventListener("submit", e => {
+  document.addEventListener("submit", async e => {
     const f = e.target;
+    if (f.dataset.admin) {
+      e.preventDefault();
+      if (f.dataset.confirm && !confirm(f.dataset.confirm)) return;
+      const form = Object.fromEntries(new FormData(f));
+      for (const b of f.querySelectorAll("button")) b.disabled = true;
+      flash("Saving…");
+      try { const done = await adminAction(f.dataset.admin, form); render(); flash(done, false, 2500); }
+      catch (err) {
+        for (const b of f.querySelectorAll("button")) b.disabled = false;
+        flash(err instanceof Bad ? err.message : `Couldn't save: ${err.message}`, true);
+      }
+      return;
+    }
     if (!f.dataset.op) return;
     e.preventDefault();
     if (f.dataset.confirm && !confirm(f.dataset.confirm)) return;
@@ -1083,7 +1272,9 @@ function start() {
 if (typeof module !== "undefined") {  // tests (Node)
   module.exports = { fieldSpecs, values, filters, listPage, entryPage, questionPage, newTopicPage, OPS, Bad, serialise,
     answerOptions, merge, split, lock, unlock,
-    set: (data, token, mode, user) => { DATA = data; TOKEN = token; MODE = mode || (token ? "admin" : "view"); USER = user || null; } };
+    summary, SHARED,
+    set: (data, token, mode, user, admin, target) => { DATA = data; TOKEN = token; MODE = mode || (token ? "admin" : "view");
+      USER = user || null; ADMIN = !!admin; TARGET = target || null; } };
 } else {
   start();
 }

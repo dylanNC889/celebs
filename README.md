@@ -25,8 +25,17 @@ The page shows nothing until you log in. That only hides the page: GitHub Pages 
   - their own questions, with answers for any name.
 - Players can't rename or remove shared names, topics or questions.
 - A player's additions are saved in `users/<name>.json` on the **`userdata`** branch, which GitHub Pages doesn't build, so saving is instant.
-- Players can change their password from the bottom of the page.
+- Players can change their password or log out from their account menu (top right).
 - To add a player or reset a password, run `python3 tools/users.py TOKEN_FILE Name Password` in the repo folder. It needs the Python `cryptography` package. Then commit `users.json`.
+
+**Admins** are players with `"admin": true` in `users.json`; Akimei is one. Their account menu, top right, has an **Admin console** where they can:
+
+- work on the shared topics, their own additions, or any player's additions (a bar at the top shows whose data the pages are showing);
+- reset any player's password;
+- make players admins, or remove their admin rights;
+- add players, or remove them together with their additions.
+
+Because every player unlocks the same token, admin is a privilege on the page only, not a security boundary.
 
 **The owner signs in** with **Owner sign-in** (at the bottom of the login screen) and a GitHub token. This edits the shared topics in `data.json`, for everyone.
 
