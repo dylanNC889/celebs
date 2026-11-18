@@ -15,7 +15,9 @@
    "entries": [
     {
      "name": "Byakuya Kuchiki",
-     "details": {}
+     "details": {
+      "Has Bankai": "Yes"
+     }
     },
     {
      "name": "Gin Ichimaru",
