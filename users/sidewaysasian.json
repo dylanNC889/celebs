@@ -6,7 +6,10 @@
    "entries": [
     {
      "name": "Algernon",
-     "details": {}
+     "details": {
+      "Book": "Flowers for Algernon",
+      "Author": "Daniel Keyes"
+     }
     },
     {
      "name": "Charlie Gordon",
