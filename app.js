@@ -10,7 +10,7 @@
 // GitHub Pages). There are two ways in, and either way each change is one commit through the GitHub API:
 //  - Log in (users.json): each player has a username and password and their own additions on top of the
 //    shared topics: their own topics, names added to shared topics, and questions with answers. They're
-//    kept in users/<name>.json on the "userdata" branch (not built by Pages), and only that player sees
+//    kept in users/<name>.json (read through the API, so saves show at once), and only that player sees
 //    them. The password unlocks, in this browser, a shared GitHub token stored in users.json encrypted
 //    with it (PBKDF2-SHA256 + AES-GCM). This is simple, not secure: the repo is public, so anyone can
 //    read users' files, and anyone who guesses a password gets the token, which can change the repo.
@@ -26,7 +26,7 @@
 "use strict";
 
 const OWNER = "dylanNC889", REPO = "celebs", BRANCH = "main", FILE = "data.json";
-const USERS_FILE = "users.json", USER_BRANCH = "userdata", ITERATIONS = 250000;
+const USERS_FILE = "users.json", USER_BRANCH = BRANCH, ITERATIONS = 250000;  // players' files live on main too
 const userFile = name => `users/${name.toLowerCase()}.json`;
 const API = "https://api.github.com";
 const TYPES = ["text", "tags", "list", "long", "image"];
@@ -44,7 +44,7 @@ let USER = null;    // the logged-in player's name
 let TOKEN = null;   // GitHub token: typed in by the owner, or unlocked by a player's password
 let BASE = null;    // data.json: the shared topics
 let SHA = null;     // its blob sha on GitHub (when read through the API), needed to save it
-let OVER = null;    // the player's own additions (users/<name>.json on the userdata branch)
+let OVER = null;    // the player's own additions (users/<name>.json)
 let OVER_SHA = null;
 let DATA = null;    // what the pages show: BASE, or BASE with the player's additions merged in
 
@@ -254,7 +254,7 @@ function listPage(params) {
     return { title: "Celebrity Heads", category, header: title,
       content: `<div class="empty">Nothing in ${esc(category)} yet. Add names, then ask questions on their pages ` +
         `or set up the topic's <a href="${esc(fieldsUrl(category))}">fields &amp; filters</a>.` +
-        nameForm(category) + "</div>" + (mine(topic) ?
+        (topic.noNewNames ? "" : nameForm(category)) + "</div>" + (mine(topic) ?
         '<details class="edit" style="margin-top:12px"><summary>Remove this topic</summary>' +
         `<form data-op="removeTopic" data-confirm="Remove the topic ${esc(category)}?">${hidden({ c: category })}` +
         `<button class="btn danger">Remove ${esc(category)}</button></form></details>` : "") };
@@ -277,11 +277,12 @@ function listPage(params) {
       `data-s="${esc(text)}"${artAttr}><span class="text"><span class="name">${esc(name)}</span>` +
       (meta ? `<span class="meta">${esc(meta)}</span>` : "") + `</span>${thumb}</a>`;
   });
-  const adding = canEdit() ? `<dialog class="add" id="add" aria-label="Add names"><h2>Add to ${esc(category)}</h2>` +
+  const canAdd = canEdit() && !topic.noNewNames;  // some topics (Valorant) have a fixed list of names
+  const adding = canAdd ? `<dialog class="add" id="add" aria-label="Add names"><h2>Add to ${esc(category)}</h2>` +
     nameForm(category, '<button type="button" class="btn" id="addclose">Cancel</button>') + "</dialog>" : "";
   const content = '<div class="tools"><p class="count" id="count"></p><div class="row">' +
-    (canEdit() ? '<button type="button" class="btn" id="addbtn">Add names</button>' +
-      `<a class="btn" href="${esc(fieldsUrl(category))}">Fields &amp; filters</a>` : "") +
+    (canAdd ? '<button type="button" class="btn" id="addbtn">Add names</button>' : "") +
+    (canEdit() ? `<a class="btn" href="${esc(fieldsUrl(category))}">Fields &amp; filters</a>` : "") +
     '<button type="button" class="btn primary" id="random">Random pick</button></div></div>' +
     '<div class="grid">' + cards.join("") + "</div>" + adding +
     '<dialog class="pick" id="pick" aria-label="Random pick"><img class="pick-art" alt="" hidden>' +
@@ -454,8 +455,13 @@ function fieldsPage(params) {  // a topic's fields: add, rename, type, filter, c
     '<label class="check"><input type="checkbox" name="card" value="1"> Show on cards</label>' +
     `<label>Filter tab<input class="field" name="group" list="groups" maxlength="${LIMITS.topic}" autocomplete="off" placeholder="e.g. Questions"></label>` +
     '<div class="row"><button class="btn primary">Add field</button></div></form></section>';
-  const content = `<section class="adminsec"><h3>Fields of ${esc(category)}</h3>${rows || '<p class="missing">No fields yet.</p>'}</section>` +
-    add + `<datalist id="groups">${groups.map(g => `<option value="${esc(g)}">`).join("")}</datalist>`;
+  const settings = mine(topic) ? `<section class="adminsec"><h3>Names</h3><form data-op="topicSettings" class="form">${hidden({ c: category })}` +
+    `<label class="check"><input type="checkbox" name="allowNames" value="1"${topic.noNewNames ? "" : " checked"}> Players can add names</label>` +
+    '<div class="row"><button class="btn primary">Save</button></div></form></section>'
+    : (topic.noNewNames ? '<section class="adminsec"><h3>Names</h3><p class="note">This topic has a fixed list of names.</p></section>' : "");
+  const content = '<div class="fields-layout"><div class="col-add">' + add + settings + "</div>" +
+    `<div class="col-list"><section class="adminsec"><h3>Fields of ${esc(category)}</h3>${rows || '<p class="missing">No fields yet.</p>'}</section></div></div>` +
+    `<datalist id="groups">${groups.map(g => `<option value="${esc(g)}">`).join("")}</datalist>`;
   return { title: `Fields · ${category}`, category, header, content, init: initEntry };
 }
 
@@ -580,6 +586,7 @@ const OPS = {
   },
   addName(d, f) {  // one name per line; ones already there are skipped
     const t = topicOf(d, f.c);
+    if (t.noNewNames) throw new Bad(`${t.name} has a fixed list of names, so names can't be added.`);
     const names = String(f.n || "").split(/\r?\n/).map(line => tidy(line, "name")).filter(Boolean);
     if (!names.length) throw new Bad("Type at least one name.");
     if (names.length > 300) throw new Bad("That's more than 300 names. Add them in smaller batches.");
@@ -687,6 +694,13 @@ const OPS = {
       if (JSON.stringify(e.details[s.name]) !== before) changed++;
     }
     return { url: entryUrl(t.name, e.name), message: `Edit ${e.name}'s details in ${t.name}`, note: changed ? "Saved" : "Nothing changed" };
+  },
+  topicSettings(d, f) {  // "Players can add names" (off = a fixed list of names, like Valorant)
+    const t = topicOf(d, f.c);
+    mustOwn(t, t.name);
+    const allow = f.allowNames === "1";
+    if (allow) delete t.noNewNames; else t.noNewNames = true;
+    return { url: fieldsUrl(t.name), message: `${allow ? "Allow" : "Stop"} adding names in ${t.name}` };
   },
   addField(d, f) {
     const t = topicOf(d, f.c);
@@ -806,6 +820,7 @@ function merge(base, over) {  // the shared topics with a player's additions, th
     const x = (over.extra || {})[t.name] || {};
     const answers = x.answers || {};
     const topic = { name: t.name, note: t.note, fields: copyOf(t.fields), entries: [] };
+    if (t.noNewNames) topic.noNewNames = true;
     for (const f of x.fields || []) topic.fields.push(Object.assign(copyOf(f), { own: true }));
     for (const e of t.entries) {
       const details = copyOf(e.details);
@@ -867,6 +882,19 @@ async function readFile(path, ref) {  // {data, sha} through the API, or null if
 async function loadData() {
   if (MODE !== "view") {
     try {
+      if (MODE === "user") {  // admin rights (or removal) take effect on the next load, without logging in again
+        const users = await readFile(USERS_FILE, BRANCH);
+        const me = users && (users.data.users || []).find(u => same(u.name, USER));
+        if (!me) {
+          logOut();
+          BASE = DATA = null;
+          flash("That login isn't in the list of players any more.", true);
+          return;
+        }
+        ADMIN = !!me.admin;
+        store("ch-admin", ADMIN ? "1" : null);
+        if (!ADMIN) setTarget(null);
+      }
       const base = await readFile(FILE, BRANCH);
       BASE = base.data;
       SHA = base.sha;

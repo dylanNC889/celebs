@@ -24,7 +24,7 @@ The page shows nothing until you log in. That only hides the page: GitHub Pages 
   - names added to shared topics;
   - their own questions, with answers for any name.
 - Players can't rename or remove shared names, topics or questions.
-- A player's additions are saved in `users/<name>.json` on the **`userdata`** branch, which GitHub Pages doesn't build, so saving is instant.
+- A player's additions are saved in `users/<name>.json`. A logged-in player reads them straight from GitHub, so their own changes show at once.
 - Players can change their password or log out from their account menu (top right).
 - To add a player or reset a password, run `python3 tools/users.py TOKEN_FILE Name Password` in the repo folder. It needs the Python `cryptography` package. Then commit `users.json`.
 
@@ -59,6 +59,7 @@ How a player's login works, and why it isn't secure:
   - turn each field's filter and "show on cards" on or off;
   - put fields under a filter tab, and rename, reorder and remove them;
   - switch a field between one value and several, which converts the existing values.
+  - turn "Players can add names" off for topics with a fixed list of names, like Valorant. Players can change this only on their own topics, and admins on shared ones.
   - A field in the **Questions** tab is a question, with one-tap answer buttons on each name's page.
 - **Questions with several answers** (tick "Several answers" when asking, or make it "Several values" on the fields page): each answer button toggles that answer on or off, and the filter matches names that have all the chosen answers.
 

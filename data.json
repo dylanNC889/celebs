@@ -3,6 +3,7 @@
   {
    "name": "Valorant",
    "note": "Everything is about the Alpha Earth agent unless it says Omega. Omega Earth doubles are under each profile's Omega section and the Omega filters; Omega side is where the double stood after Omega Viper took over the Legion in 2026.",
+   "noNewNames": true,
    "fields": [
     {
      "name": "Portrait",
