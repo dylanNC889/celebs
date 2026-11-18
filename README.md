@@ -63,6 +63,15 @@ How a player's login works, and why it isn't secure:
   - A field in the **Questions** tab is a question, with one-tap answer buttons on each name's page.
 - **Questions with several answers** (tick "Several answers" when asking, or make it "Several values" on the fields page): each answer button toggles that answer on or off, and the filter matches names that have all the chosen answers.
 
+**Removing names:** **Remove names** on a topic's list lets you tick several names (players: the ones they added) and remove them in one go.
+
+**AI names (Gemini):** when a Gemini key is set up, logged-in players get two extra options:
+
+- **Pre-load names with AI** on the New topic page, with how many and an optional "which ones";
+- **Suggest with AI** in the Add names box, which fills the box with suggestions to check before adding.
+
+It uses a free-tier key. The free tier has no web search, so names come from the model's own knowledge. `users.json` holds the key, encrypted with the players' token (`tools/ai-key.py TOKEN_FILE GEMINI_KEY_FILE`). Anyone who guesses a password could use it, but a free-tier key can only run out of its daily allowance, not cost money.
+
 Every question becomes a filter of its answers, with "Not answered" for names without one. Tap a question to answer it for every name, or to rename or remove it.
 
 ## Fields

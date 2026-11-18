@@ -28,6 +28,10 @@
 const OWNER = "dylanNC889", REPO = "celebs", BRANCH = "main", FILE = "data.json";
 const USERS_FILE = "users.json", USER_BRANCH = BRANCH, ITERATIONS = 250000;  // players' files live on main too
 const userFile = name => `users/${name.toLowerCase()}.json`;
+// AI name suggestions (Gemini, free-tier key): users.json "ai" holds the key encrypted with the players' token,
+// so any logged-in player can use it. The free tier has no web search, so names come from the model's knowledge.
+const AI_URL = "https://generativelanguage.googleapis.com/v1beta/models";
+const AI_MODELS = ["gemini-3.5-flash-lite", "gemini-3.8-flash"];  // the second is a backup when the first is busy
 const API = "https://api.github.com";
 const TYPES = ["text", "tags", "list", "long", "image"];
 const SELECT_OVER = 8;      // a text filter with more values than this is a drop-down instead of chips
@@ -46,6 +50,7 @@ let BASE = null;    // data.json: the shared topics
 let SHA = null;     // its blob sha on GitHub (when read through the API), needed to save it
 let OVER = null;    // the player's own additions (users/<name>.json)
 let OVER_SHA = null;
+let AI_KEY = null;  // the Gemini key, when the logged-in player can use AI
 let DATA = null;    // what the pages show: BASE, or BASE with the player's additions merged in
 
 const SHARED = "*shared*";  // TARGET value: an admin player working on the shared topics
@@ -155,7 +160,8 @@ function nameForm(category, cancel = "") {
   return `<form data-op="addName" class="form">${hidden({ c: category })}` +
     '<label>Names, one per line<textarea class="field" name="n" rows="4" required autocomplete="off" ' +
     'placeholder="e.g. Harry Potter&#10;Hermione Granger"></textarea></label><div class="row">' +
-    `<button class="btn primary">Add</button>${cancel}</div></form>`;
+    `<button class="btn primary">Add</button>` + (AI_KEY ? '<button type="button" class="btn" id="ai-suggest">Suggest with AI</button>' : "") +
+    `${cancel}</div></form>`;
 }
 
 function answerControls(category, name, spec, got, options, back) {  // one-tap answers, Clear, Other…
@@ -251,7 +257,7 @@ function listPage(params) {
   const entries = sortedEntries(topic);
   if (!entries.length) {
     if (!canEdit()) return { title: "Celebrity Heads", category, header: title, content: `<p class="empty">Nothing in ${esc(category)} yet.</p>` };
-    return { title: "Celebrity Heads", category, header: title,
+    return { title: "Celebrity Heads", category, header: title, init: wireSuggest,
       content: `<div class="empty">Nothing in ${esc(category)} yet. Add names, then ask questions on their pages ` +
         `or set up the topic's <a href="${esc(fieldsUrl(category))}">fields &amp; filters</a>.` +
         (topic.noNewNames ? "" : nameForm(category)) + "</div>" + (mine(topic) ?
@@ -278,13 +284,20 @@ function listPage(params) {
       (meta ? `<span class="meta">${esc(meta)}</span>` : "") + `</span>${thumb}</a>`;
   });
   const canAdd = canEdit() && !topic.noNewNames;  // some topics (Valorant) have a fixed list of names
+  const removable = canEdit() ? entries.filter(e => mine(e)) : [];  // players: names they added
   const adding = canAdd ? `<dialog class="add" id="add" aria-label="Add names"><h2>Add to ${esc(category)}</h2>` +
     nameForm(category, '<button type="button" class="btn" id="addclose">Cancel</button>') + "</dialog>" : "";
   const content = '<div class="tools"><p class="count" id="count"></p><div class="row">' +
     (canAdd ? '<button type="button" class="btn" id="addbtn">Add names</button>' : "") +
+    (removable.length ? '<button type="button" class="btn" id="removebtn">Remove names</button>' : "") +
     (canEdit() ? `<a class="btn" href="${esc(fieldsUrl(category))}">Fields &amp; filters</a>` : "") +
     '<button type="button" class="btn primary" id="random">Random pick</button></div></div>' +
-    '<div class="grid">' + cards.join("") + "</div>" + adding +
+    '<div class="grid">' + cards.join("") + "</div>" + adding + (removable.length ?
+    '<dialog class="add" id="remove-box" aria-label="Remove names"><h2>Remove names</h2>' +
+    `<form data-op="removeNames" class="form" data-confirm="Remove the ticked names and everything added to them?">${hidden({ c: category })}` +
+    '<div class="row"><button type="button" class="btn" id="tick-all">Tick all</button><button type="button" class="btn" id="tick-none">Untick all</button></div>' +
+    '<div class="ticklist">' + removable.map(e => `<label class="check"><input type="checkbox" name="r" value="${esc(e.name)}"> ${esc(e.name)}</label>`).join("") +
+    '</div><div class="row"><button class="btn danger">Remove ticked</button><button type="button" class="btn" id="removeclose">Cancel</button></div></form></dialog>' : "") +
     '<dialog class="pick" id="pick" aria-label="Random pick"><img class="pick-art" alt="" hidden>' +
     '<p class="pick-name"></p><p class="pick-meta"></p><p class="pick-left"></p><div class="pick-actions">' +
     '<button type="button" class="btn primary" id="again">Pick again</button>' +
@@ -532,7 +545,11 @@ function newTopicPage() {
     `<label>Topic<input class="field" name="name" required maxlength="${LIMITS.topic}" autocomplete="off" ` +
     'placeholder="e.g. Harry Potter characters"></label>' +
     `<label>Note (optional, shown under the search box)<input class="field" name="note" maxlength="${LIMITS.note}" ` +
-    'autocomplete="off"></label><div class="row"><button class="btn primary">Add topic</button></div></form>' +
+    'autocomplete="off"></label>' + (AI_KEY ? '<label class="check"><input type="checkbox" name="ai" value="1"> Pre-load names with AI</label>' +
+    '<label>How many names<input class="field" type="number" name="aiCount" min="5" max="100" value="30"></label>' +
+    `<label>Which ones (optional)<input class="field" name="aiHint" maxlength="${LIMITS.question}" autocomplete="off" ` +
+    'placeholder="e.g. main characters only"></label>' : "") +
+    '<div class="row"><button class="btn primary">Add topic</button></div></form>' +
     "<p class=\"note\">Next, add names to it. On each name's page you can ask questions; every question becomes a filter of its answers.</p>";
   return { title: "New topic · Celebrity Heads", category: "", header, content };
 }
@@ -604,6 +621,20 @@ const OPS = {
     }
     const note = `Added ${added.length} name${added.length === 1 ? "" : "s"}` + (there.length ? ` (${there.length} already there)` : "");
     return { url: listUrl(t.name), message: `Add ${added.length} names to ${t.name}`, note };
+  },
+  removeNames(d, f) {  // f.r: the ticked names, one per line
+    const t = topicOf(d, f.c);
+    const wanted = String(f.r || "").split("\n").filter(Boolean);
+    if (!wanted.length) throw new Bad("Tick at least one name.");
+    let removed = 0;
+    for (const name of wanted) {
+      const e = findEntry(t, name);
+      if (!e || !mine(e)) continue;  // shared names stay
+      t.entries.splice(t.entries.indexOf(e), 1);
+      removed++;
+    }
+    const n = `${removed} name${removed === 1 ? "" : "s"}`;
+    return { url: listUrl(t.name), message: `Remove ${n} from ${t.name}`, note: `Removed ${n}` };
   },
   renameName(d, f) {
     const to = tidy(f.to, "name");
@@ -893,6 +924,7 @@ async function loadData() {
         }
         ADMIN = !!me.admin;
         store("ch-admin", ADMIN ? "1" : null);
+        AI_KEY = await unlockAi(users.data.ai);
         if (!ADMIN) setTarget(null);
       }
       const base = await readFile(FILE, BRANCH);
@@ -986,6 +1018,62 @@ async function lock(name, password, token) {
   const sealed = await crypto.subtle.encrypt({ name: "AES-GCM", iv, additionalData: new TextEncoder().encode(name.toLowerCase()) },
     key, new TextEncoder().encode(token));
   return { name, salt: bytes64(salt), iter: ITERATIONS, iv: bytes64(iv), key: bytes64(new Uint8Array(sealed)) };
+}
+
+async function unlockAi(blob) {  // users.json "ai": the Gemini key, AES-GCM with SHA-256(players' token) as the key
+  if (!blob || !TOKEN) return null;
+  try {
+    const raw = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(TOKEN));
+    const key = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unbytes64(blob.iv),
+      additionalData: new TextEncoder().encode("celebs-ai") }, key, unbytes64(blob.key));
+    return new TextDecoder().decode(plain);
+  } catch (e) { return null; }
+}
+
+function aiPrompt(topic, count, hint, existing) {
+  return `Celebrity Heads is a party game where players guess who they are. List up to ${count} well-known names for the topic "${topic}".` +
+    (hint ? ` Only include: ${hint}.` : "") +
+    " Give each one's usual name as fans know it, one per item, with no descriptions and no duplicates." +
+    (existing.length ? ` Leave out these, which are already in the list: ${existing.slice(0, 300).join("; ")}.` : "") +
+    " If you don't know the topic well, give fewer names rather than guessing.";
+}
+
+async function suggestNames(topic, count, hint, existing) {  // names from Gemini, minus ones already there
+  if (!AI_KEY) throw new Error("AI isn't set up for this login.");
+  const body = { contents: [{ role: "user", parts: [{ text: aiPrompt(topic, count, hint, existing) }] }],
+    generationConfig: { responseMimeType: "application/json",
+      responseJsonSchema: { type: "object", properties: { names: { type: "array", items: { type: "string" } } }, required: ["names"] } } };
+  let problem = "no answer";
+  for (const model of AI_MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      let r;
+      const stop = new AbortController(), timer = setTimeout(() => stop.abort(), 60000);
+      try {
+        r = await fetch(`${AI_URL}/${model}:generateContent`, { method: "POST", signal: stop.signal,
+          headers: { "Content-Type": "application/json", "x-goog-api-key": AI_KEY }, body: JSON.stringify(body) });
+      } catch (e) { problem = "Gemini didn't answer"; continue; } finally { clearTimeout(timer); }
+      if (r.ok) {
+        const j = await r.json();
+        const parts = ((((j.candidates || [])[0] || {}).content || {}).parts || []).filter(p => !p.thought);
+        let names;
+        try { names = JSON.parse(parts.map(p => p.text || "").join("")).names; } catch (e) { problem = "the AI's answer wasn't readable"; continue; }
+        const seen = new Set(existing.map(x => x.toLowerCase())), out = [];
+        for (const raw of Array.isArray(names) ? names : []) {
+          const name = String(raw).split(/\s+/).filter(Boolean).join(" ").slice(0, LIMITS.name);
+          if (name && !seen.has(name.toLowerCase())) { seen.add(name.toLowerCase()); out.push(name); }
+        }
+        return out.slice(0, count);
+      }
+      const err = ((await r.json().catch(() => ({}))).error || {}).message || "";
+      if (r.status === 401 || r.status === 403 || (r.status === 400 && /api key/i.test(err))) throw new Error("Gemini doesn't accept the AI key.");
+      if (r.status === 429) { problem = "the free AI allowance is used up for now (it resets at midnight US Pacific time)"; break; }
+      problem = r.status >= 500 ? "Gemini is busy right now" : `Gemini answered HTTP ${r.status}`;
+      if (r.status >= 500 && attempt === 0) { await new Promise(done => setTimeout(done, 1000)); continue; }
+      break;
+    }
+  }
+  throw new Error(problem);
 }
 
 async function readUsers() {  // the newest users.json (the API, so a changed password works at once), else Pages' copy
@@ -1231,7 +1319,34 @@ function initEntry() {
   } catch (e) {}
 }
 
+function wireSuggest() {  // "Suggest with AI" fills the names box for checking before Add
+  const button = $("ai-suggest");
+  if (!button) return;
+  button.addEventListener("click", async () => {
+    const box = button.closest("form").querySelector("[name=n]");
+    const topic = findTopic(DATA, document.body.dataset.category);
+    const typed = box.value.split("\n").map(x => x.trim()).filter(Boolean);
+    button.disabled = true;
+    flash("Asking the AI for names…");
+    try {
+      const names = await suggestNames(topic.name, 30, "", topic.entries.map(e => e.name).concat(typed));
+      box.value = typed.concat(names).join("\n");
+      flash(names.length ? `${names.length} suggestions added to the box. Check them, then Add.` : "The AI had no new names for this topic.", !names.length, 4000);
+    } catch (err) { flash(`The AI couldn't help: ${err.message}`, true); }
+    button.disabled = false;
+  });
+}
+
 function initList() {
+  wireSuggest();
+  const removeBox = $("remove-box");
+  if (removeBox) {
+    $("removebtn").addEventListener("click", () => removeBox.showModal());
+    $("removeclose").addEventListener("click", () => removeBox.close());
+    removeBox.addEventListener("click", e => { if (e.target === removeBox) removeBox.close(); });
+    $("tick-all").addEventListener("click", () => { for (const c of removeBox.querySelectorAll("[name=r]")) c.checked = true; });
+    $("tick-none").addEventListener("click", () => { for (const c of removeBox.querySelectorAll("[name=r]")) c.checked = false; });
+  }
   const addBox = $("add");
   if (addBox) {
     $("addbtn").addEventListener("click", () => { addBox.showModal(); addBox.querySelector("[name=n]").focus(); });
@@ -1384,7 +1499,30 @@ async function save(op, form) {
   }
 }
 
+async function addTopicWithAi(form) {  // add the topic, then the AI's names (two commits)
+  for (const b of document.querySelectorAll("main button, header button")) b.disabled = true;
+  flash("Saving…");
+  try {
+    const made = await commit(d => OPS.addTopic(d, form));
+    const topic = new URLSearchParams(made.url.slice(1)).get("c");
+    flash("Asking the AI for names…");
+    let names;
+    try {
+      const count = Math.min(100, Math.max(5, parseInt(form.aiCount, 10) || 30));
+      names = await suggestNames(topic, count, tidy(form.aiHint, "question"), findTopic(DATA, topic).entries.map(e => e.name));
+    } catch (err) { go(made.url); flash(`The topic is added, but the AI couldn't help: ${err.message}`, true); return; }
+    if (!names.length) { go(made.url); flash("The topic is added, but the AI didn't know any names for it.", true); return; }
+    await commit(d => OPS.addName(d, { c: topic, n: names.join("\n") }));
+    go(listUrl(topic));
+    flash(`Added ${names.length} names from the AI. Use Remove names for any you don't want.`, false, 5000);
+  } catch (err) {
+    for (const b of document.querySelectorAll("main button, header button")) b.disabled = false;
+    flash(err instanceof Bad ? err.message : `Couldn't save: ${err.message}`, true);
+  }
+}
+
 function logOut() {
+  AI_KEY = null;
   MODE = "view"; USER = null; TOKEN = null; SHA = null; OVER = null; OVER_SHA = null; ADMIN = false;
   setTarget(null);
   DATA = BASE;
@@ -1455,11 +1593,13 @@ function start() {
     if (!f.dataset.op) return;
     e.preventDefault();
     if (f.dataset.confirm && !confirm(f.dataset.confirm)) return;
-    const form = Object.fromEntries(new FormData(f));
+    const form = {};
+    for (const [k, v] of new FormData(f)) form[k] = k in form ? `${form[k]}\n${v}` : v;  // repeated fields: one per line
     if (e.submitter && e.submitter.name) form[e.submitter.name] = e.submitter.value;
     const dialog = f.closest("dialog");
     if (dialog) dialog.close();
-    save(f.dataset.op, form);
+    if (f.dataset.op === "addTopic" && form.ai === "1") addTopicWithAi(form);
+    else save(f.dataset.op, form);
   });
   window.addEventListener("popstate", render);
   $("signin-form").addEventListener("submit", async e => {
@@ -1498,7 +1638,7 @@ function start() {
 if (typeof module !== "undefined") {  // tests (Node)
   module.exports = { fieldSpecs, values, filters, listPage, entryPage, questionPage, newTopicPage, OPS, Bad, serialise,
     answerOptions, merge, split, lock, unlock,
-    summary, SHARED, fieldsPage,
+    summary, SHARED, fieldsPage, aiPrompt, unlockAi, suggestNames, setAi: k => { AI_KEY = k; },
     set: (data, token, mode, user, admin, target) => { DATA = data; TOKEN = token; MODE = mode || (token ? "admin" : "view");
       USER = user || null; ADMIN = !!admin; TARGET = target || null; } };
 } else {
