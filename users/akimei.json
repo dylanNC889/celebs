@@ -3,7 +3,14 @@
   {
    "name": "Bleach",
    "note": "",
-   "fields": [],
+   "fields": [
+    {
+     "name": "Has Bankai",
+     "type": "text",
+     "filter": true,
+     "card": false
+    }
+   ],
    "entries": [
     {
      "name": "Byakuya Kuchiki",
