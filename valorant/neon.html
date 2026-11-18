@@ -1,0 +1,175 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Neon · Valorant</title><style>
+:root { --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5f6b7a; --line: #dde2e8;
+  --head: #eef1f5; --accent: #3b6fd8; --on-accent: #ffffff; }
+@media (prefers-color-scheme: dark) { :root { --bg: #11151c; --card: #1a2029; --text: #e6e9ee;
+  --muted: #9aa5b4; --line: #2b3340; --head: #222a35; --accent: #7aa2f7; --on-accent: #10141b; } }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+header { padding: 16px 16px 12px; border-bottom: 1px solid var(--line); }
+h1 { margin: 0 0 10px; font-size: 1.4rem; }
+main { padding: 12px 16px 32px; max-width: 960px; }
+button, input, select { font: inherit; color: var(--text); }
+.tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; }
+.tabs a { flex: none; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--card); color: var(--text); text-decoration: none; font-weight: 500; }
+.tabs a span { color: var(--muted); font-weight: 400; margin-left: 4px; }
+.tabs a[aria-current=page] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.tabs a[aria-current=page] span { color: inherit; opacity: 0.8; }
+input[type=search] { width: 100%; padding: 10px 12px; font-size: 1rem; background: var(--card);
+  border: 1px solid var(--line); border-radius: 8px; }
+input[type=search]:focus, select:focus, .chip:focus-visible, .card:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px; }
+.filters { margin-top: 10px; }
+.filters summary { cursor: pointer; font-weight: 600; padding: 4px 0; }
+.filters summary span { color: var(--muted); font-weight: 400; }
+.filter { display: flex; align-items: baseline; gap: 10px; margin-top: 8px; }
+.filter .label { flex: none; width: 5.6rem; color: var(--muted); font-size: 0.85rem; }
+.ftabs { display: flex; margin: 6px 0 2px; border-bottom: 1px solid var(--line); }
+.ftab { padding: 7px 14px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent;
+  background: none; color: var(--muted); font-weight: 600; cursor: pointer; }
+.ftab[aria-selected=true] { color: var(--text); border-bottom-color: var(--accent); }
+.ftab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.ftab .n { margin-left: 6px; padding: 0 6px; border-radius: 999px; font-size: 0.75rem;
+  background: var(--accent); color: var(--on-accent); }
+.ftab .n:empty { display: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--card);
+  font-size: 0.9rem; cursor: pointer; }
+.chip .n { color: var(--muted); margin-left: 4px; font-size: 0.8rem; }
+.chip[aria-pressed=true] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.chip[aria-pressed=true] .n { color: inherit; opacity: 0.8; }
+.chip.zero { opacity: 0.45; }
+span.chip { cursor: default; }
+select { padding: 6px 8px; background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  max-width: 100%; }
+.clear { margin-top: 10px; padding: 0; border: 0; background: none; color: var(--accent); cursor: pointer; }
+.count { color: var(--muted); font-size: 0.85rem; margin: 0; }
+.tools { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.btn { display: inline-block; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--text); text-decoration: none; font-size: 0.95rem; cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+dialog.pick { width: min(92vw, 360px); padding: 22px 18px 18px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--card); color: var(--text); text-align: center; }
+dialog.pick::backdrop { background: rgba(0, 0, 0, 0.55); }
+.pick-art { display: block; width: 100%; height: min(50vh, 420px); margin: -6px 0 12px; object-fit: contain;
+  border-radius: 8px; background: radial-gradient(circle at 50% 30%, #2e3a52, #121722); }
+.pick-name { margin: 2px 0 4px; font-size: 2rem; font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; }
+.pick-meta { margin: 0; color: var(--muted); }
+.pick-left { margin: 6px 0 16px; color: var(--muted); font-size: 0.8rem; }
+.pick-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.card { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 10px 12px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 8px; color: var(--text); text-decoration: none; }
+.card:hover { border-color: var(--accent); }
+.card .text { min-width: 0; }
+.card .name { display: block; font-weight: 600; }
+.thumb { width: 48px; height: 48px; flex: none; border-radius: 8px; object-fit: cover;
+  background: radial-gradient(circle at 50% 30%, #2e3a52, #121722); }
+.card .meta { display: block; color: var(--muted); font-size: 0.85rem; }
+.note { margin: 8px 0 0; color: var(--muted); font-size: 0.85rem; }
+.profile dl + p { margin-top: 10px; }
+.empty { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+.who { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.who h1 { margin: 0; }
+.avatar { width: 76px; height: 76px; flex: none; border-radius: 14px; border: 1px solid var(--line);
+  background: radial-gradient(circle at 50% 30%, #2e3a52, #121722); object-fit: cover; }
+.art img { display: block; width: 100%; max-height: 75vh; object-fit: contain; border-radius: 8px;
+  background: radial-gradient(circle at 50% 30%, #2e3a52, #121722); }
+.back { display: inline-block; margin-bottom: 8px; color: var(--accent); text-decoration: none; font-weight: 500; }
+/* Profile with a side picture (the trimmed copy, cut to the figure): on phones Details left and the
+   picture right, at least as tall as the old full-width picture (sides cropped if needed), the rest
+   full width below; on wide screens all info left and the whole picture pinned right, up to 75vh tall
+   as it was full width. */
+.profile.has-art { display: grid; grid-template-columns: minmax(0, 1fr) 48%; column-gap: 12px; align-items: start; }
+.profile.has-art > * { grid-column: 1 / -1; }
+.profile.has-art > .details { grid-column: 1; grid-row: 1; }
+.art-col { grid-column: 2 !important; grid-row: 1; align-self: stretch; margin: 0 0 12px; }
+.art-col a { display: block; height: 100%; }
+.art-col img { display: block; width: 100%; height: 100%; min-height: min(calc((100vw - 32px) * 0.9), 75vh);
+  object-fit: cover; object-position: 50% 0;
+  border: 1px solid var(--line); border-radius: 8px; background: radial-gradient(circle at 50% 30%, #2e3a52, #121722); }
+@media (max-width: 759px) {
+  .profile.has-art .details dl { grid-template-columns: 1fr; gap: 0; }
+  .profile.has-art .details dd { margin-bottom: 6px; }
+}
+@media (min-width: 760px) {
+  main:has(.profile.has-art) { max-width: 1240px; }
+  .profile.has-art { grid-template-columns: minmax(0, 1fr) auto; column-gap: 20px; }
+  .profile.has-art > * { grid-column: 1; }
+  .profile.has-art > .pager { grid-column: 1 / -1; }
+  .art-col { grid-row: 1 / span 40; align-self: start; position: sticky; top: 12px; }
+  .art-col a { height: auto; }
+  .art-col img { width: auto; height: auto; min-height: 0; max-width: min(50vw, 620px); max-height: 75vh; object-fit: contain; }
+}
+.profile section { background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  padding: 12px 14px; margin-bottom: 12px; }
+.profile h2 { margin: 0 0 8px; font-size: 1.05rem; }
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+.items { margin: 0; padding-left: 1.2rem; }
+.items li + li { margin-top: 8px; }
+.profile p { margin: 0; }
+.profile p + p { margin-top: 10px; }
+.missing { color: var(--muted); font-style: italic; }
+.pager { display: flex; justify-content: space-between; gap: 8px; }
+.pager a { padding: 8px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+  color: var(--text); text-decoration: none; }
+/* Editing: topics, names and questions */
+.tabs a.add { color: var(--accent); border-style: dashed; }
+.filter.wide { display: block; }
+.filter.wide .label { display: block; width: auto; margin-bottom: 4px; }
+.field { display: block; width: 100%; padding: 10px 12px; font-size: 1rem; background: var(--card);
+  border: 1px solid var(--line); border-radius: 8px; color: var(--text); }
+.field:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.form { display: grid; gap: 10px; }
+.form label { display: grid; gap: 4px; color: var(--muted); font-size: 0.9rem; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.row .btn.primary { order: 9; margin-left: auto; }
+.btn.danger { color: #d64545; border-color: #d64545; }
+.qrow { padding: 10px 0; border-top: 1px solid var(--line); }
+.qrow:first-of-type { border-top: 0; padding-top: 0; }
+.qtext { margin: 0 0 6px !important; font-weight: 600; }
+.qtext a { color: var(--text); text-decoration: none; }
+.qtext a::after { content: " ›"; color: var(--muted); }
+.qrow .missing { font-weight: 400; font-size: 0.85rem; margin-left: 6px; }
+.chip.clear { color: var(--muted); border-style: dashed; }
+.other { margin-top: 6px; }
+.other summary, .edit summary { cursor: pointer; color: var(--accent); font-size: 0.9rem; }
+.other form { display: flex; gap: 6px; margin-top: 6px; }
+.other .field { padding: 6px 10px; }
+.addq { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.addq h3 { margin: 0 0 8px; font-size: 0.95rem; }
+.edit { margin-bottom: 12px; }
+.edit[open] { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+.edit form + form { margin-top: 12px; }
+.tools .row { flex-wrap: nowrap; }
+dialog.add { width: min(92vw, 400px); padding: 18px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--card); color: var(--text); }
+dialog.add::backdrop { background: rgba(0, 0, 0, 0.55); }
+dialog.add h2 { margin: 0 0 10px; font-size: 1.1rem; }
+.empty .form { margin-top: 12px; }
+.foot { padding: 4px 16px 24px; max-width: 960px; color: var(--muted); font-size: 0.75rem; }
+</style></head><body data-category="Valorant"><header><a class="back" href="../valorant/">‹ Valorant</a><div class="who"><h1>Neon</h1><img class="avatar" src="../img/thumbs/valorant/neon-portrait.webp" alt="Neon portrait"></div></header><main><div class="profile has-art"><section class="details"><h2>Details</h2><dl><dt>Role</dt><dd>Duelist</dd><dt>Gender</dt><dd>Female</dd><dt>Origin</dt><dd>Philippines</dd><dt>Region</dt><dd>Asia</dd><dt>Real name</dt><dd>Tala Nicole Dimaapi Valdez</dd><dt>Hometown</dt><dd>Taguig, Metro Manila</dd><dt>Power source</dt><dd>Radiant</dd></dl></section><figure class="art-col"><a href="../img/trimmed/valorant/neon-full.webp" title="Open the full picture"><img src="../img/trimmed/valorant/neon-full.webp" alt="Neon full art"></a></figure><section><h2>Worked for</h2><div class="chips"><span class="chip">Kingdom</span></div></section><section><h2>Ability types</h2><div class="chips"><span class="chip">Wall</span><span class="chip">Concuss</span><span class="chip">Movement</span></div></section><section><h2>Info</h2><span class="missing">None</span></section><section><h2>Abilities</h2><ul class="items"><li><strong>Fast Lane (C)</strong>: Instantly launch two vision-blocking walls that extend until they hit a surface.</li><li><strong>Relay Bolt (Q)</strong>: Instantly throw a bolt that bounces once. Explodes on each surface, concussing all players.</li><li><strong>High Gear (E)</strong>: Instantly consume fuel to gain haste. Reactivate to cancel. Alt fire to slide forward or in your movement direction. Slide resets every two kills.</li><li><strong>Overdrive (X, ultimate)</strong>: Instantly refresh High Gear. Access an accurate lightning beam that can be used while activating High Gear. Fire to shoot. On kills, fully recharge fuel.</li><li><strong>Battery (passive)</strong>: Passively recharge fuel over time.</li></ul></section><section><h2>Lore</h2><p>Filipino Agent Neon surges forward at shocking speeds, discharging bursts of bioelectric radiance as fast as her body generates it. She races ahead to catch enemies off guard then strikes them down quicker than lightning.</p><p>Neon is a Filipino Radiant whose bioelectric powers are so strong she wears a Surge Protector pack to keep them under control. The pack was designed by her scientist father, Nathaniel Valdez, whose Radiant-support tech went on to help millions; her dossier says her mother served her community through justice and law. Before the Protocol she worked for Kingdom&#x27;s security arm K-SEC, where she fell out with Chamber. Chamber still recommended her, and she joined as Agent 19, partly to power Killjoy&#x27;s Alpha-to-Omega teleporter. Sage and Reyna both mentor her, she has a speed rivalry with Jett, and she played basketball in high school.</p></section><section><h2>Omega</h2><dl><dt>Omega double</dt><dd>Only mentioned</dd><dt>Omega status</dt><dd>Alive</dd><dt>Omega side</dt><dd>Undecided</dd></dl><p>Omega Neon is a Legion agent. After Omega Viper&#x27;s 2026 takeover she was described as &#x27;spinning&#x27; and struggling with it, with Omega Yoru staying with her while Omega Breach hoped to win her over. Alpha Neon has been to Omega Earth herself: in Omega Lisbon she pulled Alpha Reyna away from a fight with Omega Viper.</p></section><nav class="pager"><a href="../valorant/miks.html">‹ Miks</a><a href="../valorant/omen.html">Omen ›</a></nav></div></main><footer class="foot">Read-only copy. Celebrity Heads was created under Riot Games&#x27; &quot;Legal Jibber Jabber&quot; policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.</footer><script>
+// Back to the list with the search and filters it had, if this tab came from that category's list.
+try {
+  const saved = sessionStorage.getItem("ch-list");
+  const back = document.querySelector(".back");
+  if (saved && new URLSearchParams(saved).get("c") === document.body.dataset.category)
+    back.href = back.getAttribute("href").split("?")[0] + saved;
+} catch (e) {}
+
+// Forms that remove things ask first.
+for (const f of document.querySelectorAll("form[data-confirm]"))
+  f.addEventListener("submit", e => { if (!confirm(f.dataset.confirm)) e.preventDefault(); });
+// "Add name" opens its dialog.
+const addBox = document.getElementById("add");
+if (addBox) {
+  document.getElementById("addbtn").addEventListener("click", () => { addBox.showModal(); addBox.querySelector("input[name=n]").focus(); });
+  document.getElementById("addclose").addEventListener("click", () => addBox.close());
+  addBox.addEventListener("click", e => { if (e.target === addBox) addBox.close(); });
+}
+</script></body></html>
