@@ -8,7 +8,8 @@
      "name": "Has Bankai",
      "type": "text",
      "filter": true,
-     "card": true
+     "card": true,
+     "group": "A"
     }
    ],
    "entries": [
