@@ -6,8 +6,8 @@
 // are keyed by field name. "sized" lists the image paths (without extension) that have a small WebP copy
 // in img/thumbs/ (cards, avatars) or img/trimmed/ (profile art, random pick).
 //
-// Anyone can look at the shared topics. There are two ways to edit (add a topic or name, ask and answer
-// questions, rename and remove); either way each change is one commit through the GitHub API:
+// Nothing shows until someone logs in (the page asks first; the files themselves are still public on
+// GitHub Pages). There are two ways in, and either way each change is one commit through the GitHub API:
 //  - Log in (users.json): each player has a username and password and their own additions on top of the
 //    shared topics: their own topics, names added to shared topics, and questions with answers. They're
 //    kept in users/<name>.json on the "userdata" branch (not built by Pages), and only that player sees
@@ -676,11 +676,10 @@ async function loadData() {
     } catch (err) {
       if (!err.expired) throw err;
       logOut();
-      flash("The saved login no longer works with GitHub, so editing is off. Log in again.", true);
+      flash("The saved login no longer works with GitHub. Log in again.", true);
     }
   }
-  const r = await fetch(FILE, { cache: "no-cache" });
-  BASE = DATA = await r.json();
+  BASE = DATA = null;  // not logged in: nothing is loaded or shown
   SHA = null;
 }
 
@@ -796,9 +795,29 @@ function flash(message, error = false, ms = 0) {
   if (ms) flash.timer = setTimeout(() => { box.hidden = true; }, ms);
 }
 
+function loginPage() {
+  const content = '<form class="form login" id="login-form"><h2>Log in</h2>' +
+    '<label>Username<input class="field" id="login-name" autocomplete="username" autocapitalize="off" required></label>' +
+    '<label>Password<input class="field" id="login-password" type="password" autocomplete="current-password" required></label>' +
+    '<div class="row"><button class="btn primary">Log in</button></div></form>';
+  return { title: "Log in · Celebrity Heads", category: "", header: "<h1>Celebrity Heads</h1>", content, init: initLogin };
+}
+
+function initLogin() {
+  $("login-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    flash("Logging in…");
+    try {
+      await logIn($("login-name").value, $("login-password").value);
+      render();
+      flash(`Logged in as ${USER}.`, false, 2500);
+    } catch (err) { flash(err.message, true); }
+  });
+}
+
 function render() {
   const params = new URLSearchParams(location.search);
-  const page = params.has("n") ? entryPage(params) : params.has("ask") ? questionPage(params)
+  const page = MODE === "view" ? loginPage() : params.has("n") ? entryPage(params) : params.has("ask") ? questionPage(params)
     : params.has("new") ? newTopicPage() : listPage(params);
   document.title = page.title;
   document.body.dataset.category = page.category;
@@ -807,7 +826,7 @@ function render() {
   const login = store("ch-login");
   $("foot").innerHTML = (MODE === "user" ? `Logged in as ${esc(USER)} · <a href="#" id="password">Change password</a> · <a href="#" id="signout">Log out</a>`
     : MODE === "admin" ? `Editing the shared topics${login ? ` (GitHub: ${esc(login)})` : ""} · <a href="#" id="signout">Sign out</a>`
-    : '<a href="#" id="login">Log in</a> · <a href="#" id="signin">Owner sign-in</a>') + `<br>${esc(RIOT_NOTICE)}`;
+    : '<a href="#" id="signin">Owner sign-in</a>') + `<br>${esc(RIOT_NOTICE)}`;
   if (page.init) page.init();
   const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
   if (target) target.scrollIntoView();
@@ -1007,10 +1026,9 @@ function start() {
   USER = MODE === "user" ? store("ch-user") : null;
   document.addEventListener("click", e => {
     const a = e.target.closest("a");
-    if (a && a.id === "login") { e.preventDefault(); $("login-box").showModal(); $("login-name").focus(); return; }
     if (a && a.id === "signin") { e.preventDefault(); $("signin-box").showModal(); $("token").focus(); return; }
     if (a && a.id === "password") { e.preventDefault(); $("password-box").showModal(); $("new-password").focus(); return; }
-    if (a && a.id === "signout") { e.preventDefault(); logOut(); render(); flash("Logged out. Editing is off on this device.", false, 2500); return; }
+    if (a && a.id === "signout") { e.preventDefault(); logOut(); render(); flash("Logged out.", false, 2500); return; }
     // Links within the page (?c=…) render here without reloading.
     const href = a && a.getAttribute("href");
     if (!href || !href.startsWith("?") || a.target || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
@@ -1043,18 +1061,6 @@ function start() {
     } catch (err) { flash(err.message, true); }
   });
   $("signin-cancel").addEventListener("click", () => $("signin-box").close());
-  $("login-form").addEventListener("submit", async e => {
-    e.preventDefault();
-    flash("Logging in…");
-    try {
-      await logIn($("login-name").value, $("login-password").value);
-      $("login-box").close();
-      $("login-password").value = "";
-      render();
-      flash(`Logged in as ${USER}.`, false, 2500);
-    } catch (err) { flash(err.message, true); }
-  });
-  $("login-cancel").addEventListener("click", () => $("login-box").close());
   $("password-form").addEventListener("submit", async e => {
     e.preventDefault();
     const a = $("new-password").value, b = $("new-password-again").value;

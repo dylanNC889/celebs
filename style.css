@@ -159,3 +159,5 @@ dialog.add h2 { margin: 0 0 10px; font-size: 1.1rem; }
 .status.error { background: #d64545; color: #fff; }
 .foot a { color: var(--accent); }
 button:disabled { opacity: 0.6; cursor: default; }
+.form.login { max-width: 380px; margin-top: 4px; }
+.form.login h2 { margin: 0; font-size: 1.1rem; }

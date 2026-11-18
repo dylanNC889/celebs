@@ -15,9 +15,9 @@ randomly pick from, and a profile page per name. Live at **https://dylannc889.gi
 
 ## Logins and editing
 
-Anyone can look at the shared topics. There are two ways to edit.
+The page shows nothing until you log in. That only hides the page: GitHub Pages files such as `data.json` stay public. There are two ways in.
 
-**Players log in** with **Log in** at the bottom of the page.
+**Players log in** on the login screen that opens first.
 
 - Each player has their own additions on top of the shared topics, and only they see them:
   - their own topics;
@@ -28,7 +28,7 @@ Anyone can look at the shared topics. There are two ways to edit.
 - Players can change their password from the bottom of the page.
 - To add a player or reset a password, run `python3 tools/users.py TOKEN_FILE Name Password` in the repo folder. It needs the Python `cryptography` package. Then commit `users.json`.
 
-**The owner signs in** with **Owner sign-in** and a GitHub token. This edits the shared topics in `data.json`, for everyone.
+**The owner signs in** with **Owner sign-in** (at the bottom of the login screen) and a GitHub token. This edits the shared topics in `data.json`, for everyone.
 
 How a player's login works, and why it isn't secure:
 
