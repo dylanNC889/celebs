@@ -3,6 +3,8 @@
 A party-game helper: topics (like Valorant agents or book characters), each with names you can search, filter and
 randomly pick from, and a profile page per name. Live at **https://dylannc889.github.io/celebs/**.
 
+The site opens on a home page listing the topics. Tap one to start, or tap "Celebrity Heads" at the top of any page to come back.
+
 ## How it works
 
 - Everything runs in the browser from GitHub Pages: `index.html`, `app.js` and `style.css`.
@@ -62,6 +64,7 @@ How a player's login works, and why it isn't secure:
   - turn "Players can add names" off for topics with a fixed list of names, like Valorant. Players can change this only on their own topics, and admins on shared ones.
   - **Delete topic**: deletes a topic and all its names, after a confirmation. Players can delete only their own topics; admins on the shared topics and the owner can also delete shared topics. A deleted topic can still be restored from the repo's history.
   - A field in the **Questions** tab is a question, with one-tap answer buttons on each name's page.
+  - **Fill in for every name** (from a field's row, or the "Fill it in" link on an empty filter) opens a page with every name and one-tap answers, for any one-value or several-values field. Adding such a field opens that page straight away. A filter shows its choices once at least one name has a value.
 - **Questions with several answers** (tick "Several answers" when asking, or make it "Several values" on the fields page): each answer button toggles that answer on or off, and the filter matches names that have all the chosen answers.
 
 **Removing names:** **Remove names** on a topic's list lets you tick several names (players: the ones they added) and remove them in one go.

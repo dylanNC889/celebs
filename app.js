@@ -40,6 +40,7 @@ const QUESTIONS = "Questions";
 const YES_NO = ["Yes", "No"];
 const LIMITS = { topic: 60, note: 300, name: 80, question: 120, answer: 80, answers: 240, detail: 200, item: 600, long: 10000 };
 const TYPE_LABELS = { text: "One value", tags: "Several values", list: "List", long: "Paragraphs", image: "Picture" };
+const HOME_LINK = '<h1><a class="home" href="?">Celebrity Heads</a></h1>';  // goes back to the topic list
 const RIOT_NOTICE = "Celebrity Heads was created under Riot Games' \"Legal Jibber Jabber\" policy using assets " +
   "owned by Riot Games. Riot Games does not endorse or sponsor this project.";
 
@@ -179,7 +180,7 @@ function answerControls(category, name, spec, got, options, back) {  // one-tap 
     '<button class="btn">Save</button></form></details>';
 }
 
-function filters(specs, entries) {
+function filters(specs, entries, category) {
   const groups = new Map();  // tab name -> filter rows, in field order
   for (const spec of specs) {
     if (!spec.filter) continue;
@@ -190,7 +191,14 @@ function filters(specs, entries) {
       if (!got.length) empty++;
       for (const v of got) counts.set(v, (counts.get(v) || 0) + 1);
     }
-    if (!counts.size) continue;  // nothing filled in yet
+    if (!counts.size) {  // nothing filled in yet: say so, with a link to fill it in
+      if (category && canEdit()) {
+        if (!groups.has(spec.group)) groups.set(spec.group, []);
+        groups.get(spec.group).push(`<div class="filter-empty"><span class="label">${esc(spec.name)}</span>` +
+          `<span class="missing">Nothing filled in yet. <a href="${esc(questionUrl(category, spec.name))}">Fill it in</a></span></div>`);
+      }
+      continue;
+    }
     const name = esc(spec.name);
     const mode = spec.type === "tags" ? "all" : "any";
     const ordered = [...counts.keys()].sort(spec.question ? answerOrder : byLower);
@@ -238,19 +246,36 @@ function item(text) {
 }
 
 const notFound = (title, message) => ({
-  title: "Celebrity Heads", category: "", header: "<h1>Celebrity Heads</h1>" + tabs(title),
+  title: "Celebrity Heads", category: "", header: HOME_LINK + tabs(title),
   content: `<p class="empty">${message}</p>` });
 
 // ---- Pages: each returns {title, category, header, content, init} ----
 
+function topicThumb(t) {  // the first name's picture, for topics with pictures
+  const pic = fieldSpecs(t.fields).find(s => s.type === "image");
+  const first = pic && sortedEntries(t).find(e => values(pic, e.details).length);
+  return first ? `<img class="thumb" src="${esc(sizedSrc(values(pic, first.details)[0], "thumbs"))}" alt="" loading="lazy">` : "";
+}
+
+function homePage() {  // where the site starts: pick a topic
+  const cards = DATA.topics.map(t => `<a class="card topic" href="${esc(listUrl(t.name))}"><span class="text">` +
+    `<span class="name">${esc(t.name)}</span><span class="meta">${t.entries.length} name${t.entries.length === 1 ? "" : "s"}` +
+    `${MODE === "user" && t.own ? " · yours" : ""}</span>` + (t.note ? `<span class="meta clamp">${esc(t.note)}</span>` : "") +
+    `</span>${topicThumb(t)}</a>`).join("");
+  const add = canEdit() ? '<a class="card topic add-topic" href="?new"><span class="text"><span class="name">+ New topic</span>' +
+    '<span class="meta">Start a list of your own</span></span></a>' : "";
+  return { title: "Celebrity Heads", category: "", header: '<h1>Celebrity Heads</h1><p class="note">Pick a topic to start.</p>',
+    content: `<div class="grid topics">${cards}${add}</div>` + (DATA.topics.length ? "" : '<p class="empty">No topics yet.</p>') };
+}
+
 function listPage(params) {
   if (!DATA.topics.length) {
-    return { title: "Celebrity Heads", category: "", header: "<h1>Celebrity Heads</h1>" + tabs(null),
+    return { title: "Celebrity Heads", category: "", header: HOME_LINK + tabs(null),
       content: `<p class="empty">No topics yet.${canEdit() ? ' <a href="?new">Add a topic</a>' : ""}</p>` };
   }
   const wanted = params.get("c") || DATA.topics[0].name;
   const topic = findTopic(DATA, wanted);
-  const title = "<h1>Celebrity Heads</h1>" + tabs(topic && topic.name);
+  const title = HOME_LINK + tabs(topic && topic.name);
   if (!topic) return notFound(null, `No topic called ${esc(wanted)}.`);
   const category = topic.name;
   const specs = fieldSpecs(topic.fields);
@@ -266,7 +291,7 @@ function listPage(params) {
         `<button class="btn danger">Remove ${esc(category)}</button></form></details>` : "") };
   }
   const header = title + '<input type="search" id="q" placeholder="Search" autocomplete="off">' +
-    (topic.note ? `<p class="note">${esc(topic.note)}</p>` : "") + filters(specs, entries);
+    (topic.note ? `<p class="note">${esc(topic.note)}</p>` : "") + filters(specs, entries, category);
   const pictures = specs.filter(s => s.type === "image");
   const picture = pictures[0], big = pictures[pictures.length - 1];  // on the card; in the random pick popup
   const cards = entries.map(({ name, details }) => {
@@ -457,7 +482,7 @@ function fieldsPage(params) {  // a topic's fields: add, rename, type, filter, c
       '<div class="row"><button class="btn primary">Save</button></div></form><div class="row">' +
       `<form data-op="moveField">${keep}${hidden({ dir: "up" })}<button class="btn" aria-label="Move ${esc(s.name)} up">↑</button></form>` +
       `<form data-op="moveField">${keep}${hidden({ dir: "down" })}<button class="btn" aria-label="Move ${esc(s.name)} down">↓</button></form>` +
-      (s.question ? `<a class="btn" href="${esc(questionUrl(category, s.name))}">Answer for every name</a>` : "") +
+      (short ? `<a class="btn" href="${esc(questionUrl(category, s.name))}">${s.question ? "Answer" : "Fill in"} for every name</a>` : "") +
       `<form data-op="removeField" data-confirm="Remove ${esc(s.name)} and its values from every name?">${keep}` +
       '<button class="btn danger">Remove</button></form></div></div>';
   }).join("");
@@ -514,25 +539,28 @@ function questionsSection(category, name, specs, details, everyone) {
 
 function questionPage(params) {
   const topic = findTopic(DATA, params.get("c"));
-  const spec = topic && fieldSpecs(topic.fields).find(s => s.question && s.name === params.get("ask"));
+  const spec = topic && fieldSpecs(topic.fields).find(s => (s.question || s.type === "text" || s.type === "tags") && s.name === params.get("ask"));
   if (!spec) {
-    return notFound(topic && topic.name, topic ? `There's no question ${esc(params.get("ask"))} in ${esc(topic.name)}.`
+    return notFound(topic && topic.name, topic ? `There's no question or field ${esc(params.get("ask"))} in ${esc(topic.name)}.`
       : `No topic called ${esc(params.get("c") || "")}.`);
   }
   const category = topic.name;
   const everyone = sortedEntries(topic);
   const options = answerOptions(spec, everyone.map(e => e.details));
   const answered = everyone.filter(e => values(spec, e.details).length).length;
-  const rows = everyone.map(({ name, details }, j) => {
-    const got = values(spec, details);
-    const state = got.length ? "" : '<span class="missing">Not answered</span>';
-    return `<div class="qrow" id="n${j}"><p class="qtext"><a href="${esc(entryUrl(category, name))}">${esc(name)}</a>${state}</p>` +
-      (canEdit() ? answerControls(category, name, spec, got, options, "question") : `<p>${esc(got.join(", "))}</p>`) + "</div>";
+  const unset = spec.question ? "Not answered" : "Not filled in";
+  const fillable = e => spec.question || editingBase() || e.own || spec.own;  // players: shared details stay as they are
+  const rows = everyone.map((e, j) => {
+    const got = values(spec, e.details);
+    const state = got.length ? "" : `<span class="missing">${unset}</span>`;
+    return `<div class="qrow" id="n${j}"><p class="qtext"><a href="${esc(entryUrl(category, e.name))}">${esc(e.name)}</a>${state}</p>` +
+      (canEdit() && fillable(e) ? answerControls(category, e.name, spec, got, options, "question") : `<p>${esc(got.join(", "))}</p>`) + "</div>";
   });
   const header = `<a class="back" href="${esc(listUrl(category))}">‹ ${esc(category)}</a><h1>${esc(spec.name)}</h1>` +
-    `<p class="note">Answered for ${answered} of ${everyone.length}.` +
+    `<p class="note">${spec.question ? "Answered" : "Filled in"} for ${answered} of ${everyone.length}.` +
     (canEdit() ? " Tap an answer for each name; it saves straight away." : "") + "</p>";
-  const edit = mine(spec) ? '<details class="edit"><summary>Rename or remove this question</summary>' +
+  const edit = !spec.question ? (canEdit() ? `<p class="note"><a href="${esc(fieldsUrl(category))}">Change this field on Fields &amp; filters</a></p>` : "")
+    : mine(spec) ? '<details class="edit"><summary>Rename or remove this question</summary>' +
     `<form data-op="renameQuestion" class="form">${hidden({ c: category, q: spec.name })}` +
     `<label>Question<input class="field" name="to" value="${esc(spec.name)}" required maxlength="${LIMITS.question}" ` +
     'autocomplete="off"></label><div class="row"><button class="btn primary">Rename</button></div></form>' +
@@ -544,7 +572,7 @@ function questionPage(params) {
 }
 
 function newTopicPage() {
-  const header = "<h1>Celebrity Heads</h1>" + tabs(null) + "<h2>New topic</h2>";
+  const header = HOME_LINK + tabs(null) + "<h2>New topic</h2>";
   if (!canEdit()) return { title: "New topic · Celebrity Heads", category: "", header, content: '<p class="empty">Log in (at the bottom of the page) to add a topic.</p>' };
   const content = '<form data-op="addTopic" class="form">' +
     `<label>Topic<input class="field" name="name" required maxlength="${LIMITS.topic}" autocomplete="off" ` +
@@ -668,7 +696,11 @@ const OPS = {
     const t = topicOf(d, f.c), e = entryOf(t, f.n);
     if (questionKey(question) === "name") throw new Bad("A question can't be called Name.");
     let match = t.fields.find(x => questionKey(fieldName(x)) === questionKey(question));
-    if (match && !isQuestion(match)) throw new Bad(`${t.name} already has a field called ${fieldName(match)}, which isn't a question.`);
+    if (match && !isQuestion(match)) {
+      const kind = fieldSpecs([match])[0].type;
+      if (kind !== "text" && kind !== "tags") throw new Bad(`${fieldName(match)} can't be filled in with buttons. Use Edit details.`);
+      if (!(editingBase() || e.own || match.own)) throw new Bad(`${fieldName(match)} is shared, so only an admin working on the shared topics can change it.`);
+    }
     if (!match && !clearing) {
       match = Object.assign({ name: question, type: f.multi === "1" ? "tags" : "text", filter: true, card: false, group: QUESTIONS }, ownFlag());
       t.fields.push(match);
@@ -748,6 +780,7 @@ const OPS = {
     const field = Object.assign({ name, type, filter: short && f.filter === "1", card: short && f.card === "1" },
       short && group ? { group } : {}, ownFlag());
     t.fields.push(field);
+    if (short) return { url: questionUrl(t.name, name), message: `Add field "${name}" to ${t.name}`, note: "Field added. Fill it in for each name here." };
     return { url: fieldsUrl(t.name) + `#f${t.fields.length - 1}`, message: `Add field "${name}" to ${t.name}` };
   },
   updateField(d, f) {
@@ -1196,7 +1229,7 @@ function summary(over) {  // what a player has added, in a few words
 }
 
 function adminPage() {
-  const header = "<h1>Celebrity Heads</h1>" + tabs(null) + "<h2>Admin console</h2>";
+  const header = HOME_LINK + tabs(null) + "<h2>Admin console</h2>";
   if (MODE !== "user" || !ADMIN) {
     return { title: "Admin · Celebrity Heads", category: "", header, content: '<p class="empty">Only admins can open this.</p>' };
   }
@@ -1283,7 +1316,8 @@ function initLogin() {
 function render() {
   const params = new URLSearchParams(location.search);
   const page = MODE === "view" ? loginPage() : params.has("n") ? entryPage(params) : params.has("ask") ? questionPage(params)
-    : params.has("new") ? newTopicPage() : params.has("admin") ? adminPage() : params.has("fields") ? fieldsPage(params) : listPage(params);
+    : params.has("new") ? newTopicPage() : params.has("admin") ? adminPage() : params.has("fields") ? fieldsPage(params)
+    : params.has("c") ? listPage(params) : homePage();
   document.title = page.title;
   document.body.dataset.category = page.category;
   $("head").innerHTML = page.header;
@@ -1643,7 +1677,7 @@ function start() {
 if (typeof module !== "undefined") {  // tests (Node)
   module.exports = { fieldSpecs, values, filters, listPage, entryPage, questionPage, newTopicPage, OPS, Bad, serialise,
     answerOptions, merge, split, lock, unlock,
-    summary, SHARED, fieldsPage, aiPrompt, unlockAi, suggestNames, setAi: k => { AI_KEY = k; },
+    summary, SHARED, fieldsPage, homePage, aiPrompt, unlockAi, suggestNames, setAi: k => { AI_KEY = k; },
     set: (data, token, mode, user, admin, target) => { DATA = data; TOKEN = token; MODE = mode || (token ? "admin" : "view");
       USER = user || null; ADMIN = !!admin; TARGET = target || null; } };
 } else {
