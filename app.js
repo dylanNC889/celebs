@@ -52,6 +52,7 @@ let SHA = null;     // its blob sha on GitHub (when read through the API), neede
 let OVER = null;    // the player's own additions (users/<name>.json)
 let OVER_SHA = null;
 let AI_KEY = null;  // the Gemini key, when the logged-in player can use AI
+let UNSAVED = 0;    // changes waiting for Save on the "every name" page
 let DATA = null;    // what the pages show: BASE, or BASE with the player's additions merged in
 
 const SHARED = "*shared*";  // TARGET value: an admin player working on the shared topics
@@ -92,6 +93,7 @@ function fieldSpecs(raw) {
       section: String(f.section || ""),
       question: (kind === "text" || kind === "tags") && f.group === QUESTIONS && !f.section,
       multi: kind === "tags",  // several values (for a question: several answers)
+      blank: String(f.blank || ""),  // what a name with no value shows as in filters, if not the default
       own: !!f.own,
     };
   });
@@ -107,9 +109,10 @@ const sortedEntries = topic => topic.entries.slice().sort((a, b) => byLower(a.na
 const findTopic = (data, wanted) => data.topics.find(t => same(t.name, wanted || ""));
 const findEntry = (topic, wanted) => topic.entries.find(e => same(e.name, wanted || ""));
 
-function label(value, spec) {
+function label(value, spec) {  // a filter value; NONE (no value) is "Unknown", or "None" for several-values fields
   if (value !== NONE) return value;
-  return spec && spec.question ? "Not answered" : "None";
+  if (spec && spec.blank) return spec.blank;
+  return spec && (spec.question || spec.type === "text") ? "Unknown" : "None";
 }
 
 function answerOrder(a, b) {  // Yes, then No, then the rest A to Z
@@ -202,17 +205,18 @@ function filters(specs, entries, category) {
     const name = esc(spec.name);
     const mode = spec.type === "tags" ? "all" : "any";
     const ordered = [...counts.keys()].sort(spec.question ? answerOrder : byLower);
+    const blank = counts.has(label(NONE, spec)) ? "Not set" : label(NONE, spec);
     if (empty) { counts.set(NONE, empty); ordered.push(NONE); }
     let control, kind;
     if (spec.type === "text" && counts.size > SELECT_OVER) {
-      const options = ordered.map(v => `<option value="${esc(v)}">${esc(label(v, spec))} (${counts.get(v)})</option>`).join("");
+      const options = ordered.map(v => `<option value="${esc(v)}">${esc(v === NONE ? blank : v)} (${counts.get(v)})</option>`).join("");
       const anything = spec.question ? "Any answer" : `Any ${spec.name.toLowerCase()}`;
       control = `<select aria-label="${name}"><option value="">${esc(anything)}</option>${options}</select>`;
       kind = "select";
     } else {
       control = '<div class="chips">' + ordered.map(v =>
         `<button type="button" class="chip" data-value="${esc(v)}" aria-pressed="false">` +
-        `${esc(label(v, spec))}<span class="n">${counts.get(v)}</span></button>`).join("") + "</div>";
+        `${esc(v === NONE ? blank : v)}<span class="n">${counts.get(v)}</span></button>`).join("") + "</div>";
       kind = "chips";
     }
     const wide = spec.question ? " wide" : "";  // questions are long: label above the chips
@@ -517,7 +521,7 @@ function questionsSection(category, name, specs, details, everyone) {
   }
   const rows = asked.map((s, i) => {
     const got = values(s, details);
-    const state = got.length ? "" : '<span class="missing">Not answered</span>';
+    const state = got.length ? "" : `<span class="missing">${esc(label(NONE, s))}</span>`;
     return `<div class="qrow" id="q${i}"><p class="qtext"><a href="${esc(questionUrl(category, s.name))}" ` +
       `title="Answer for every name">${esc(s.name)}</a>${state}</p>` +
       answerControls(category, name, s, got, answerOptions(s, everyone), "entry") + "</div>";
@@ -548,17 +552,27 @@ function questionPage(params) {
   const everyone = sortedEntries(topic);
   const options = answerOptions(spec, everyone.map(e => e.details));
   const answered = everyone.filter(e => values(spec, e.details).length).length;
-  const unset = spec.question ? "Not answered" : "Not filled in";
+  const unset = label(NONE, spec);
   const fillable = e => spec.question || editingBase() || e.own || spec.own;  // players: shared details stay as they are
+  let editable = 0;
   const rows = everyone.map((e, j) => {
     const got = values(spec, e.details);
     const state = got.length ? "" : `<span class="missing">${unset}</span>`;
-    return `<div class="qrow" id="n${j}"><p class="qtext"><a href="${esc(entryUrl(category, e.name))}">${esc(e.name)}</a>${state}</p>` +
-      (canEdit() && fillable(e) ? answerControls(category, e.name, spec, got, options, "question") : `<p>${esc(got.join(", "))}</p>`) + "</div>";
+    const name = `<p class="qtext"><a href="${esc(entryUrl(category, e.name))}">${esc(e.name)}</a>${state}</p>`;
+    if (!(canEdit() && fillable(e))) return `<div class="qrow" id="n${j}">${name}<p>${esc(got.join(", "))}</p></div>`;
+    editable++;
+    const shown = options.concat(got.filter(v => !options.includes(v)));
+    return `<div class="qrow fill" id="n${j}" data-name="${esc(e.name)}" data-was="${esc(JSON.stringify(got))}">${name}<div class="chips">` +
+      shown.map(o => `<button type="button" class="chip" data-v="${esc(o)}" aria-pressed="${got.includes(o)}">${esc(o)}</button>`).join("") +
+      '<button type="button" class="chip clear" data-clear="1">Clear</button></div>' +
+      `<details class="other"><summary>${spec.multi ? "Add answers…" : "Other answer…"}</summary><div class="row">` +
+      `<input class="field" maxlength="${spec.multi ? LIMITS.answers : LIMITS.answer}" autocomplete="off" ` +
+      `placeholder="${spec.multi ? "Type answers, commas between" : "Type an answer"}" aria-label="${spec.multi ? "Add answers" : "Other answer"} for ${esc(e.name)}">` +
+      '<button type="button" class="btn" data-add="1">Add</button></div></details></div>';
   });
   const header = `<a class="back" href="${esc(listUrl(category))}">‹ ${esc(category)}</a><h1>${esc(spec.name)}</h1>` +
     `<p class="note">${spec.question ? "Answered" : "Filled in"} for ${answered} of ${everyone.length}.` +
-    (canEdit() ? " Tap an answer for each name; it saves straight away." : "") + "</p>";
+    (editable ? ` Tap ${spec.multi ? "answers (each tap turns one on or off)" : "an answer"} for any names, then Save at the bottom.` : "") + "</p>";
   const edit = !spec.question ? (canEdit() ? `<p class="note"><a href="${esc(fieldsUrl(category))}">Change this field on Fields &amp; filters</a></p>` : "")
     : mine(spec) ? '<details class="edit"><summary>Rename or remove this question</summary>' +
     `<form data-op="renameQuestion" class="form">${hidden({ c: category, q: spec.name })}` +
@@ -566,9 +580,11 @@ function questionPage(params) {
     'autocomplete="off"></label><div class="row"><button class="btn primary">Rename</button></div></form>' +
     '<form data-op="removeQuestion" data-confirm="Remove this question and its answers from every name?">' +
     `${hidden({ c: category, q: spec.name })}<button class="btn danger">Remove this question</button></form></details>` : "";
+  const bar = editable ? `<div class="savebar" id="savebar" data-c="${esc(category)}" data-q="${esc(spec.name)}" data-multi="${spec.multi ? 1 : 0}">` +
+    '<span id="changes">No changes yet</span><button type="button" class="btn primary" id="save-fill" disabled>Save</button></div>' : "";
   const content = edit + '<div class="profile"><section class="questions">' +
-    (rows.join("") || '<p class="missing">No names yet.</p>') + "</section></div>";
-  return { title: `${spec.name} · ${category}`, category, header, content, init: initEntry };
+    (rows.join("") || '<p class="missing">No names yet.</p>') + "</section></div>" + bar;
+  return { title: `${spec.name} · ${category}`, category, header, content, init: initFill };
 }
 
 function newTopicPage() {
@@ -741,6 +757,37 @@ const OPS = {
     }
     const asked = t.fields.filter(isQuestion).map(fieldName);
     return { url: entryUrl(t.name, e.name) + (asked.includes(question) ? `#q${asked.indexOf(question)}` : "#questions"), message };
+  },
+  fillMany(d, f) {  // Save on the "every name" page: f.changes = {name: [answers]}, an empty list clears
+    const t = topicOf(d, f.c);
+    const field = t.fields.find(x => fieldName(x) === f.q);
+    if (!field) throw new Bad(`${t.name} has no ${f.q} any more.`);
+    const spec = fieldSpecs([field])[0];
+    if (!spec.question && spec.type !== "text" && spec.type !== "tags") throw new Bad(`${spec.name} can't be filled in here.`);
+    let changes;
+    try { changes = JSON.parse(f.changes || "{}"); } catch (e) { throw new Bad("Couldn't read the changes."); }
+    const used = new Map();  // answers already given, so "yes" becomes "Yes"
+    for (const x of t.entries) for (const v of [].concat(x.details[spec.name] || [])) if (typeof v === "string") used.set(v.toLowerCase(), v);
+    for (const v of YES_NO) used.set(v.toLowerCase(), v);
+    let n = 0;
+    for (const [name, list] of Object.entries(changes)) {
+      const e = findEntry(t, name);
+      if (!e || !(spec.question || editingBase() || e.own || spec.own)) continue;  // shared details stay as they are
+      const clean = [];
+      for (const raw of Array.isArray(list) ? list : []) {
+        const v = String(raw).split(/\s+/).filter(Boolean).join(" ");
+        if (!v) continue;
+        if (v.length > LIMITS.answer) throw new Bad(`"${v.slice(0, 30)}…" is too long (at most ${LIMITS.answer} characters).`);
+        const spelled = used.get(v.toLowerCase()) || upperFirst(v);
+        used.set(v.toLowerCase(), spelled);
+        if (!clean.includes(spelled)) clean.push(spelled);
+      }
+      if (!clean.length) delete e.details[spec.name];
+      else e.details[spec.name] = spec.multi ? clean : clean[0];
+      n++;
+    }
+    const changed = `${n} name${n === 1 ? "" : "s"}`;
+    return { url: questionUrl(t.name, spec.name), message: `Fill in "${spec.name}" for ${changed} in ${t.name}`, note: `Saved ${changed}` };
   },
   editDetails(d, f) {  // the "Edit details" form: f["f:<field>"] for each field it showed
     const t = topicOf(d, f.c), e = entryOf(t, f.n);
@@ -1314,6 +1361,7 @@ function initLogin() {
 }
 
 function render() {
+  UNSAVED = 0;
   const params = new URLSearchParams(location.search);
   const page = MODE === "view" ? loginPage() : params.has("n") ? entryPage(params) : params.has("ask") ? questionPage(params)
     : params.has("new") ? newTopicPage() : params.has("admin") ? adminPage() : params.has("fields") ? fieldsPage(params)
@@ -1373,6 +1421,70 @@ function wireSuggest() {  // "Suggest with AI" fills the names box for checking 
       flash(names.length ? `${names.length} suggestions added to the box. Check them, then Add.` : "The AI had no new names for this topic.", !names.length, 4000);
     } catch (err) { flash(`The AI couldn't help: ${err.message}`, true); }
     button.disabled = false;
+  });
+}
+
+function initFill() {  // the "every name" page: taps change answers on the page; Save sends them all as one change
+  initEntry();
+  const bar = $("savebar");
+  if (!bar) return;
+  const multi = bar.dataset.multi === "1";
+  const rows = [...document.querySelectorAll(".qrow.fill")];
+  const now = new Map(rows.map(r => [r, JSON.parse(r.dataset.was)]));
+  const tidyOne = v => v.split(/\s+/).filter(Boolean).join(" ");
+  const count = () => {
+    UNSAVED = rows.filter(r => r.classList.contains("changed")).length;
+    $("changes").textContent = UNSAVED ? `${UNSAVED} unsaved change${UNSAVED === 1 ? "" : "s"}` : "No changes yet";
+    $("save-fill").disabled = !UNSAVED;
+  };
+  const show = r => {
+    const picked = now.get(r);
+    for (const chip of r.querySelectorAll(".chip[data-v]")) chip.setAttribute("aria-pressed", picked.includes(chip.dataset.v));
+    r.classList.toggle("changed", JSON.stringify(picked) !== r.dataset.was);
+    count();
+  };
+  const addChoice = v => {  // a new answer becomes a button on every row
+    for (const r of rows) {
+      if ([...r.querySelectorAll(".chip[data-v]")].some(c => c.dataset.v === v)) continue;
+      const chip = document.createElement("button");
+      chip.type = "button"; chip.className = "chip"; chip.dataset.v = v; chip.textContent = v;
+      chip.setAttribute("aria-pressed", "false");
+      r.querySelector(".chip.clear").before(chip);
+    }
+  };
+  for (const r of rows) {
+    r.addEventListener("click", e => {
+      const b = e.target.closest("button");
+      if (!b || !r.contains(b)) return;
+      let picked = now.get(r);
+      if (b.dataset.v !== undefined) {
+        const v = b.dataset.v;
+        picked = multi ? (picked.includes(v) ? picked.filter(x => x !== v) : picked.concat(v)) : (picked.length === 1 && picked[0] === v ? [] : [v]);
+      } else if (b.dataset.clear) {
+        picked = [];
+      } else if (b.dataset.add) {
+        const input = r.querySelector(".other input");
+        const typed = (multi ? input.value.split(",") : [input.value]).map(tidyOne).filter(Boolean);
+        if (!typed.length) return;
+        const known = [...r.querySelectorAll(".chip[data-v]")].map(c => c.dataset.v);
+        const spelled = typed.map(v => known.find(k => k.toLowerCase() === v.toLowerCase()) || upperFirst(v));
+        for (const v of spelled) addChoice(v);
+        picked = multi ? [...new Set(picked.concat(spelled))] : [spelled[0]];
+        input.value = "";
+        r.querySelector(".other").open = false;
+      } else return;
+      now.set(r, picked);
+      show(r);
+    });
+    r.querySelector(".other input").addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); r.querySelector("[data-add]").click(); }
+    });
+  }
+  $("save-fill").addEventListener("click", () => {
+    const changes = {};
+    for (const r of rows) if (r.classList.contains("changed")) changes[r.dataset.name] = now.get(r);
+    UNSAVED = 0;
+    save("fillMany", { c: bar.dataset.c, q: bar.dataset.q, changes: JSON.stringify(changes) });
   });
 }
 
@@ -1612,6 +1724,7 @@ function start() {
     const href = a && a.getAttribute("href");
     if (!href || !href.startsWith("?") || a.target || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
     e.preventDefault();
+    if (UNSAVED && !confirm(`Leave without saving ${UNSAVED} change${UNSAVED === 1 ? "" : "s"}?`)) return;
     go(href);
   });
   document.addEventListener("submit", async e => {
@@ -1641,6 +1754,7 @@ function start() {
     else save(f.dataset.op, form);
   });
   window.addEventListener("popstate", render);
+  window.addEventListener("beforeunload", e => { if (UNSAVED) { e.preventDefault(); e.returnValue = ""; } });
   $("signin-form").addEventListener("submit", async e => {
     e.preventDefault();
     const token = $("token").value.trim();

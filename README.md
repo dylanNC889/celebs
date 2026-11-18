@@ -64,7 +64,8 @@ How a player's login works, and why it isn't secure:
   - turn "Players can add names" off for topics with a fixed list of names, like Valorant. Players can change this only on their own topics, and admins on shared ones.
   - **Delete topic**: deletes a topic and all its names, after a confirmation. Players can delete only their own topics; admins on the shared topics and the owner can also delete shared topics. A deleted topic can still be restored from the repo's history.
   - A field in the **Questions** tab is a question, with one-tap answer buttons on each name's page.
-  - **Fill in for every name** (from a field's row, or the "Fill it in" link on an empty filter) opens a page with every name and one-tap answers, for any one-value or several-values field. Adding such a field opens that page straight away. A filter shows its choices once at least one name has a value.
+  - **Fill in for every name** (from a field's row, or the "Fill it in" link on an empty filter) opens a page with every name and tap-to-answer buttons, for any one-value or several-values field. Taps only mark the answers (changed rows are highlighted); **Save** at the bottom saves them all as one change, and leaving with unsaved changes asks first. Adding such a field opens that page straight away. A filter shows its choices once at least one name has a value.
+- **Blank values** show as **Unknown** in filters (questions and one-value fields), or **None** for several-values fields. A field can set its own word with `"blank"` (Valorant's Omega fields use "None"). If a real answer is already called Unknown, blanks show as "Not set".
 - **Questions with several answers** (tick "Several answers" when asking, or make it "Several values" on the fields page): each answer button toggles that answer on or off, and the filter matches names that have all the chosen answers.
 
 **Removing names:** **Remove names** on a topic's list lets you tick several names (players: the ones they added) and remove them in one go.
@@ -76,7 +77,7 @@ How a player's login works, and why it isn't secure:
 
 It uses a free-tier key. The free tier has no web search, so names come from the model's own knowledge. `users.json` holds the key, encrypted with the players' token (`tools/ai-key.py TOKEN_FILE GEMINI_KEY_FILE`). Anyone who guesses a password could use it, but a free-tier key can only run out of its daily allowance, not cost money.
 
-Every question becomes a filter of its answers, with "Not answered" for names without one. Tap a question to answer it for every name, or to rename or remove it.
+Every question becomes a filter of its answers, with "Unknown" for names without one. Tap a question to answer it for every name, or to rename or remove it.
 
 ## Fields
 

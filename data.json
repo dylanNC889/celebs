@@ -88,7 +88,8 @@
      "filter": true,
      "card": false,
      "group": "Omega",
-     "section": "Omega"
+     "section": "Omega",
+     "blank": "None"
     },
     {
      "name": "Omega status",
@@ -96,7 +97,8 @@
      "filter": true,
      "card": false,
      "group": "Omega",
-     "section": "Omega"
+     "section": "Omega",
+     "blank": "None"
     },
     {
      "name": "Omega side",
@@ -104,7 +106,8 @@
      "filter": true,
      "card": false,
      "group": "Omega",
-     "section": "Omega"
+     "section": "Omega",
+     "blank": "None"
     },
     {
      "name": "Omega lore",
