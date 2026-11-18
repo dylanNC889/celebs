@@ -1,0 +1,1600 @@
+{
+ "topics": [
+  {
+   "name": "Valorant",
+   "note": "Everything is about the Alpha Earth agent unless it says Omega. Omega Earth doubles are under each profile's Omega section and the Omega filters; Omega side is where the double stood after Omega Viper took over the Legion in 2026.",
+   "fields": [
+    {
+     "name": "Portrait",
+     "type": "image"
+    },
+    {
+     "name": "Full art",
+     "type": "image"
+    },
+    {
+     "name": "Role",
+     "type": "text",
+     "filter": true,
+     "group": "Abilities"
+    },
+    {
+     "name": "Gender",
+     "type": "text",
+     "filter": true,
+     "card": false,
+     "group": "Lore"
+    },
+    {
+     "name": "Origin",
+     "type": "text",
+     "filter": true,
+     "group": "Lore"
+    },
+    {
+     "name": "Region",
+     "type": "text",
+     "filter": true,
+     "card": false,
+     "group": "Lore"
+    },
+    {
+     "name": "Real name",
+     "type": "text",
+     "card": false
+    },
+    {
+     "name": "Hometown",
+     "type": "text",
+     "card": false
+    },
+    {
+     "name": "Power source",
+     "type": "text",
+     "filter": true,
+     "card": false,
+     "group": "Lore"
+    },
+    {
+     "name": "Worked for",
+     "type": "tags",
+     "filter": true,
+     "group": "Lore"
+    },
+    {
+     "name": "Ability types",
+     "type": "tags",
+     "filter": true,
+     "group": "Abilities"
+    },
+    {
+     "name": "Info",
+     "type": "tags",
+     "filter": true,
+     "group": "Abilities"
+    },
+    {
+     "name": "Abilities",
+     "type": "list"
+    },
+    {
+     "name": "Lore",
+     "type": "long"
+    },
+    {
+     "name": "Omega double",
+     "type": "text",
+     "filter": true,
+     "card": false,
+     "group": "Omega",
+     "section": "Omega"
+    },
+    {
+     "name": "Omega status",
+     "type": "text",
+     "filter": true,
+     "card": false,
+     "group": "Omega",
+     "section": "Omega"
+    },
+    {
+     "name": "Omega side",
+     "type": "text",
+     "filter": true,
+     "card": false,
+     "group": "Omega",
+     "section": "Omega"
+    },
+    {
+     "name": "Omega lore",
+     "type": "long",
+     "section": "Omega"
+    }
+   ],
+   "entries": [
+    {
+     "name": "Astra",
+     "details": {
+      "Role": "Controller",
+      "Origin": "Ghana",
+      "Abilities": [
+       "Gravity Well (C): Activate a Star to create a zone that pulls all players to the center, exploding and applying vulnerable to all players.",
+       "Nova Pulse (Q): Activate a Star to detonate it, concussing all players hit.",
+       "Nebula (E): Activate a Star to transform it into a smoke.",
+       "Cosmic Divide (X, ultimate): Enter Astral Form. Alt fire to equip Cosmic Divide. Fire to set, pivot and fire again to create an indestructible wall that blocks audio.",
+       "Astral Form (passive): Activate ultimate to enter Astral Form. Fire to cast Stars. Interact to recall a Star. Recalling a Star forms a brief smoke."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Wall",
+       "Concuss"
+      ],
+      "Real name": "Efia Danso",
+      "Hometown": "Accra",
+      "Power source": "Radiant",
+      "Lore": "Ghanaian Agent Astra harnesses the energies of the cosmos to reshape battlefields to her whim. With full command of her astral form and a talent for deep strategic foresight, she's always eons ahead of her enemy's next move.\n\nAstra is Agent 16 of the VALORANT Protocol. She is a Radiant who channels her cosmic power through a golden gauntlet, an artifact of the Astral Guardians, a group sworn to protect reality. She seems to be the only living Guardian on Earth, and what she knows about the Guardians is incomplete. She pushed for Harbor to be recruited after she realised his bracelet was a Guardian artifact. Riot says she played a key part in finding the lost City of Flowers in India's Western Ghats, which is the Lotus map. Her real name was revealed in a dossier written by Fade, who was then known only as the 'blackmailer'.",
+      "Gender": "Female",
+      "Region": "Africa",
+      "Portrait": "valorant/astra-portrait.png",
+      "Full art": "valorant/astra-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Undecided",
+      "Omega lore": "Omega Astra used her golden gauntlet to switch on the multiverse nexus in Omega's City of Flowers (the Lotus map) while Alpha Astra and Harbor fought the Legion there; a Spike blast shut it down seconds later. During Omega Viper's 2026 takeover she was still undecided, and Omega Sova was sent to win her over."
+     }
+    },
+    {
+     "name": "Breach",
+     "details": {
+      "Role": "Initiator",
+      "Origin": "Sweden",
+      "Abilities": [
+       "Aftershock (C): Equip Aftershock. Fire to send a zone through a wall, exploding to repeatedly deal damage to all players.",
+       "Flashpoint (Q): Equip a Flashpoint. Fire to send it through a wall, exploding to flash all players looking at it.",
+       "Fault Line (E): Equip Fault Line. Hold fire to increase distance. Release to detonate a zone that concusses all players.",
+       "Rolling Thunder (X, ultimate): Equip Rolling Thunder. Fire to send forward a wave that concusses and knocks up all players."
+      ],
+      "Ability types": [
+       "Flash",
+       "Concuss",
+       "Damage"
+      ],
+      "Real name": "Erik Torsten",
+      "Hometown": "Not revealed",
+      "Power source": "Technology",
+      "Lore": "The bionic Swede Breach fires powerful, targeted kinetic blasts to aggressively clear a path through enemy ground. The damage and disruption he inflicts ensures no fight is ever fair.\n\nBreach is Agent 13, a Swede who was born without arms. He wears heavy prosthetic arms that he built himself, and Raze later upgraded them. The two are friendly, and her voice lines offer him 'tune-ups'. He comes from the Torsten family of criminals. When the family was prosecuted, a judge went easy on him because of his disability. He took that as an insult and committed a string of crimes to prove he was as dangerous as his relatives. This came out in the dossier that Fade (the 'blackmailer') wrote on him.",
+      "Gender": "Male",
+      "Region": "Europe",
+      "Portrait": "valorant/breach-portrait.png",
+      "Full art": "valorant/breach-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Breach is one of Omega Viper's main backers: he joined the 2026 mutiny against Omega Brimstone, was on the team that ambushed the Protocol at Reyna's Sanctuary in Mexico, and now leads the Legion's strike teams. On Omega he's a public hero with a mural in Lisbon and his own comic ('War Dawgs'), and the 2026 cinematic shows him repairing a child's prosthetic."
+     }
+    },
+    {
+     "name": "Brimstone",
+     "details": {
+      "Role": "Controller",
+      "Origin": "United States",
+      "Abilities": [
+       "Stim Beacon (C): Instantly throw a Stim Beacon. On landing, create a zone that grants combat stim and haste to allies.",
+       "Incendiary (Q): Equip Incendiary. Fire to launch. On landing, create a zone that deals damage to all players.",
+       "Sky Smoke (E): Equip a tactical map. Fire to set smoke locations. Alt fire to cast smokes.",
+       "Orbital Strike (X, ultimate): Equip a tactical map. Fire to cast an Orbital Strike at a location, dealing high damage over time to all players."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Damage"
+      ],
+      "Real name": "Liam Byrne",
+      "Hometown": "Baltimore (likely)",
+      "Power source": "Technology",
+      "Lore": "Joining from the U.S.A., Brimstone's orbital arsenal ensures his squad always has the advantage. His ability to deliver utility precisely and safely make him the unmatched boots-on-the-ground commander.\n\nBrimstone is Agent 1 and the commander of the VALORANT Protocol, and Viper (Agent 2) is his second-in-command. Before the Protocol he was a firefighter with the Baltimore Fire Department (Engine 8). He then served in Special Forces and later worked for K-SEC, the security arm of the Kingdom Corporation. He has no powers and relies on military gear. The dossier Fade wrote on him mentions a friend, Tariq Porter, whose death he witnessed.",
+      "Gender": "Male",
+      "Region": "Americas",
+      "Worked for": [
+       "Kingdom",
+       "Military"
+      ],
+      "Portrait": "valorant/brimstone-portrait.png",
+      "Full art": "valorant/brimstone-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Against Viper",
+      "Omega lore": "Omega Brimstone led the Legion and is honoured on Omega with statues and comics; he led strike teams to Los Angeles (the Sunset map) and Toronto. After repeated failures, capped by the Toronto mission where Omega Chamber was shot, Omega Viper led a mutiny in early 2026 and stripped him of command."
+     }
+    },
+    {
+     "name": "Chamber",
+     "details": {
+      "Role": "Sentinel",
+      "Origin": "France",
+      "Abilities": [
+       "Trademark (C): Equip a destructible Trademark. Fire to place. Triggers on nearby visible enemies in range, creating a zone that slows all players. Can be recalled.",
+       "Headhunter (Q): Equip Headhunter. Fire to shoot. Alt fire to aim down sights.",
+       "Rendezvous (E): Equip a destructible Rendezvous. Fire to place. While in range, reactivate to instantly teleport to it. Can be recalled.",
+       "Tour De Force (X, ultimate): Activate to access a sniper rifle that deals lethal damage with direct hits to the upper body. Fire to shoot. Alt fire to aim down sights. On kills, create a zone that slows all players."
+      ],
+      "Ability types": [
+       "Slow",
+       "Damage",
+       "Trap",
+       "Teleport"
+      ],
+      "Info": [
+       "Alarms"
+      ],
+      "Real name": "Vincent Fabron",
+      "Hometown": "Not revealed",
+      "Power source": "Technology",
+      "Lore": "Well-dressed and well-armed, French weapons designer Chamber expels aggressors with deadly precision. He leverages his custom arsenal to hold the line and pick off enemies from afar, with a contingency built for every plan.\n\nChamber is Agent 18, a Frenchman who served as a marksman in the French military and then with a private military company. After that he worked in Kingdom's weapons-design department. Riot's Fracture reveal trailer, narrated by Chamber, shows that he and his Omega Earth double destroyed the Large Radian Collider at the Everett-Linde research site in New Mexico, knowing it would kill the scientists there. That site is the Fracture map. He then got into the Protocol by offering Brimstone and Viper help with their Omega Earth project, although they don't trust him. He also has a secret deal with his own Omega counterpart.",
+      "Gender": "Male",
+      "Region": "Europe",
+      "Worked for": [
+       "Kingdom",
+       "Military"
+      ],
+      "Portrait": "valorant/chamber-portrait.png",
+      "Full art": "valorant/chamber-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Chamber has a secret, long-running deal with Alpha Chamber; the two fired together to destroy the Large Radian Collider at the Everett-Linde lab (the Fracture map). He's also a Legion agent: in the 2026 cinematic he was shot and critically wounded covering Omega Brimstone and Omega Viper in Toronto, but survived and was carried back to the Legion medbay."
+     }
+    },
+    {
+     "name": "Clove",
+     "details": {
+      "Role": "Controller",
+      "Origin": "Scotland",
+      "Abilities": [
+       "Pick-me-up (C): Activate on a targeted dead enemy that you damaged or killed to gain haste and overheal.",
+       "Meddle (Q): Equip Meddle. Fire to throw. Explodes on landing, decaying all players.",
+       "Ruse (E): Equip a tactical map. Fire to set smoke locations. Alt fire to cast smokes. While dead, Clove can access Ruse to cast brief smokes.",
+       "Not Dead Yet (X, ultimate): On death, activate to channel a self-resurrect. During the channel, Clove is intangible. Reactivate to end the channel early. Once resurrected, secure a kill or damaging assist to stay alive."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Heal",
+       "Revive"
+      ],
+      "Real name": "Not revealed",
+      "Hometown": "Edinburgh",
+      "Power source": "Radiant",
+      "Lore": "Scottish troublemaker Clove makes mischief for enemies in both the heat of combat and the cold of death. The young immortal keeps foes guessing, even from beyond the grave, their return to the living only ever a moment away.\n\nClove is Agent 25, a young Radiant whose power lets them come back from death. Riot calls them an Edinburgh native and uses they/them pronouns. Omen was on a break from the Protocol when he found Clove in Edinburgh, along with a journal belonging to a secret group called the Scions of Hourglass, and he brought them in. Deadlock confirmed that the new recruit had arrived safely. Astra has said she is worried because immortality among Radiants is unheard of, and in one voice line Clove offers to help Reyna's sister Lucia.",
+      "Gender": "Non-binary",
+      "Region": "Europe",
+      "Portrait": "valorant/clove-portrait.png",
+      "Full art": "valorant/clove-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Alive",
+      "Omega side": "Unknown",
+      "Omega lore": "Omega Clove has never appeared on screen. The only mention is a 2026 Range audio log where Omega Breach, nursing a sore neck at Legion HQ, says 'Clove keeps ibuprofen around here somewhere', which places a Clove in the Legion."
+     }
+    },
+    {
+     "name": "Cypher",
+     "details": {
+      "Role": "Sentinel",
+      "Origin": "Morocco",
+      "Abilities": [
+       "Trapwire (C): Equip a destructible Trapwire. Fire to place a wire between surfaces. Trapwire stealths after placement. Triggers when enemies come in contact, tethering enemies, and after a delay, revealing them if Trapwire is not destroyed. Can be picked up.",
+       "Cyber Cage (Q): Instantly throw a Cyber Cage. Interact to create a vision-blocking cylinder that plays an audio cue when enemies come in contact. Can be picked up during buy phase.",
+       "Spycam (E): Equip a destructible Spycam. Fire to place. Spycam stealths after placement. Reactivate to control it. Fire to shoot a dart that snapshots enemies hit until they remove it. Can be picked up.",
+       "Neural Theft (X, ultimate): Activate on a targeted dead enemy. After a delay, snapshot living enemies twice."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Trap"
+      ],
+      "Info": [
+       "Pings",
+       "Alarms"
+      ],
+      "Real name": "Amir El Amari",
+      "Hometown": "Rabat (likely)",
+      "Power source": "Technology",
+      "Lore": "The Moroccan information broker, Cypher is a one-man surveillance network who keeps tabs on the enemy's every move. No secret is safe. No maneuver goes unseen. Cypher is always watching.\n\nCypher is Agent 5, a Moroccan information broker from Rabat, the city where the Bind map is set. He hides his face even from his fellow agents. According to Fade's dossier, he also hides it from his wife Nora and their child. Some of his voice lines, such as 'Nora, I will see you again', leave it unclear whether his family is still alive. He tracked the anonymous 'blackmailer' to Turkey and later pushed for her, Fade, to join the Protocol. He also backed recruiting Iso.",
+      "Gender": "Male",
+      "Region": "Africa",
+      "Portrait": "valorant/cypher-portrait.png",
+      "Full art": "valorant/cypher-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Came back from death",
+      "Omega side": "Unknown",
+      "Omega lore": "Omega Cypher helps plan Legion missions and has been killed twice: by Alpha Yoru while sniping at Icebox (RETAKE), after which Omega Sage revived him, and by Alpha Jett at a temple in Thimphu, Bhutan (UNITED TOGETHER). He also joined the Los Angeles incursion, and during the 2026 takeover Omega Sova told Omega Viper to leave him and Omega Fade alone rather than try to win them over."
+     }
+    },
+    {
+     "name": "Deadlock",
+     "details": {
+      "Role": "Sentinel",
+      "Origin": "Norway",
+      "Abilities": [
+       "Barrier Mesh (C): Equip Barrier Mesh. Fire to throw. On landing, create destructible markers that fortify after a delay. These markers form barriers that block player movement.",
+       "Sonic Sensor (Q): Equip a destructible Sonic Sensor. Fire to place. Triggers on nearby detected enemy noise, creating a zone that concusses all players. Sonic Sensor stealths after placement. Can be picked up.",
+       "GravNet (E): Equip GravNet. Fire to throw. Alt fire to lob. Explodes on landing, forcing all players to crouch and move slowly until they remove the net.",
+       "Annihilation (X, ultimate): Equip Annihilation. Fire to launch a zone, forcing the first enemy caught into a destructible cocoon that pulls them along a path for lethal damage unless the cocoon is destroyed."
+      ],
+      "Ability types": [
+       "Wall",
+       "Concuss",
+       "Slow",
+       "Damage",
+       "Trap"
+      ],
+      "Info": [
+       "Alarms"
+      ],
+      "Real name": "Iselin (first name only)",
+      "Hometown": "Not revealed",
+      "Power source": "Technology",
+      "Lore": "Norwegian operative Deadlock deploys an array of cutting-edge nanowire to secure the battlefield from even the most lethal assault. No one escapes her vigilant watch, nor survives her unyielding ferocity.\n\nAgent 23. Before the Protocol she was an elite hunter in Ståljeger, a Norwegian private security force, on its 'Ursa' team. Kingdom hired her team to escort a scientist to 'The Vault' on Svalbard to collect a radivore bear for Project Landfall, but the bear killed her teammates and the scientist. She destroyed it with the chamber's energy purge but lost her arm, then sent a distress beacon that Sova picked up. Killjoy fitted her with a high-tech prosthetic arm, and because of what happened she distrusts Gekko's radivore creatures.",
+      "Gender": "Female",
+      "Region": "Europe",
+      "Portrait": "valorant/deadlock-portrait.png",
+      "Full art": "valorant/deadlock-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Against Viper",
+      "Omega lore": "Omega Deadlock was on the Legion team that exactly mirrored the Protocol's team (Brimstone, Deadlock, Gekko, Reyna, Sova) and teleported into Los Angeles at the end of the Sunset trailer; the Protocol drove them off. When Omega Viper took over in 2026, Omega Breach reported that Deadlock was 'not on board' because 'she cares about loyalty'."
+     }
+    },
+    {
+     "name": "Fade",
+     "details": {
+      "Role": "Initiator",
+      "Origin": "Turkey",
+      "Abilities": [
+       "Prowler (C): Equip a destructible Prowler. Fire to send it forward. Hold fire to steer towards your crosshair. Chases the first enemy or Terror Trail it sees, nearsighting on impact.",
+       "Seize (Q): Equip Seize. Fire to throw. Reactivate to drop early. On landing, deafen, decay, and tether enemies.",
+       "Haunt (E): Equip a destructible Haunt. Fire to throw. Reactivate to drop early. On landing, mark and reveal enemies in range and line of sight.",
+       "Nightfall (X, ultimate): Equip Nightfall. Fire to send forward a wave that deafens, decays, and marks enemies.",
+       "Terror Trails (passive): Marked enemies have their location tracked by Terror Trails."
+      ],
+      "Ability types": [
+       "Nearsight",
+       "Bots & creatures"
+      ],
+      "Info": [
+       "Pings",
+       "Drones"
+      ],
+      "Real name": "Hazal Eyletmez",
+      "Hometown": "Istanbul",
+      "Power source": "Radiant",
+      "Lore": "Turkish bounty hunter Fade unleashes the power of raw nightmare to seize enemy secrets. Attuned with terror itself, she hunts down targets and reveals their deepest fears - before crushing them in the dark.\n\nAgent 20, a Turkish Radiant who worked as a bounty hunter and had worked for REALM. When someone close to her, only ever called 'him', went missing, she blamed the VALORANT Protocol and blackmailed it by leaking dossiers that exposed the agents' real names and pasts. Cypher traced her to Istanbul, where a Protocol strike team captured her, and it turned out the Protocol had nothing to do with the disappearance. Cypher backed recruiting her while Jett objected, and she joined to help scout Omega Earth while still searching for 'him'. She treats her fear powers as a separate being she calls 'Nightmare'.",
+      "Gender": "Female",
+      "Region": "Europe",
+      "Worked for": [
+       "REALM"
+      ],
+      "Portrait": "valorant/fade-portrait.png",
+      "Full art": "valorant/fade-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Came back from death",
+      "Omega side": "Unknown",
+      "Omega lore": "In REVELATION, Omega Fade (recognised by a fan) took a map to the City of Flowers off a man in an Istanbul nightclub and knocked out his pursuers, then escorted Omega Astra to switch on the nexus in Lotus. She was later killed by Alpha Phoenix in a Legion attack on Icebox, but she's active again in 2026, when Omega Sova told Omega Viper to leave her and Omega Cypher out of the takeover talks."
+     }
+    },
+    {
+     "name": "Gekko",
+     "details": {
+      "Role": "Initiator",
+      "Origin": "United States",
+      "Abilities": [
+       "Mosh Pit (C): Equip Mosh. Fire to throw. Alt fire to lob. On landing, create a zone that deals low damage over time before exploding, dealing high damage to all players. Reverts to a Globule.",
+       "Wingman (Q): Equip a destructible Wingman. Fire to send it forward. Chases the first enemy it sees, concussing on impact. Alt fire to have Wingman plant or defuse at a targeted bomb site. Reverts to a Globule.",
+       "Dizzy (E): Equip a destructible Dizzy. Fire to throw. Fires plasma at enemies in line of sight, blinding them. Reverts to a Globule.",
+       "Thrash (X, ultimate): Equip a destructible Thrash. Fire to take control. Fire again to lunge and explode, detaining all players. Fire while lunging to explode early. Reverts to a Globule only once.",
+       "Globule (passive): Gekko’s abilities transform into a Globule after use. Interact to reclaim nearby Globules to gain another charge after a short cooldown."
+      ],
+      "Ability types": [
+       "Flash",
+       "Concuss",
+       "Damage",
+       "Bots & creatures"
+      ],
+      "Info": [
+       "Drones"
+      ],
+      "Real name": "Mateo Armendáriz De la Fuente",
+      "Hometown": "Los Angeles",
+      "Power source": "Radivores",
+      "Lore": "Gekko the Angeleno leads a tight-knit crew of calamitous creatures. His buddies bound forward, scattering enemies out of the way, with Gekko chasing them down to regroup and go again.\n\nAgent 22, born and raised in Los Angeles. He lives with his mother, a vet, and speaks English and Spanish. His four radivore creatures, Wingman, Dizzy, Mosh and Thrash, were originally Kingdom (K-SEC) property from its LA facility, and the Protocol helped him get away from Kingdom security and recruited him. In the Sunset map trailer, Wingman carried Deadlock's device into Kingdom's Project Landfall portal in LA and destroyed it, coming back shrunk. Deadlock distrusts his creatures, Harbor coaches him at swimming, and he is close to Reyna.",
+      "Gender": "Male",
+      "Region": "Americas",
+      "Portrait": "valorant/gekko-portrait.png",
+      "Full art": "valorant/gekko-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Unknown",
+      "Omega side": "Unknown",
+      "Omega lore": "Omega Gekko was on the Legion strike team, a mirror of the Protocol's own team, that came through portals into Los Angeles at the end of the Sunset trailer, just after Alpha Gekko's team shut down Kingdom's Interverse portal. The Protocol drove them off."
+     }
+    },
+    {
+     "name": "Harbor",
+     "details": {
+      "Role": "Controller",
+      "Origin": "India",
+      "Abilities": [
+       "Storm Surge (C): Equip Storm Surge. Fire to throw. Explodes on landing, nearsighting and slowing all players.",
+       "High Tide (Q): Equip High Tide. Fire to send forward a vision-blocking wall that slows all players who come in contact. Hold fire to steer towards your crosshair. Alt fire to stop early.",
+       "Cove (E): Enter The Deep. Reactivate to cast a smoke. Hold FIRE/ALT fire to adjust distance. Reload to toggle view. After casting, reactivate to transform the smoke into a destructible shield.",
+       "Reckoning (X, ultimate): Equip Reckoning. Fire to push forward a vision-blocking wall that nearsights and slows all players who come in contact. Reactivate to stop the wall early."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Wall",
+       "Nearsight",
+       "Slow"
+      ],
+      "Real name": "Varun Batra",
+      "Hometown": "Not revealed",
+      "Power source": "Ancient artifact",
+      "Lore": "Hailing from India’s coast, Harbor storms the field wielding ancient technology with dominion over water. He unleashes frothing rapids and crushing waves to shield his allies, or pummel those that oppose him.\n\nAgent 21. He was a REALM operative who recovered stolen relics. On a REALM mission in India, an ancient artifact (a bracelet with rings) bonded to his wrist and gave him control over water. His commander, Captain Greaves, tried to take it at gunpoint, then branded him a rogue, and REALM hunted him for about two months. In his reveal trailer, Brimstone rescues him from Greaves mid-chase and brings him into the Protocol. He coaches Gekko at swimming, and Astra is curious about his artifact.",
+      "Gender": "Male",
+      "Region": "Asia",
+      "Worked for": [
+       "REALM"
+      ],
+      "Portrait": "valorant/harbor-portrait.png",
+      "Full art": "valorant/harbor-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Harbor (Varun Batra) joined the Legion before Alpha Harbor joined the Protocol, as an advisor and keeper of a new 'power source', the ancient water bracelet; that's why the Protocol went looking for Alpha Harbor. In 2026 Omega Sova told Omega Viper that 'Harbor is on our side' in her takeover."
+     }
+    },
+    {
+     "name": "Hush",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "China",
+      "Abilities": [
+       "Flow (C): Instantly create an anchor. If Hush is in the air, briefly levitate in place. After a delay, propel towards it.",
+       "Flashbulb (Q): Equip Flashbulb. Fire to throw. Alt fire to prepare it instead. Reactivate to direct it towards your crosshair. Explodes on any surface or after a delay, flashing all players looking at it.",
+       "Displacement (E): Equip Displacement. Fire to throw. Alt fire to prepare it instead. Reactivate to direct it towards your crosshair. Explodes on any surface or after a delay, pulling all players towards the center and concussing them if they collide with any surface or another player. Resets every two kills.",
+       "Suspension (X, ultimate): Instantly prepare Suspension. Fire to send it forward, steering with your crosshair. Reactivate or press fire again to detonate, levitating all players.",
+       "Telekinesis (passive): Hush can pick up weapons, the Spike, and interact with switches from an increased range."
+      ],
+      "Ability types": [
+       "Flash",
+       "Concuss",
+       "Movement"
+      ],
+      "Real name": "Not revealed",
+      "Hometown": "Guangdong province",
+      "Power source": "Radiant",
+      "Lore": "Chinese operative Hush uses her telekinesis to close the most classified cases. Fighting with precision and finesse, she redirects her combat utility in midair to disrupt and displace the enemy team before suspending them helplessly for the killing blow.\n\nAgent 31, a Radiant with telekinesis from Guangdong province, China. Before joining the Protocol she worked in what Riot calls 'some of the more shadowed halls' of Kingdom Corp. Her mother is the most important person in her life: she calls her every day, even in the middle of a fight, and her 'RISE AND FALL' trailer shows exactly that. Sage is her closest friend in the Protocol, and the two often share Cantonese chicken hotpot.",
+      "Gender": "Female",
+      "Region": "Asia",
+      "Worked for": [
+       "Kingdom"
+      ],
+      "Portrait": "valorant/hush-portrait.png",
+      "Full art": "valorant/hush-full.png",
+      "Omega lore": "No Omega Hush has appeared or been mentioned in the lore yet."
+     }
+    },
+    {
+     "name": "Iso",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "China",
+      "Abilities": [
+       "Contingency (C): Equip Contingency. Fire to push forward an indestructible vision-blocking wall. Alt fire for a slower wall.",
+       "Undercut (Q): Equip Undercut. Fire to send it forward. Applies suppress and vulnerable to all players.",
+       "Double Tap (E): Instantly channel Focus. Gain a shield that blocks one instance of damage.",
+       "Kill Contract (X, ultimate): Equip Kill Contract. Fire to send forward a zone that pulls you and the first enemy hit into a duel. Channel Focus at the start of a duel.",
+       "Focus (passive): While Focused, reload faster and spawn destructible energy orbs from dead enemies Iso has damaged or killed. When an energy orb is shot, grant a shield that blocks one instance of damage and refresh Focus."
+      ],
+      "Ability types": [
+       "Wall",
+       "Suppress"
+      ],
+      "Real name": "Li Zhao Yu",
+      "Hometown": "Chongqing",
+      "Power source": "Radiant",
+      "Lore": "Chinese fixer for hire Iso falls into a flow state to dismantle the opposition. Reconfiguring ambient energy into bulletproof protection, he advances with focus towards his next duel to the death.\n\nAgent 24, a Radiant who shapes raw radianite energy into solid shields and other constructs. He was an elite hitman for a secret group called the Scions of Hourglass. His reveal trailer shows him killing a Kingdom Project Landfall scientist and her guards, after which the Scions named Omen as his next target. He joined the Protocol asking for protection from the Scions while secretly planning to kill Omen. Cypher found out but let him make his own choice, and Iso turned on the Scions instead, helping the Protocol raid their base in Jakarta.",
+      "Gender": "Male",
+      "Region": "Asia",
+      "Worked for": [
+       "Scions of Hourglass"
+      ],
+      "Portrait": "valorant/iso-portrait.png",
+      "Full art": "valorant/iso-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Iso was on a Legion team that attacked Los Angeles in the INCURSIONS cinematic. In 2026 he was part of Omega Yoru's ambush on the Protocol at the Yue Yuan Men academy in China ('Iso's on the river'), which the Protocol turned around with a counter-ambush."
+     }
+    },
+    {
+     "name": "Jett",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "South Korea",
+      "Abilities": [
+       "Cloudburst (C): Instantly throw a cloud. Forms into a brief smoke on any surface or after a delay. Hold activate to steer towards your crosshair.",
+       "Updraft (Q): Instantly propel high into the air.",
+       "Tailwind (E): Instantly prepare a dash. Reactivate to dash forward or in your movement direction. Resets every two kills.",
+       "Blade Storm (X, ultimate): Instantly access five accurate throwing knives that deal lethal damage with direct hits to the head. Fire to shoot. On kills, refresh your knives. Alt fire to throw all remaining knives without a refresh.",
+       "Drift (passive): Hold jump while falling to glide."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Damage",
+       "Movement"
+      ],
+      "Real name": "Han Sunwoo",
+      "Hometown": "Seoul",
+      "Power source": "Radiant",
+      "Lore": "Representing her home country of South Korea, Jett's agile and evasive fighting style lets her take risks no one else can. She runs circles around every skirmish, cutting enemies up before they even know what hit them.\n\nJett, Agent 10 of the VALORANT Protocol, is a South Korean Radiant who controls the wind. Before joining she was a chef at her family's restaurant in Seoul, until a 'freak storm' all but destroyed it and she went on the run. Later her Omega Earth double caused the Venice disaster that raised the city (now the Ascent map). Because the public doesn't know Omega Earth exists, the real Jett got the blame and was branded a dangerous Radiant, so she has to wear disguises in public. She has a friendly speed rivalry with Neon, trades banter with Phoenix and Raze, and objected when Fade, the hacker who had blackmailed the Protocol, was recruited.",
+      "Gender": "Female",
+      "Region": "Asia",
+      "Portrait": "valorant/jett-portrait.png",
+      "Full art": "valorant/jett-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Came back from death",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Jett caused the Venice disaster (the Ascent map): chased by Alpha Phoenix, she 'killed' him and set off the Spike, and Alpha Jett got the blame. Earlier she went to Seoul to kill Alpha Jett, then a chef, shooting her below the shoulder (Alpha Jett's scar) in a fight whose winds wrecked the restaurant. She was killed by Alpha Yoru at Icebox (RETAKE) but revived, has a statue in Omega Lisbon for holding back the sea, and still fights for Omega Viper's Legion in 2026."
+     }
+    },
+    {
+     "name": "KAY/O",
+     "details": {
+      "Role": "Initiator",
+      "Origin": "None (a robot)",
+      "Abilities": [
+       "FRAG/ment (C): Equip FRAG/ment. Fire to throw. Alt fire to lob. Explodes on landing, repeatedly dealing pulses of damage to all players.",
+       "FLASH/drive (Q): Equip a FLASH/drive. Fire to throw. Alt fire to lob. After a delay, explode, flashing all players looking at it.",
+       "ZERO/point (E): Equip a destructible ZERO/point. Fire to throw. Pulses on any surface, suppressing enemies within range.",
+       "NULL/cmd (X, ultimate): Instantly gain overloaded and repeatedly send out a pulse that suppresses enemies within range. Overloaded grants combat stim. Upon taking lethal damage, KAY/O is downed and can be re-stabilized."
+      ],
+      "Ability types": [
+       "Flash",
+       "Damage",
+       "Suppress"
+      ],
+      "Real name": "None (a robot)",
+      "Hometown": "Not revealed",
+      "Power source": "Robot",
+      "Lore": "KAY/O is a machine of war built for a single purpose: neutralizing radiants. His power to Suppress enemy abilities dismantles his opponents' capacity to fight back, securing him and his allies the ultimate edge.\n\nKAY/O is a combat robot from an alternate future where humans and Radiants fought a devastating war. He was built to kill Radiants, using polarized radianite that shuts down their powers. In that war he fought beside his timeline's Brimstone, his closest friend, whom he failed to save, and beside Sova, and he says he killed that world's Reyna. He travelled back to the present through a portal on the island seen in the Breeze map and became Agent 17. He still struggles to separate today's Brimstone from his memories, distrusts Reyna, and lets Killjoy maintain his core.",
+      "Gender": "Male",
+      "Region": "Unknown",
+      "Portrait": "valorant/kayo-portrait.png",
+      "Full art": "valorant/kayo-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "An Omega KAY/O serves in the Legion but has never been shown on screen. In 2026 Range audio logs Omega Sova calls KAY/O 'a big problem' for Omega Viper's takeover and says KAY/O and Omega Killjoy now look at him differently, yet Omega KAY/O still took part in Omega Yoru's ambush on the Protocol in China."
+     }
+    },
+    {
+     "name": "Killjoy",
+     "details": {
+      "Role": "Sentinel",
+      "Origin": "Germany",
+      "Abilities": [
+       "Nanoswarm (C): Equip a destructible Nanoswarm. Fire to throw. Alt fire to lob. Nanoswarm stealths after landing. Interact to create a zone that deals damage to all players. Can be picked up during buy phase.",
+       "Alarmbot (Q): Equip a destructible Alarmbot. Fire to place. Alarmbot stealths after placement. Triggers on nearby visible enemies in range. Chases the first enemy it sees, exploding and applying vulnerable. Can be recalled.",
+       "Turret (E): Equip a destructible Turret. While equipped, reactivate to flip the direction or hold alt fire to rotate. Fire to place. Shoots at enemies in line of sight. Can be recalled.",
+       "Lockdown (X, ultimate): Equip a destructible Lockdown. Fire to prepare a zone. After a delay, detain enemies within range."
+      ],
+      "Ability types": [
+       "Damage",
+       "Trap",
+       "Bots & creatures"
+      ],
+      "Info": [
+       "Alarms"
+      ],
+      "Real name": "Klara Böhringer",
+      "Hometown": "Not revealed",
+      "Power source": "Technology",
+      "Lore": "The genius of Germany, Killjoy effortlessly secures key battlefield positions with her arsenal of inventions. If their damage doesn't take her enemies out, the debuff her robots provide will make short work of them.\n\nKilljoy is a German genius inventor with no powers; all her abilities are gadgets and robots she built herself. She was nominated for a Distinguished Inventor award and became head of Kingdom's research and development at 18. Her callsign started as a joke from teammates about how good she was, and she joined as Agent 4. She is Brimstone's protégé and built the Protocol's teleporter to Omega Earth, using Neon's electricity as a power source. Riot has confirmed she is dating Raze, and her dossier names Zehra and Emil, later confirmed as her parents.",
+      "Gender": "Female",
+      "Region": "Europe",
+      "Worked for": [
+       "Kingdom"
+      ],
+      "Portrait": "valorant/killjoy-portrait.png",
+      "Full art": "valorant/killjoy-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Came back from death",
+      "Omega side": "Against Viper",
+      "Omega lore": "Omega Killjoy invented the Spike, the device the Legion uses to steal radianite, and stars in Omega comics. She was seen on a night out in Seoul with Omega Jett and Omega Raze before the Lotus fight, and was killed by Alpha Jett during a Legion attack on a temple in Thimphu, Bhutan. In 2026 she was openly angry ('pissed') about Omega Viper's takeover."
+     }
+    },
+    {
+     "name": "Miks",
+     "details": {
+      "Role": "Controller",
+      "Origin": "Croatia",
+      "Abilities": [
+       "M-pulse (C): Equip a destructible M-Pulse. Alt fire to toggle between concuss or heal. Fire to throw. Repeatedly pulses on landing, applying the selected effect on all players within range.",
+       "Harmonize (Q): Equip Harmonize. Fire on a targeted ally to grant combat stim and haste to them and yourself. On kills while active, refresh the buff if both Harmonized players are still alive. Alt fire to self-cast with no refresh.",
+       "Waveform (E): Equip a tactical map. Fire to set smoke locations. Alt fire to cast smokes.",
+       "Bassquake (X, ultimate): Equip Bassquake. Fire to send forward a zone that deafens, knocks back, and slows all players."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Concuss",
+       "Slow",
+       "Heal"
+      ],
+      "Real name": "Not revealed",
+      "Hometown": "Not revealed",
+      "Power source": "Radiant",
+      "Lore": "Straight from Croatia, Miks takes the stage channeling pure sound energy. With his infectious passion and sonic powers, he rallies his squad to move as one as they set the tempo on the battlefield together.\n\nMiks is a Croatian Radiant who gives off sonic energy and channels it through high-tech gloves. Riot says music was a big part of his life before the Protocol, with roots in Croatia's underground EDM scene. Clove and Killjoy saw him perform months earlier, and Clove later pitched him to Brimstone as a radiant 'healing guy'. He joined as Agent 30 while Omega's Legion was attacking hard, volunteering as healing backup for Sage, whose crystallization is getting worse. At HQ he runs a recording studio (he spent over four hours recording KAY/O's sounds), jams with Raze, and has had noise complaints from Vyse.",
+      "Gender": "Male",
+      "Region": "Europe",
+      "Portrait": "valorant/miks-portrait.png",
+      "Full art": "valorant/miks-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Unknown",
+      "Omega side": "Not in the Legion",
+      "Omega lore": "Omega Miks is only talked about, never shown. In a 2026 Legion call the Protocol intercepted, Omega Sova worried about Alpha Miks's healing and said Legion should recruit Miks's Omega counterpart, adding that he would track him down."
+     }
+    },
+    {
+     "name": "Neon",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "Philippines",
+      "Abilities": [
+       "Fast Lane (C): Instantly launch two vision-blocking walls that extend until they hit a surface.",
+       "Relay Bolt (Q): Instantly throw a bolt that bounces once. Explodes on each surface, concussing all players.",
+       "High Gear (E): Instantly consume fuel to gain haste. Reactivate to cancel. Alt fire to slide forward or in your movement direction. Slide resets every two kills.",
+       "Overdrive (X, ultimate): Instantly refresh High Gear. Access an accurate lightning beam that can be used while activating High Gear. Fire to shoot. On kills, fully recharge fuel.",
+       "Battery (passive): Passively recharge fuel over time."
+      ],
+      "Ability types": [
+       "Wall",
+       "Concuss",
+       "Movement"
+      ],
+      "Real name": "Tala Nicole Dimaapi Valdez",
+      "Hometown": "Taguig, Metro Manila",
+      "Power source": "Radiant",
+      "Lore": "Filipino Agent Neon surges forward at shocking speeds, discharging bursts of bioelectric radiance as fast as her body generates it. She races ahead to catch enemies off guard then strikes them down quicker than lightning.\n\nNeon is a Filipino Radiant whose bioelectric powers are so strong she wears a Surge Protector pack to keep them under control. The pack was designed by her scientist father, Nathaniel Valdez, whose Radiant-support tech went on to help millions; her dossier says her mother served her community through justice and law. Before the Protocol she worked for Kingdom's security arm K-SEC, where she fell out with Chamber. Chamber still recommended her, and she joined as Agent 19, partly to power Killjoy's Alpha-to-Omega teleporter. Sage and Reyna both mentor her, she has a speed rivalry with Jett, and she played basketball in high school.",
+      "Gender": "Female",
+      "Region": "Asia",
+      "Worked for": [
+       "Kingdom"
+      ],
+      "Portrait": "valorant/neon-portrait.png",
+      "Full art": "valorant/neon-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Alive",
+      "Omega side": "Undecided",
+      "Omega lore": "Omega Neon is a Legion agent. After Omega Viper's 2026 takeover she was described as 'spinning' and struggling with it, with Omega Yoru staying with her while Omega Breach hoped to win her over. Alpha Neon has been to Omega Earth herself: in Omega Lisbon she pulled Alpha Reyna away from a fight with Omega Viper."
+     }
+    },
+    {
+     "name": "Omen",
+     "details": {
+      "Role": "Controller",
+      "Origin": "Unknown",
+      "Abilities": [
+       "Shrouded Step (C): Equip a Shrouded Step. Fire to briefly channel, then teleport to a targeted location.",
+       "Paranoia (Q): Equip Paranoia. Fire to send it forward. Applies nearsight and deafens all players.",
+       "Dark Cover (E): Enter Shadow Vision. Reactivate to cast a smoke. Hold FIRE/ALT fire to adjust distance. Reload to toggle view.",
+       "From the Shadows (X, ultimate): Equip a tactical map. Fire to begin a teleport to a selected location. While teleporting, Omen appears as a destructible shade at the destination. Reactivate to cancel."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Nearsight",
+       "Teleport"
+      ],
+      "Real name": "Not revealed",
+      "Hometown": "Not revealed",
+      "Power source": "Radiant",
+      "Lore": "A phantom of a memory, Omen hunts in the shadows. He renders enemies blind, teleports across the field, then lets paranoia take hold as his foe scrambles to uncover where he might strike next.\n\nOmen's true name is unknown; Fade's dossier found only aliases (John, Fred, Marcus, Yohan, Dimitri). He was once 'Ghost', a top assassin for the Scions of Hourglass, a secret group trying to keep radianite from being rediscovered, and was sent to kill the scientist Sabine Callas (Viper). She fought back, trapped him in a test chamber and switched it on, turning him into a shadowy phantom with no memories. As Agent 3 he spent years searching for his past and only learned the truth in Jakarta (the RECKONING cinematic) after fellow ex-Hourglass assassin Iso joined; Viper had known all along. He took leave, has since returned, knits to help himself focus, and is close to Sage.",
+      "Gender": "Male",
+      "Region": "Unknown",
+      "Worked for": [
+       "Scions of Hourglass"
+      ],
+      "Portrait": "valorant/omen-portrait.png",
+      "Full art": "valorant/omen-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Omen is a Legion hero with a statue in Omega Lisbon for carrying people to safety from the floods, and on the Pearl map Alpha Omen says 'Is that a statue of me?'. He helped Omega Sage in training and raided Alpha Earth at Haven (Thimphu), where Alpha Sage stopped his spike plant and he teleported away, and at Icebox. In 2026 he is still in Legion and is making a matching hat for the unconscious Omega Sage."
+     }
+    },
+    {
+     "name": "Phoenix",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "United Kingdom",
+      "Abilities": [
+       "Blaze (C): Equip Blaze. Fire to send forward a vision-blocking fire wall that deals damage to all players. Hold fire to steer towards your crosshair.",
+       "Hot Hands (Q): Equip Hot Hands. Fire to throw. Alt fire to lob. On landing, create a fire zone that deals damage to all players.",
+       "Curveball (E): Equip a Curveball. Fire to curve left, alt fire to curve right. After a delay, explode, flashing all players looking at it. Resets every two kills.",
+       "Run it Back (X, ultimate): Instantly place a marker at your location. Upon taking lethal damage or when Run it Back expires, return to the marker with full health and the amount of armor you had when the ability was activated.",
+       "Inner Fire (passive): Phoenix heals while standing in his own fire instead of taking damage."
+      ],
+      "Ability types": [
+       "Wall",
+       "Flash",
+       "Damage",
+       "Heal"
+      ],
+      "Real name": "Jamie Adeyemi",
+      "Hometown": "Peckham, London",
+      "Power source": "Radiant",
+      "Lore": "Hailing from the U.K., Phoenix's star power shines through in his fighting style, igniting the battlefield with flash and flare. Whether he's got backup or not, he's rushing in to fight on his own terms.\n\nPhoenix is Agent 9, a fire Radiant from Peckham in South London who went to a performing arts school there. His dossier says he was raised by women who were always worried about his safety, and as kids he and his younger sister Mary were on a London rooftop when First Light hit. Mary is now a singer, and 2025 voicemails show him missing her calls and her debut show of her song 'EGO'. On his first solo mission, in Venice, he failed to stop a Spike, and in Rabat he came face to face with his own double from Omega Earth. Sage runs his Radiant training, and he is close friends with Jett and KAY/O.",
+      "Gender": "Male",
+      "Region": "Europe",
+      "Portrait": "valorant/phoenix-portrait.png",
+      "Full art": "valorant/phoenix-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Unknown",
+      "Omega lore": "Omega Phoenix made the lone spike attack on Rabat (Bind) and came face to face with Alpha Phoenix, who was caught off guard to find the attacker was his own double. He retreated when Alpha Viper opened fire, the spike was defused, and his complaint about defending it alone against a whole team is why Legion started sending full teams. On Omega he is a hero with a statue in Lisbon for guiding people to safety from the floods."
+     }
+    },
+    {
+     "name": "Raze",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "Brazil",
+      "Abilities": [
+       "Boom Bot (C): Equip a destructible Boom Bot. Fire to send it forward. Chases the first enemy it sees, exploding and dealing damage to enemies on impact.",
+       "Blast Pack (Q): Instantly throw a destructible Blast Pack that sticks to surfaces that fully arms after a delay. Reactivate to detonate, knocking away anything hit. If fully armed, Blast Pack will also deal damage to enemies.",
+       "Paint Shells (E): Equip Paint Shells. Fire to throw. Alt fire to lob. After a delay, explode, dealing damage and creating sub-munitions, each also dealing damage to all players. Resets every two kills.",
+       "Showstopper (X, ultimate): Instantly prepare Showstopper. Fire to launch. Explodes on any surface, dealing high damage to all players."
+      ],
+      "Ability types": [
+       "Damage",
+       "Movement",
+       "Bots & creatures"
+      ],
+      "Info": [
+       "Drones"
+      ],
+      "Real name": "Tayane Alves",
+      "Hometown": "Salvador, Bahia",
+      "Power source": "Technology",
+      "Lore": "Raze explodes out of Brazil with her big personality and big guns. With her blunt-force-trauma playstyle, she excels at flushing entrenched enemies and clearing tight spaces with a generous dose of \"boom.\"\n\nRaze is Agent 12, an engineer and explosives expert with no powers, and her friends call her 'Tatá'. Back home in Bahia she helped drive Kingdom Corporation out and splashed paint over the sites they abandoned, and her dossier warns that Kingdom could return while she's away. Her Boom Bot started as an Alarmbot she borrowed from Killjoy. She and Killjoy are officially a couple and built the training robot Max Bot together. Breach is an old partner-in-crime from before the Protocol, and after a wild concert in Berlin she woke up stranded on the deserted Breeze island and rigged a junk satellite dish to call Brimstone.",
+      "Gender": "Female",
+      "Region": "Americas",
+      "Portrait": "valorant/raze-portrait.png",
+      "Full art": "valorant/raze-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Came back from death",
+      "Omega side": "Undecided",
+      "Omega lore": "Omega Raze stars in an Omega comic ('Friendly Fire') and was out partying in Seoul with Omega Jett and Omega Killjoy before facing Protocol agents at Lotus. In the raid on Haven (Thimphu) one of her grenades killed Alpha Sova, and Alpha Phoenix then killed her, but she turns up again in later raids (Incursions, 2024). In 2026 Omega Breach was still trying to talk her into backing Omega Viper."
+     }
+    },
+    {
+     "name": "Reyna",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "Mexico",
+      "Abilities": [
+       "Leer (C): Equip a destructible Leer. Fire to send. After a delay, form, nearsighting enemies looking at it.",
+       "Devour (Q): Instantly consume a Soul Orb to heal. Excess healing is converted into overheal. While ultimate is active, Devour auto-casts.",
+       "Dismiss (E): Instantly consume a Soul Orb to briefly become intangible. Reactivate to cancel early. While ultimate is active, also gain invisibility.",
+       "Empress (X, ultimate): Instantly gain empress. Empress grants combat stim, endless Soul Orb consumption, and permanent overheal.",
+       "Vitality (passive): Spawn a Soul Orb from dead enemies Reyna has damaged or killed."
+      ],
+      "Ability types": [
+       "Nearsight",
+       "Heal"
+      ],
+      "Real name": "Zyanya Mondragón",
+      "Hometown": "Not revealed",
+      "Power source": "Radiant",
+      "Lore": "Forged in the heart of Mexico, Reyna dominates single combat, popping off with each kill she scores. Her capability is only limited by her raw skill, making her sharply dependent on performance.\n\nReyna is Agent 11, a Mexican Radiant who survives and grows stronger by absorbing the life energy (souls) of the people she kills. Before joining she built the Sanctuary, a community for people and children she rescued from Kingdom's experiments, and she is its protector. Her younger sister Lucia, who was with her when First Light hit, can only stay alive on life energy. Viper built equipment that passes the souls Reyna collects to Lucia, but much of it is lost along the way. Neon trains with both her and Sage, she is very protective of Gekko, and in 2026 the Omega Legion attacked agents eating at her Sanctuary compound in Mexico.",
+      "Gender": "Female",
+      "Region": "Americas",
+      "Portrait": "valorant/reyna-portrait.png",
+      "Full art": "valorant/reyna-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Reyna was on the Legion team that arrived in Los Angeles as an exact mirror of the Protocol team Alpha Reyna was on (Sunset map cinematic), and she is painted on a hero mural in Omega Lisbon. In 2026 Omega Breach listed her among the agents backing Omega Viper's takeover, the same Legion that attacked Alpha Reyna's Sanctuary in Mexico."
+     }
+    },
+    {
+     "name": "Sage",
+     "details": {
+      "Role": "Sentinel",
+      "Origin": "China",
+      "Abilities": [
+       "Barrier Orb (C): Equip a destructible Barrier Orb. While equipped, reactivate to pivot the wall or hold alt fire to rotate. Fire to place a destructible wall that fortifies after a delay.",
+       "Slow Orb (Q): Equip a Slow Orb. Fire to throw. On landing, create a zone that slows all players and plays an audio cue when enemies run through it.",
+       "Healing Orb (E): Equip Healing Orb. Fire on a damaged ally to grant healing. Alt fire to self-cast.",
+       "Resurrection (X, ultimate): Equip Resurrection. Fire on a targeted dead ally to resurrect them."
+      ],
+      "Ability types": [
+       "Wall",
+       "Slow",
+       "Heal",
+       "Revive"
+      ],
+      "Info": [
+       "Alarms"
+      ],
+      "Real name": "Ling Ying Wei",
+      "Hometown": "Shaanxi province",
+      "Power source": "Radiant",
+      "Lore": "The bastion of China, Sage creates safety for herself and her team wherever she goes. Able to revive fallen friends and stave off forceful assaults, she provides a calm center to a hellish battlefield.\n\nSage is Agent 7, a Radiant monk whose dossier calls her 'the Balm of Shaanxi' and mentions the monastery that taught her about balance. Her Radiance lets her heal and even bring the dead back to life, and she channels it through orbs of pure crystallised Radianite. She quickly rose to lead the Protocol's Radiant training: she recruited Skye, welcomed Neon, coaches Phoenix and has spent long sessions helping Omen recover his memories. Riot says she knew Viper and Omen before the Protocol, and Viper refuses her offers of help. Using resurrection again and again (including bringing back Killjoy in 2025 and Brimstone in 2026) has made painful crystals grow on her body, and the Omega Legion is now targeting her on purpose.",
+      "Gender": "Female",
+      "Region": "Asia",
+      "Portrait": "valorant/sage-portrait.png",
+      "Full art": "valorant/sage-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Out of action",
+      "Omega side": "Unknown",
+      "Omega lore": "Omega Sage is Legion's Agent 10 (Alpha Sage is Agent 07) and a hero with a statue in Omega Lisbon, and she revived Legion agents killed at Icebox. Overusing her powers crystallised her body, so she now lies unconscious in a chemical stasis tank at Legion HQ that Omega Viper says will cure her. In 2026 Viper's Legion made Alpha Sage its main target, attacking again and again to push her to the same breaking point ('not until we put her down')."
+     }
+    },
+    {
+     "name": "Skye",
+     "details": {
+      "Role": "Initiator",
+      "Origin": "Australia",
+      "Abilities": [
+       "Regrowth (C): Equip Regrowth. Hold fire to heal allies in range and line of sight. Uses a limited healing pool. Cannot heal self.",
+       "Trailblazer (Q): Equip a destructible Trailblazer. Fire to take control. Fire again to lunge and explode, concussing all players and dealing damage to enemies on direct hits.",
+       "Guiding Light (E): Equip a Guiding Light. Fire to send it forward. Hold fire to steer towards your crosshair. Reactivate to detonate, flashing all players looking at it.",
+       "Seekers (X, ultimate): Equip destructible Seekers. Fire to send out up to three Seekers. Chases the three closest enemies, nearsighting and slowing on impact."
+      ],
+      "Ability types": [
+       "Flash",
+       "Nearsight",
+       "Concuss",
+       "Slow",
+       "Damage",
+       "Heal",
+       "Bots & creatures"
+      ],
+      "Info": [
+       "Drones"
+      ],
+      "Real name": "Kirra Foster",
+      "Hometown": "Nimbin, New South Wales",
+      "Power source": "Radiant",
+      "Lore": "Hailing from Australia, Skye and her band of beasts trailblaze the way through hostile territory. With her creations hampering the enemy, and her power to heal others, the team is strongest and safest by Skye's side.\n\nSkye is Agent 14, a Radiant who spent years fighting Kingdom's projects across eastern Australia (Blue Mountains, Sawn Rocks, Kangaroo Valley), earning the nickname 'the Great Reclaimer'. Her power brings carved wooden totems to life as her animal pack and lets her heal others; Riot says the power comes from her will, not the carvings. She didn't want to leave her land unprotected, but Sage recruited her by showing her a huge rift near her home and telling her more were opening around the world. With the Protocol she tracked REALM in India, held off ATLAS troops alone so Harbor and Astra could reach Omega's City of Flowers, and later identified ATLAS as the new threat. She is good friends with Sage and works out with Breach, but argues with Viper and Killjoy over pollution and tech, and has told Brimstone he's too soft on Kingdom.",
+      "Gender": "Female",
+      "Region": "Oceania",
+      "Portrait": "valorant/skye-portrait.png",
+      "Full art": "valorant/skye-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Came back from death",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Skye helped revive Legion agents killed at Icebox, was killed by Alpha Jett in the raid on Haven (Thimphu), and turns up again later in the Los Angeles raids. In 2026 Omega Sova counted her as backing Omega Viper, though Omega Breach said she's been 'too exhausted to care' since Omega Sage went down."
+     }
+    },
+    {
+     "name": "Sova",
+     "details": {
+      "Role": "Initiator",
+      "Origin": "Russia",
+      "Abilities": [
+       "Owl Drone (C): Equip a destructible Owl Drone. Fire to take control. Fire again to shoot a dart that repeatedly reveals enemies.",
+       "Shock Bolt (Q): Equip a Shock Bolt. Fire to shoot a bolt that explodes on any surface, dealing damage to all players. Hold fire to increase the bolt’s velocity. Alt fire to add up to two bounces.",
+       "Recon Bolt (E): Equip a destructible Recon Bolt. Fire to shoot a bolt that repeatedly reveals nearby enemies in range and line of sight. Hold fire to increase the bolt’s velocity. Alt fire to add up to two bounces.",
+       "Hunter's Fury (X, ultimate): Equip Hunter’s Fury. Fire to shoot a zone that deals damage. Can be fired up to two more times. Enemies hit are revealed to Sova."
+      ],
+      "Ability types": [
+       "Damage",
+       "Bots & creatures"
+      ],
+      "Info": [
+       "Pings",
+       "Drones"
+      ],
+      "Real name": "Sasha Novikov",
+      "Hometown": "Severomorsk, Murmansk Oblast",
+      "Power source": "Technology",
+      "Lore": "Born from the eternal winter of Russia's tundra, Sova tracks, finds, and eliminates enemies with ruthless efficiency and precision. His custom bow and incredible scouting abilities ensure that even if you run, you cannot hide.\n\nSova is Agent 6, a Russian archer who was famous long before the Protocol as 'Filin, Brother of Steel and String' and 'the man who never missed a shot', although his dossier says he has missed. He has no powers: he uses a custom bow, Radianite-tech arrows, an owl drone and a bionic right eye. He has travelled through rifts, and when he first met his Omega Earth double he spared his life but cut out his right eye. In 2026 that double joined Omega Viper's takeover of the Legion. He is one of Brimstone's most trusted agents: he helped lead the Istanbul team that captured Fade, found and rescued Deadlock in Norway, and freed Omen in Jakarta with a Hunter's Fury shot.",
+      "Gender": "Male",
+      "Region": "Europe",
+      "Portrait": "valorant/sova-portrait.png",
+      "Full art": "valorant/sova-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Against Viper",
+      "Omega lore": "Omega Sova lost a fight to Alpha Sova, who spared him but cut out his right eye. In 2026 he joined Omega Viper's coup, became her second-in-command and was on the strike team that hit Reyna's Sanctuary in Mexico, but he then refused to fire his bow into civilians at Summit and accused Viper of chasing revenge until she drew a gun and threw everyone out. He admits he may have joined partly 'to hurt the man who hurt me'."
+     }
+    },
+    {
+     "name": "Tejo",
+     "details": {
+      "Role": "Initiator",
+      "Origin": "Colombia",
+      "Abilities": [
+       "Stealth Drone (C): Equip a destructible Stealth Drone. Fire to take control. Fire again to reveal and suppress nearby enemies in range and line of sight.",
+       "Special Delivery (Q): Equip Special Delivery. Fire to launch. Alt fire to launch with a bounce. Explodes on any surface, concussing and damaging all players.",
+       "Guided Salvo (E): Equip a tactical map. Fire to set locations. Alt fire to launch missiles that travel to and repeatedly pulse, dealing damage to all players.",
+       "Armageddon (X, ultimate): Equip a tactical map. Fire to set, pivot and fire again to cast a wave that deals high damage to all players. Alt fire to cancel targeting."
+      ],
+      "Ability types": [
+       "Concuss",
+       "Damage",
+       "Suppress",
+       "Bots & creatures"
+      ],
+      "Info": [
+       "Pings",
+       "Drones"
+      ],
+      "Real name": "Not revealed",
+      "Hometown": "Not revealed",
+      "Power source": "Technology",
+      "Lore": "A veteran intelligence consultant from Colombia, Tejo’s ballistic guidance system pressures the enemy to relinquish their ground - or their lives. His targeted strikes keep opponents off balance and under his heel.\n\nTejo is Agent 27, a veteran soldier and formerly retired intelligence consultant who once had clients in weapons R&D. He and Brimstone go back years: an incident involving them both left people dead, Tejo refuses to apologise for it, and he calls Brimstone 'cucho' (old man) while mocking him for watching baseball instead of football. He turned up at Protocol HQ uninvited to warn that Omega forces were raiding Earth unnoticed, which led to the fight with Atlas. Before the Protocol he did paid contract jobs as a three-person crew with Waylay and Veto, and he got both of them recruited; Veto says Tejo 'gave me everything'. His missiles and drone come from a wrist launcher and targeting glasses, not powers.",
+      "Gender": "Male",
+      "Region": "Americas",
+      "Worked for": [
+       "Tejo's crew",
+       "Military"
+      ],
+      "Portrait": "valorant/tejo-portrait.png",
+      "Full art": "valorant/tejo-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Tejo is only mentioned, never shown. In an intercepted 2026 Legion call, Omega Breach named him with Omega Omen, Reyna, Chamber, Vyse and Jett as agents on Omega Viper's side after she ousted Omega Brimstone ('No love lost there')."
+     }
+    },
+    {
+     "name": "Veto",
+     "details": {
+      "Role": "Sentinel",
+      "Origin": "Senegal",
+      "Abilities": [
+       "Crosscut (C): Equip a destructible Crosscut. Fire to place. While in range, interact to teleport to it. Can be recalled during buy phase.",
+       "Chokehold (Q): Equip a destructible Chokehold. Fire to throw. Chokehold stealths after landing. Triggers on nearby visible enemies in range, deafening, decaying, and tethering enemies. Can be recalled during buy phase.",
+       "Interceptor (E): Equip a destructible Interceptor. Fire to place. Reactivate to activate. While active, destroy any enemy utility that can be shot or would bounce off players in range and line of sight. Can be recalled.",
+       "Evolution (X, ultimate): Instantly gain evolution. Evolution grants combat stim, continuous healing, and immunity to all debuffs and damage, except weapons."
+      ],
+      "Ability types": [
+       "Trap",
+       "Teleport",
+       "Heal"
+      ],
+      "Info": [
+       "Alarms"
+      ],
+      "Real name": "Not revealed",
+      "Hometown": "Not revealed",
+      "Power source": "DNA mutation",
+      "Lore": "Empowered by an unstoppable DNA mutation, Senegalese enforcer Veto defies the rules of engagement by nullifying his opponent's powers and technology. On Veto's battlefield, gunplay is your only guarantee.\n\nVeto is Agent 29. Before the Protocol he did contract work in a crew with Tejo and Waylay; on one mission an enemy grenade went off right above him, and he now has a mutated blue left arm and eye. In a voice line to Gekko he links his arm to radivores ('All kinds of Radivore nonsense here today. My arm, your crew.'). Tejo got him hired as undercover bodyguard for Phoenix's sister Mary Adeyemi at the First Light Expo in Paris, where he kept her safe through Atlas's attack and helped stop it, then joined the Protocol. He speaks French and Wolof, collects fragrances and oils, and HQ's biometric locks keep shutting him out.",
+      "Gender": "Male",
+      "Region": "Africa",
+      "Worked for": [
+       "Tejo's crew"
+      ],
+      "Portrait": "valorant/veto-portrait.png",
+      "Full art": "valorant/veto-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Alive",
+      "Omega side": "Undecided",
+      "Omega lore": "Omega Veto is only mentioned, never shown. When Omega Viper took over Legion in 2026 she asked about him and Omega Waylay, and Omega Breach said they were 'thinking it over' because they're 'picky who they work for' and don't know her."
+     }
+    },
+    {
+     "name": "Viper",
+     "details": {
+      "Role": "Controller",
+      "Origin": "United States",
+      "Abilities": [
+       "Snake Bite (C): Equip Snake Bite. Fire to launch. On landing, create a zone that grants vulnerable and deals low damage to all players.",
+       "Poison Cloud (Q): Equip Poison Cloud. Fire to throw. Alt fire to lob. Reactivate to consume fuel to create a toxic smoke that decays enemies. Can be picked up during buy phase.",
+       "Toxic Screen (E): Equip Toxic Screen. Fire to send forward and place a line of emitters. Reactivate to consume fuel to create a toxic vision-blocking wall that decays enemies.",
+       "Viper's Pit (X, ultimate): Equip Viper’s Pit. Fire to form a large toxic vision-blocking cloud that decays enemies inside. Hold activate to cancel the cloud.",
+       "Toxin (passive): Viper’s Toxin continuously inflicts decay when enemies come in contact. Passively recharge fuel over time."
+      ],
+      "Ability types": [
+       "Smoke",
+       "Wall",
+       "Damage"
+      ],
+      "Real name": "Sabine Callas",
+      "Hometown": "Not revealed",
+      "Power source": "Technology",
+      "Lore": "The American Chemist, Viper deploys an array of poisonous chemical devices to control the battlefield and choke the enemy's vision. If the toxins don't kill her prey, her mindgames surely will.\n\nViper is Agent 2. She co-founded the Protocol with Brimstone and is his second-in-command. As Dr. Sabine Callas she was an award-winning Kingdom chemist, the first Chief Scientific Officer on its board, and one of the first people to study radianite. The Scions of Hourglass sent their assassin 'Ghost' to kill her, but she hit him with chemicals and trapped him in a test chamber that turned him into Omen; she hid this from him for years, and things between them have been tense since he found out. She used to work in healing before an unexplained incident turned her towards poisons and revenge; she says Sage once failed her, and she has worked with Reyna to keep Reyna's sister Lucia alive.",
+      "Gender": "Female",
+      "Region": "Americas",
+      "Worked for": [
+       "Kingdom"
+      ],
+      "Portrait": "valorant/viper-portrait.png",
+      "Full art": "valorant/viper-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Came back from death",
+      "Omega side": "Leads the Legion",
+      "Omega lore": "Omega Viper led the Icebox raid (Alpha Phoenix killed her and she was revived) and fought Alpha Reyna in Omega Lisbon. In 2026, after Omega Chamber was critically wounded in Toronto, she overthrew Omega Brimstone, led the attack on Reyna's Sanctuary in Mexico, made Alpha Sage Legion's main target and led the assault on Sage at the Summit academy, where Alpha Reyna went hunting for her. Alpha Viper hates hearing the intercepted recordings of her: 'I don't need this mirror shoved in my face!'"
+     }
+    },
+    {
+     "name": "Vyse",
+     "details": {
+      "Role": "Sentinel",
+      "Origin": "Unknown",
+      "Abilities": [
+       "Razorvine (C): Equip a destructible Razorvine. Fire to throw. Razorvine stealths after landing. Interact to create a zone that slows and deals damage when players move through it. Can be recalled during buy phase.",
+       "Shear (Q): Equip Shear. Fire to place. Shear stealths after placement. Triggers when enemies walk on it, and after a delay, create a brief indestructible wall. Can be recalled during buy phase.",
+       "Arc Rose (E): Equip a destructible Arc Rose. Fire to place. Alt fire to place it through a wall. Reactivate to flash all players looking at it. Can be recalled.",
+       "Steel Garden (X, ultimate): Equip Steel Garden. Fire to prepare a zone. After a delay, jam enemy primary weapons within range."
+      ],
+      "Ability types": [
+       "Wall",
+       "Flash",
+       "Slow",
+       "Damage",
+       "Trap"
+      ],
+      "Info": [
+       "Alarms"
+      ],
+      "Real name": "Not revealed",
+      "Hometown": "Not revealed",
+      "Power source": "Radiant",
+      "Lore": "Metallic mastermind Vyse unleashes liquid metal to isolate, trap, and disarm her enemies. Through cunning and manipulation, she forces all who oppose her to fear the battlefield itself.\n\nVyse is Agent 26, a Radiant with a radianite-infused liquid-metal alloy flowing through her. More than a decade ago she led a team researching the Interverse. The Scions of Hourglass later held her in a super-cold containment cell at their base under Jan Mayen (the Abyss map) and ran tests on her; she says what they did can't be undone, and something happened to her old team. When the Protocol stormed the base she broke free, destroyed several Hourglass hideouts in revenge, and agreed to join after a Protocol team caught up with her in Seoul. She now runs the Protocol's Interverse research, knew Viper before ('We saved the world once, Sabine'), and openly admires Omen.",
+      "Gender": "Female",
+      "Region": "Unknown",
+      "Portrait": "valorant/vyse-portrait.png",
+      "Full art": "valorant/vyse-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Vyse is only mentioned, never shown. In an intercepted 2026 Legion call, Omega Breach listed her among the agents on Omega Viper's side after the coup ('No love lost there')."
+     }
+    },
+    {
+     "name": "Waylay",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "Thailand",
+      "Abilities": [
+       "Saturate (C): Equip Saturate. Fire to throw. Explodes on landing, hindering all players.",
+       "Lightspeed (Q): Equip Lightspeed. Fire to dash forward twice. Alt fire to dash forward once. Only the first dash can launch upward.",
+       "Refract (E): Instantly place a marker at your location. Reactivate to travel to it. While traveling, Waylay is immune but cannot see enemies. Resets every two kills.",
+       "Convergent Paths (X, ultimate): Equip Convergent Paths. Fire to gain haste and send forward a zone that hinders all players."
+      ],
+      "Ability types": [
+       "Slow",
+       "Teleport",
+       "Movement"
+      ],
+      "Real name": "Ariya Saengkaew (from a coded sign; unconfirmed)",
+      "Hometown": "Not revealed",
+      "Power source": "Radiant",
+      "Lore": "Thailand's prismatic radiant Waylay transforms into light itself as she darts across the battlefield, striking down her targets through shards of light before flitting back to safety, all in the blink of an eye.\n\nWaylay is Agent 28. For years she did contract jobs in a crew with Tejo, who taught her ('You taught a shark to swim, T'), and Veto. Her past is on the wrong side of the law: she tells Breach about the jobs they could have pulled together, and Veto asked Brimstone to get her cleared from arrest lists in several territories. Tejo called her in to rescue a Protocol strike team pinned down by Atlas at Bangkok Port, and she was recruited afterwards, having been drifting while she looked for a place to call home. In the Protocol she trains the younger agents, like Phoenix and Jett, to fight as a team.",
+      "Gender": "Female",
+      "Region": "Asia",
+      "Worked for": [
+       "Tejo's crew"
+      ],
+      "Portrait": "valorant/waylay-portrait.png",
+      "Full art": "valorant/waylay-full.png",
+      "Omega double": "Only mentioned",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Waylay was at first 'thinking it over' when Omega Viper sought her support in 2026, but she later took the east riverbank in Omega Yoru's ambush on a Protocol VLT/R aircraft. The Protocol had planned a counter-ambush, and Alpha Brimstone later congratulated the team on a 'successful counter'."
+     }
+    },
+    {
+     "name": "Yoru",
+     "details": {
+      "Role": "Duelist",
+      "Origin": "Japan",
+      "Abilities": [
+       "Fakeout (C): Equip Fakeout. Fire to send a destructible clone forward. Alt fire to place a marker at your location. Interact to transform the marker into a clone. Clones continuously walk forward and will turn toward the first enemy that shoots it, flashing all players looking at it.",
+       "Blindside (Q): Equip Blindside. Fire to throw. After bouncing off a surface, explode, flashing all players looking at it.",
+       "Gatecrash (E): Equip a Gatecrash. Fire to send it forward. Alt fire to place. Reactivate to teleport to it. Interact to fake a teleport. Resets every two kills.",
+       "Dimensional Drift (X, ultimate): Equip Dimensional Drift. Fire to become intangible and invisible. Gatecrash is accessible during this state. Reactivate to exit early."
+      ],
+      "Ability types": [
+       "Flash",
+       "Teleport"
+      ],
+      "Real name": "Ryo Kiritani",
+      "Hometown": "Tokyo",
+      "Power source": "Radiant",
+      "Lore": "Japanese native Yoru rips holes straight through reality to infiltrate enemy lines unseen. Using deception and aggression in equal measure, he gets the drop on each target before they know where to look.\n\nYoru is Agent 15. He is obsessed with his samurai ancestors, and his search led him to break into Kingdom's S22 facility (the Icebox map) and steal an Edo-era samurai mask full of radianite that lets him see into another dimension; the Protocol recruited him later. Fade's dossier says he left a trail of broken bones across Tokyo and Yokohama, and that his temper wrecks every friendship and romance. Against Brimstone's orders he kept returning to the old Japanese warship at S22, fell through a rift that felt like going back in time, and heard a woman's voice he recognised. He has a friendly rivalry with Phoenix, and Riot says he was once kicked out of a boy band after a week for punching the lead singer.",
+      "Gender": "Male",
+      "Region": "Asia",
+      "Portrait": "valorant/yoru-portrait.png",
+      "Full art": "valorant/yoru-full.png",
+      "Omega double": "Shown on screen",
+      "Omega status": "Alive",
+      "Omega side": "Backs Viper",
+      "Omega lore": "Omega Yoru has been a Legion regular since the first Omega team-up (Duality) and the Los Angeles raids, and the 2026 cinematic shows him rescuing children from a disaster on Omega. He is in Omega Viper's inner circle: he went on the strike against Reyna's Sanctuary, handles 'containment' for her, scouted the Summit academy and led an ambush on a Protocol aircraft, though he only half agreed ('...maybe') with Omega Sova's no-civilians stand."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Book Characters",
+   "note": "",
+   "fields": [
+    "Book",
+    "Author"
+   ],
+   "entries": [
+    {
+     "name": "Albert the Magic Pudding",
+     "details": {
+      "Book": "The Magic Pudding",
+      "Author": "Norman Lindsay"
+     }
+    },
+    {
+     "name": "Albus Dumbledore",
+     "details": {
+      "Book": "Harry Potter series",
+      "Author": "J.K. Rowling"
+     }
+    },
+    {
+     "name": "Alice",
+     "details": {
+      "Book": "Alice's Adventures in Wonderland",
+      "Author": "Lewis Carroll"
+     }
+    },
+    {
+     "name": "Anne Shirley",
+     "details": {
+      "Book": "Anne of Green Gables",
+      "Author": "L.M. Montgomery"
+     }
+    },
+    {
+     "name": "Aslan",
+     "details": {
+      "Book": "The Chronicles of Narnia",
+      "Author": "C.S. Lewis"
+     }
+    },
+    {
+     "name": "Atticus Finch",
+     "details": {
+      "Book": "To Kill a Mockingbird",
+      "Author": "Harper Lee"
+     }
+    },
+    {
+     "name": "Bella Swan",
+     "details": {
+      "Book": "Twilight",
+      "Author": "Stephenie Meyer"
+     }
+    },
+    {
+     "name": "Bilbo Baggins",
+     "details": {
+      "Book": "The Hobbit",
+      "Author": "J.R.R. Tolkien"
+     }
+    },
+    {
+     "name": "Blinky Bill",
+     "details": {
+      "Book": "Blinky Bill",
+      "Author": "Dorothy Wall"
+     }
+    },
+    {
+     "name": "Captain Ahab",
+     "details": {
+      "Book": "Moby-Dick",
+      "Author": "Herman Melville"
+     }
+    },
+    {
+     "name": "Captain Hook",
+     "details": {
+      "Book": "Peter Pan",
+      "Author": "J.M. Barrie"
+     }
+    },
+    {
+     "name": "Charlotte",
+     "details": {
+      "Book": "Charlotte's Web",
+      "Author": "E.B. White"
+     }
+    },
+    {
+     "name": "Count Dracula",
+     "details": {
+      "Book": "Dracula",
+      "Author": "Bram Stoker"
+     }
+    },
+    {
+     "name": "Don Quixote",
+     "details": {
+      "Book": "Don Quixote",
+      "Author": "Miguel de Cervantes"
+     }
+    },
+    {
+     "name": "Dorothy Gale",
+     "details": {
+      "Book": "The Wonderful Wizard of Oz",
+      "Author": "L. Frank Baum"
+     }
+    },
+    {
+     "name": "Ebenezer Scrooge",
+     "details": {
+      "Book": "A Christmas Carol",
+      "Author": "Charles Dickens"
+     }
+    },
+    {
+     "name": "Elizabeth Bennet",
+     "details": {
+      "Book": "Pride and Prejudice",
+      "Author": "Jane Austen"
+     }
+    },
+    {
+     "name": "Frodo Baggins",
+     "details": {
+      "Book": "The Lord of the Rings",
+      "Author": "J.R.R. Tolkien"
+     }
+    },
+    {
+     "name": "Gandalf",
+     "details": {
+      "Book": "The Hobbit; The Lord of the Rings",
+      "Author": "J.R.R. Tolkien"
+     }
+    },
+    {
+     "name": "Geronimo Stilton",
+     "details": {
+      "Book": "Geronimo Stilton series",
+      "Author": "Elisabetta Dami"
+     }
+    },
+    {
+     "name": "Gollum",
+     "details": {
+      "Book": "The Hobbit; The Lord of the Rings",
+      "Author": "J.R.R. Tolkien"
+     }
+    },
+    {
+     "name": "Greg Heffley",
+     "details": {
+      "Book": "Diary of a Wimpy Kid",
+      "Author": "Jeff Kinney"
+     }
+    },
+    {
+     "name": "Harry Potter",
+     "details": {
+      "Book": "Harry Potter series",
+      "Author": "J.K. Rowling"
+     }
+    },
+    {
+     "name": "Hermione Granger",
+     "details": {
+      "Book": "Harry Potter series",
+      "Author": "J.K. Rowling"
+     }
+    },
+    {
+     "name": "Hiccup",
+     "details": {
+      "Book": "How to Train Your Dragon",
+      "Author": "Cressida Cowell"
+     }
+    },
+    {
+     "name": "Hush",
+     "details": {
+      "Book": "Possum Magic",
+      "Author": "Mem Fox"
+     }
+    },
+    {
+     "name": "Jay Gatsby",
+     "details": {
+      "Book": "The Great Gatsby",
+      "Author": "F. Scott Fitzgerald"
+     }
+    },
+    {
+     "name": "Jo March",
+     "details": {
+      "Book": "Little Women",
+      "Author": "Louisa May Alcott"
+     }
+    },
+    {
+     "name": "Katniss Everdeen",
+     "details": {
+      "Book": "The Hunger Games",
+      "Author": "Suzanne Collins"
+     }
+    },
+    {
+     "name": "Long John Silver",
+     "details": {
+      "Book": "Treasure Island",
+      "Author": "Robert Louis Stevenson"
+     }
+    },
+    {
+     "name": "Lord Voldemort",
+     "details": {
+      "Book": "Harry Potter series",
+      "Author": "J.K. Rowling"
+     }
+    },
+    {
+     "name": "Lucy Pevensie",
+     "details": {
+      "Book": "The Lion, the Witch and the Wardrobe",
+      "Author": "C.S. Lewis"
+     }
+    },
+    {
+     "name": "Mary Poppins",
+     "details": {
+      "Book": "Mary Poppins",
+      "Author": "P.L. Travers"
+     }
+    },
+    {
+     "name": "Matilda Wormwood",
+     "details": {
+      "Book": "Matilda",
+      "Author": "Roald Dahl"
+     }
+    },
+    {
+     "name": "Mowgli",
+     "details": {
+      "Book": "The Jungle Book",
+      "Author": "Rudyard Kipling"
+     }
+    },
+    {
+     "name": "Mr Darcy",
+     "details": {
+      "Book": "Pride and Prejudice",
+      "Author": "Jane Austen"
+     }
+    },
+    {
+     "name": "Oliver Twist",
+     "details": {
+      "Book": "Oliver Twist",
+      "Author": "Charles Dickens"
+     }
+    },
+    {
+     "name": "Paddington Bear",
+     "details": {
+      "Book": "A Bear Called Paddington",
+      "Author": "Michael Bond"
+     }
+    },
+    {
+     "name": "Percy Jackson",
+     "details": {
+      "Book": "Percy Jackson & the Olympians",
+      "Author": "Rick Riordan"
+     }
+    },
+    {
+     "name": "Peter Pan",
+     "details": {
+      "Book": "Peter Pan",
+      "Author": "J.M. Barrie"
+     }
+    },
+    {
+     "name": "Peter Rabbit",
+     "details": {
+      "Book": "The Tale of Peter Rabbit",
+      "Author": "Beatrix Potter"
+     }
+    },
+    {
+     "name": "Pinocchio",
+     "details": {
+      "Book": "The Adventures of Pinocchio",
+      "Author": "Carlo Collodi"
+     }
+    },
+    {
+     "name": "Pippi Longstocking",
+     "details": {
+      "Book": "Pippi Longstocking",
+      "Author": "Astrid Lindgren"
+     }
+    },
+    {
+     "name": "Robinson Crusoe",
+     "details": {
+      "Book": "Robinson Crusoe",
+      "Author": "Daniel Defoe"
+     }
+    },
+    {
+     "name": "Rubeus Hagrid",
+     "details": {
+      "Book": "Harry Potter series",
+      "Author": "J.K. Rowling"
+     }
+    },
+    {
+     "name": "Sherlock Holmes",
+     "details": {
+      "Book": "Sherlock Holmes stories",
+      "Author": "Arthur Conan Doyle"
+     }
+    },
+    {
+     "name": "Snugglepot and Cuddlepie",
+     "details": {
+      "Book": "Snugglepot and Cuddlepie",
+      "Author": "May Gibbs"
+     }
+    },
+    {
+     "name": "Stanley Yelnats",
+     "details": {
+      "Book": "Holes",
+      "Author": "Louis Sachar"
+     }
+    },
+    {
+     "name": "The BFG",
+     "details": {
+      "Book": "The BFG",
+      "Author": "Roald Dahl"
+     }
+    },
+    {
+     "name": "The Cat in the Hat",
+     "details": {
+      "Book": "The Cat in the Hat",
+      "Author": "Dr. Seuss"
+     }
+    },
+    {
+     "name": "The Cheshire Cat",
+     "details": {
+      "Book": "Alice's Adventures in Wonderland",
+      "Author": "Lewis Carroll"
+     }
+    },
+    {
+     "name": "The Grinch",
+     "details": {
+      "Book": "How the Grinch Stole Christmas!",
+      "Author": "Dr. Seuss"
+     }
+    },
+    {
+     "name": "The Very Hungry Caterpillar",
+     "details": {
+      "Book": "The Very Hungry Caterpillar",
+      "Author": "Eric Carle"
+     }
+    },
+    {
+     "name": "Tintin",
+     "details": {
+      "Book": "The Adventures of Tintin",
+      "Author": "Hergé"
+     }
+    },
+    {
+     "name": "Tom Sawyer",
+     "details": {
+      "Book": "The Adventures of Tom Sawyer",
+      "Author": "Mark Twain"
+     }
+    },
+    {
+     "name": "Victor Frankenstein",
+     "details": {
+      "Book": "Frankenstein",
+      "Author": "Mary Shelley"
+     }
+    },
+    {
+     "name": "Willy Wonka",
+     "details": {
+      "Book": "Charlie and the Chocolate Factory",
+      "Author": "Roald Dahl"
+     }
+    },
+    {
+     "name": "Winnie-the-Pooh",
+     "details": {
+      "Book": "Winnie-the-Pooh",
+      "Author": "A.A. Milne"
+     }
+    }
+   ]
+  }
+ ],
+ "sized": {
+  "thumbs": [
+   "valorant/astra-portrait",
+   "valorant/breach-portrait",
+   "valorant/brimstone-portrait",
+   "valorant/chamber-portrait",
+   "valorant/clove-portrait",
+   "valorant/cypher-portrait",
+   "valorant/deadlock-portrait",
+   "valorant/fade-portrait",
+   "valorant/gekko-portrait",
+   "valorant/harbor-portrait",
+   "valorant/hush-portrait",
+   "valorant/iso-portrait",
+   "valorant/jett-portrait",
+   "valorant/kayo-portrait",
+   "valorant/killjoy-portrait",
+   "valorant/miks-portrait",
+   "valorant/neon-portrait",
+   "valorant/omen-portrait",
+   "valorant/phoenix-portrait",
+   "valorant/raze-portrait",
+   "valorant/reyna-portrait",
+   "valorant/sage-portrait",
+   "valorant/skye-portrait",
+   "valorant/sova-portrait",
+   "valorant/tejo-portrait",
+   "valorant/veto-portrait",
+   "valorant/viper-portrait",
+   "valorant/vyse-portrait",
+   "valorant/waylay-portrait",
+   "valorant/yoru-portrait"
+  ],
+  "trimmed": [
+   "valorant/astra-full",
+   "valorant/breach-full",
+   "valorant/brimstone-full",
+   "valorant/chamber-full",
+   "valorant/clove-full",
+   "valorant/cypher-full",
+   "valorant/deadlock-full",
+   "valorant/fade-full",
+   "valorant/gekko-full",
+   "valorant/harbor-full",
+   "valorant/hush-full",
+   "valorant/iso-full",
+   "valorant/jett-full",
+   "valorant/kayo-full",
+   "valorant/killjoy-full",
+   "valorant/miks-full",
+   "valorant/neon-full",
+   "valorant/omen-full",
+   "valorant/phoenix-full",
+   "valorant/raze-full",
+   "valorant/reyna-full",
+   "valorant/sage-full",
+   "valorant/skye-full",
+   "valorant/sova-full",
+   "valorant/tejo-full",
+   "valorant/veto-full",
+   "valorant/viper-full",
+   "valorant/vyse-full",
+   "valorant/waylay-full",
+   "valorant/yoru-full"
+  ]
+ }
+}

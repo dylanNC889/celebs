@@ -1,0 +1,261 @@
+{
+ "researched": "2026-11-17",
+ "premise": "Omega Earth is a mirror copy of the agents' own world (Alpha Earth), where every agent has a near-identical double. Since the global radianite event called First Light the two worlds have drifted apart, and Omega now faces climate collapse and a shortage of the radianite it needs for life support. Omega's version of VALORANT, the Legion, are celebrated public heroes there (unlike Alpha's secret Protocol); they began crossing over with Spikes to steal Alpha's radianite, starting with Omega Jett's attack that tore up Venice, and in early 2026 Omega Viper overthrew Omega Brimstone and turned the Legion on the Protocol itself, starting with an ambush at Reyna's Sanctuary in Mexico.",
+ "agents": [
+  {
+   "name": "Astra",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Astra used her golden gauntlet to switch on the multiverse nexus in Omega's City of Flowers (the Lotus map) while Alpha Astra and Harbor fought the Legion there; a Spike blast shut it down seconds later. During Omega Viper's 2026 takeover she was still undecided, and Omega Sova was sent to win her over.",
+   "not_alpha": null,
+   "unsure": "Whether Omega Astra ended up backing Omega Viper's takeover hasn't been revealed."
+  },
+  {
+   "name": "Breach",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion (Omega Viper's faction)",
+   "omega_lore": "Omega Breach is one of Omega Viper's main backers: he joined the 2026 mutiny against Omega Brimstone, was on the team that ambushed the Protocol at Reyna's Sanctuary in Mexico, and now leads the Legion's strike teams. On Omega he's a public hero with a mural in Lisbon and his own comic ('War Dawgs'), and the 2026 cinematic shows him repairing a child's prosthetic.",
+   "not_alpha": null,
+   "unsure": null
+  },
+  {
+   "name": "Brimstone",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion (deposed former leader)",
+   "omega_lore": "Omega Brimstone led the Legion and is honoured on Omega with statues and comics; he led strike teams to Los Angeles (the Sunset map) and Toronto. After repeated failures, capped by the Toronto mission where Omega Chamber was shot, Omega Viper led a mutiny in early 2026 and stripped him of command.",
+   "not_alpha": null,
+   "unsure": "Lore hasn't said where he is or what he's doing since he was deposed; Omega Viper's takeover speech still calls him 'the old man' the agents are fond of. One press recap (esports-news.co.uk) said Viper killed him, but the official-lore wiki only says he was removed from command."
+  },
+  {
+   "name": "Chamber",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion, with a secret deal with Alpha Chamber",
+   "omega_lore": "Omega Chamber has a secret, long-running deal with Alpha Chamber; the two fired together to destroy the Large Radian Collider at the Everett-Linde lab (the Fracture map). He's also a Legion agent: in the 2026 cinematic he was shot and critically wounded covering Omega Brimstone and Omega Viper in Toronto, but survived and was carried back to the Legion medbay.",
+   "not_alpha": null,
+   "unsure": "What the two Chambers' deal is ultimately for has never been revealed. Some press recaps said he died in Toronto, but the wiki says he survived. A later 2026 Range log names him among agents Omega Breach calls 'clear' after the takeover, but the line is cut off, so his stance isn't certain. He also appears in the Champions 2026 video, which is only partly canon."
+  },
+  {
+   "name": "Clove",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Clove has never appeared on screen. The only mention is a 2026 Range audio log where Omega Breach, nursing a sore neck at Legion HQ, says 'Clove keeps ibuprofen around here somewhere', which places a Clove in the Legion.",
+   "not_alpha": null,
+   "unsure": "Nothing else is known about Omega Clove, including whether they're immortal too or where they stood on Omega Viper's takeover. Alpha Clove's voice line calling Sage's Omega counterpart their 'nemesis' is about Omega Sage, not Omega Clove."
+  },
+  {
+   "name": "Cypher",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Cypher helps plan Legion missions and has been killed twice: by Alpha Yoru while sniping at Icebox (RETAKE), after which Omega Sage revived him, and by Alpha Jett at a temple in Thimphu, Bhutan (UNITED TOGETHER). He also joined the Los Angeles incursion, and during the 2026 takeover Omega Sova told Omega Viper to leave him and Omega Fade alone rather than try to win them over.",
+   "not_alpha": null,
+   "unsure": "UNITED TOGETHER's place in the timeline is unknown, and lore doesn't say how he came back after that second death. His stance on Omega Viper's takeover isn't stated."
+  },
+  {
+   "name": "Deadlock",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Deadlock was on the Legion team that exactly mirrored the Protocol's team (Brimstone, Deadlock, Gekko, Reyna, Sova) and teleported into Los Angeles at the end of the Sunset trailer; the Protocol drove them off. When Omega Viper took over in 2026, Omega Breach reported that Deadlock was 'not on board' because 'she cares about loyalty'.",
+   "not_alpha": null,
+   "unsure": "Whether she later fell in line isn't stated; a later log only says 'the holdouts' were falling in line, without naming them."
+  },
+  {
+   "name": "Fade",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "In REVELATION, Omega Fade (recognised by a fan) took a map to the City of Flowers off a man in an Istanbul nightclub and knocked out his pursuers, then escorted Omega Astra to switch on the nexus in Lotus. She was later killed by Alpha Phoenix in a Legion attack on Icebox, but she's active again in 2026, when Omega Sova told Omega Viper to leave her and Omega Cypher out of the takeover talks.",
+   "not_alpha": null,
+   "unsure": "Her Icebox death comes from the wiki's reading of the dialogue-free INCURSIONS cinematic, and how she came back isn't stated. Who her Istanbul pursuers worked for is unknown."
+  },
+  {
+   "name": "Gekko",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Gekko was on the Legion strike team, a mirror of the Protocol's own team, that came through portals into Los Angeles at the end of the Sunset trailer, just after Alpha Gekko's team shut down Kingdom's Interverse portal. The Protocol drove them off.",
+   "not_alpha": null,
+   "unsure": "He hasn't been seen or named since the 2023 Sunset trailer, so his current status, whether he has radivore companions like Wingman, and his side in the 2026 takeover are all unknown."
+  },
+  {
+   "name": "Harbor",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion (backs Omega Viper)",
+   "omega_lore": "Omega Harbor (Varun Batra) joined the Legion before Alpha Harbor joined the Protocol, as an advisor and keeper of a new 'power source', the ancient water bracelet; that's why the Protocol went looking for Alpha Harbor. In 2026 Omega Sova told Omega Viper that 'Harbor is on our side' in her takeover.",
+   "not_alpha": null,
+   "unsure": "Omega Harbor has never been shown on screen; developers only said the two Harbors 'took different paths'. Whether he was at the City of Flowers when the nexus was switched on isn't shown."
+  },
+  {
+   "name": "Hush",
+   "omega_seen": false,
+   "omega_status": null,
+   "omega_side": null,
+   "omega_lore": null,
+   "not_alpha": null,
+   "unsure": "Hush only joined the Protocol in October 2026 (patch 13.09), and no Omega Hush has been mentioned so far."
+  },
+  {
+   "name": "Iso",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Iso was on a Legion team that attacked Los Angeles in the INCURSIONS cinematic. In 2026 he was part of Omega Yoru's ambush on the Protocol at the Yue Yuan Men academy in China ('Iso's on the river'), which the Protocol turned around with a counter-ambush.",
+   "not_alpha": null,
+   "unsure": "The INCURSIONS sighting comes from the wiki's reading of a dialogue-free cinematic. Nothing is known of his background, such as whether he was a hitman like Alpha Iso."
+  },
+  {
+   "name": "Jett",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Jett caused the Venice disaster (the Ascent map): chased by Alpha Phoenix, she 'killed' him and set off the Spike, and Alpha Jett got the blame. Earlier she went to Seoul to kill Alpha Jett, then a chef, shooting her below the shoulder (Alpha Jett's scar) in a fight whose winds wrecked the restaurant. She was killed by Alpha Yoru at Icebox (RETAKE) but revived, has a statue in Omega Lisbon for holding back the sea, and still fights for Omega Viper's Legion in 2026.",
+   "not_alpha": null,
+   "unsure": "Some press said INCURSIONS confirmed the Seoul attack is what gave Alpha Jett her powers; the wiki instead says both Jetts used wind powers in that fight."
+  },
+  {
+   "name": "KAY/O",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "An Omega KAY/O serves in the Legion but has never been shown on screen. In 2026 Range audio logs Omega Sova calls KAY/O 'a big problem' for Omega Viper's takeover and says KAY/O and Omega Killjoy now look at him differently, yet Omega KAY/O still took part in Omega Yoru's ambush on the Protocol in China.",
+   "not_alpha": "Alpha KAY/O isn't an ordinary Alpha Earth person: he's a radiant-killing robot from an alternate future where radiants and humans went to war.",
+   "unsure": "Lore hasn't explained how Omega has its own KAY/O, given KAY/O's alternate-future origin."
+  },
+  {
+   "name": "Killjoy",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Killjoy invented the Spike, the device the Legion uses to steal radianite, and stars in Omega comics. She was seen on a night out in Seoul with Omega Jett and Omega Raze before the Lotus fight, and was killed by Alpha Jett during a Legion attack on a temple in Thimphu, Bhutan. In 2026 she was openly angry ('pissed') about Omega Viper's takeover.",
+   "not_alpha": null,
+   "unsure": "UNITED TOGETHER's (Thimphu) place in the timeline is unknown and her revival isn't shown, but she's alive in 2026 logs. Whether she's dating Omega Raze, as her Alpha self is with Alpha Raze, is only hinted."
+  },
+  {
+   "name": "Miks",
+   "omega_seen": true,
+   "omega_status": "Unknown",
+   "omega_side": "Not in Legion (Legion wants to recruit him)",
+   "omega_lore": "Omega Miks is only talked about, never shown. In a 2026 Legion call the Protocol intercepted, Omega Sova worried about Alpha Miks's healing and said Legion should recruit Miks's Omega counterpart, adding that he would track him down.",
+   "unsure": "His existence rests on one line by Omega Sova (Range lore, patch 12.06). Nothing says whether Legion found or recruited him, or what he is like."
+  },
+  {
+   "name": "Neon",
+   "omega_seen": true,
+   "omega_status": "Unknown",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Neon is a Legion agent. After Omega Viper's 2026 takeover she was described as 'spinning' and struggling with it, with Omega Yoru staying with her while Omega Breach hoped to win her over. Alpha Neon has been to Omega Earth herself: in Omega Lisbon she pulled Alpha Reyna away from a fight with Omega Viper.",
+   "unsure": "Omega Neon is only mentioned in intercepted audio (patch 12.04), never shown. It isn't resolved whether she backed Viper."
+  },
+  {
+   "name": "Omen",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Omen is a Legion hero with a statue in Omega Lisbon for carrying people to safety from the floods, and on the Pearl map Alpha Omen says 'Is that a statue of me?'. He helped Omega Sage in training and raided Alpha Earth at Haven (Thimphu), where Alpha Sage stopped his spike plant and he teleported away, and at Icebox. In 2026 he is still in Legion and is making a matching hat for the unconscious Omega Sage.",
+   "unsure": "A 2026 audio line seems to put him on Omega Viper's side after the coup, but its start is cut off ('...clear. Omen, Reyna, Chamber, Vyse, Jett, Tejo. No love lost there.'). No meeting with Alpha Omen has been shown."
+  },
+  {
+   "name": "Phoenix",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Phoenix made the lone spike attack on Rabat (Bind) and came face to face with Alpha Phoenix, who was caught off guard to find the attacker was his own double. He retreated when Alpha Viper opened fire, the spike was defused, and his complaint about defending it alone against a whole team is why Legion started sending full teams. On Omega he is a hero with a statue in Lisbon for guiding people to safety from the floods.",
+   "unsure": "He hasn't been shown since; in 2026 Omega Viper only mentions him in passing ('Phoenix must have burnt out your eyes'), which implies he's still around."
+  },
+  {
+   "name": "Raze",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Raze stars in an Omega comic ('Friendly Fire') and was out partying in Seoul with Omega Jett and Omega Killjoy before facing Protocol agents at Lotus. In the raid on Haven (Thimphu) one of her grenades killed Alpha Sova, and Alpha Phoenix then killed her, but she turns up again in later raids (Incursions, 2024). In 2026 Omega Breach was still trying to talk her into backing Omega Viper.",
+   "unsure": "How she came back after being killed at Haven isn't shown. It isn't resolved whether she joined Viper's side."
+  },
+  {
+   "name": "Reyna",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Reyna was on the Legion team that arrived in Los Angeles as an exact mirror of the Protocol team Alpha Reyna was on (Sunset map cinematic), and she is painted on a hero mural in Omega Lisbon. In 2026 Omega Breach listed her among the agents backing Omega Viper's takeover, the same Legion that attacked Alpha Reyna's Sanctuary in Mexico.",
+   "unsure": "Little else is known: nothing says whether she has a sister like Alpha Reyna or whether she took part in the Sanctuary attack. The 2026 line placing her on Viper's side is partly cut off."
+  },
+  {
+   "name": "Sage",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion (out of action)",
+   "omega_lore": "Omega Sage is Legion's Agent 10 (Alpha Sage is Agent 07) and a hero with a statue in Omega Lisbon, and she revived Legion agents killed at Icebox. Overusing her powers crystallised her body, so she now lies unconscious in a chemical stasis tank at Legion HQ that Omega Viper says will cure her. In 2026 Viper's Legion made Alpha Sage its main target, attacking again and again to push her to the same breaking point ('not until we put her down').",
+   "unsure": "Whether Omega Sage will recover is still open."
+  },
+  {
+   "name": "Skye",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Skye helped revive Legion agents killed at Icebox, was killed by Alpha Jett in the raid on Haven (Thimphu), and turns up again later in the Los Angeles raids. In 2026 Omega Sova counted her as backing Omega Viper, though Omega Breach said she's been 'too exhausted to care' since Omega Sage went down.",
+   "unsure": "How she came back after being killed at Haven isn't shown."
+  },
+  {
+   "name": "Sova",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion (Viper's second-in-command)",
+   "omega_lore": "Omega Sova lost a fight to Alpha Sova, who spared him but cut out his right eye. In 2026 he joined Omega Viper's coup, became her second-in-command and was on the strike team that hit Reyna's Sanctuary in Mexico, but he then refused to fire his bow into civilians at Summit and accused Viper of chasing revenge until she drew a gun and threw everyone out. He admits he may have joined partly 'to hurt the man who hurt me'.",
+   "unsure": "Some news write-ups say Omega Sova shot Alpha Sova in the eye with an arrow in the Mexico attack; the wiki's cinematic summary doesn't say so. Who 'the man who hurt me' is isn't stated. After the row he skipped a meeting and Viper said 'forget him', so his place in Legion is now uncertain."
+  },
+  {
+   "name": "Tejo",
+   "omega_seen": true,
+   "omega_status": "Unknown",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Tejo is only mentioned, never shown. In an intercepted 2026 Legion call, Omega Breach named him with Omega Omen, Reyna, Chamber, Vyse and Jett as agents on Omega Viper's side after she ousted Omega Brimstone ('No love lost there').",
+   "unsure": "This is a single mention, and the start of Breach's line is cut off, so 'on Viper's side' is the likely reading but isn't spelled out."
+  },
+  {
+   "name": "Veto",
+   "omega_seen": true,
+   "omega_status": "Unknown",
+   "omega_side": "Courted by Omega Legion (undecided)",
+   "omega_lore": "Omega Veto is only mentioned, never shown. When Omega Viper took over Legion in 2026 she asked about him and Omega Waylay, and Omega Breach said they were 'thinking it over' because they're 'picky who they work for' and don't know her.",
+   "unsure": "Nothing says whether he joined Viper, or whether he was already a Legion member before the coup."
+  },
+  {
+   "name": "Viper",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion (its leader)",
+   "omega_lore": "Omega Viper led the Icebox raid (Alpha Phoenix killed her and she was revived) and fought Alpha Reyna in Omega Lisbon. In 2026, after Omega Chamber was critically wounded in Toronto, she overthrew Omega Brimstone, led the attack on Reyna's Sanctuary in Mexico, made Alpha Sage Legion's main target and led the assault on Sage at the Summit academy, where Alpha Reyna went hunting for her. Alpha Viper hates hearing the intercepted recordings of her: 'I don't need this mirror shoved in my face!'",
+   "unsure": "News sites say Riot confirmed Omega Viper and Omega Chamber are a couple; the wiki doesn't state it. Some write-ups say she killed Alpha Brimstone in Mexico, but later Range lore shows him back on his feet after Sage revived him. Omega Sova accuses her of a personal grudge over 'Patient Zero', which is never explained."
+  },
+  {
+   "name": "Vyse",
+   "omega_seen": true,
+   "omega_status": "Unknown",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Vyse is only mentioned, never shown. In an intercepted 2026 Legion call, Omega Breach listed her among the agents on Omega Viper's side after the coup ('No love lost there').",
+   "unsure": "Alpha Vyse's own origin is officially unknown (real name and country unknown; implied to be an ex-Kingdom scientist), but nothing official says she is from Omega. The 2026 line is partly cut off, so 'on Viper's side' is the likely reading but isn't spelled out."
+  },
+  {
+   "name": "Waylay",
+   "omega_seen": true,
+   "omega_status": "Unknown",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Waylay was at first 'thinking it over' when Omega Viper sought her support in 2026, but she later took the east riverbank in Omega Yoru's ambush on a Protocol VLT/R aircraft. The Protocol had planned a counter-ambush, and Alpha Brimstone later congratulated the team on a 'successful counter'.",
+   "unsure": "She is only heard of in audio, never shown, and what happened to her in the ambush isn't said."
+  },
+  {
+   "name": "Yoru",
+   "omega_seen": true,
+   "omega_status": "Alive",
+   "omega_side": "Omega Legion",
+   "omega_lore": "Omega Yoru has been a Legion regular since the first Omega team-up (Duality) and the Los Angeles raids, and the 2026 cinematic shows him rescuing children from a disaster on Omega. He is in Omega Viper's inner circle: he went on the strike against Reyna's Sanctuary, handles 'containment' for her, scouted the Summit academy and led an ambush on a Protocol aircraft, though he only half agreed ('...maybe') with Omega Sova's no-civilians stand.",
+   "unsure": "No meeting with Alpha Yoru has been shown."
+  }
+ ]
+}

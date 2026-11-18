@@ -1,0 +1,279 @@
+{
+ "researched": "2026-11-17",
+ "note": "Lore research notes per agent, including what could not be confirmed (unsure). Loaded into the DB via make_lore.py.",
+ "agents": [
+  {
+   "name": "Astra",
+   "real_name": "Efia Danso",
+   "hometown": "Accra, Ghana",
+   "power": "Radiant",
+   "lore": "Astra is Agent 16 of the VALORANT Protocol. She is a Radiant who channels her cosmic power through a golden gauntlet, an artifact of the Astral Guardians, a group sworn to protect reality. She seems to be the only living Guardian on Earth, and what she knows about the Guardians is incomplete. She pushed for Harbor to be recruited after she realised his bracelet was a Guardian artifact. Riot says she played a key part in finding the lost City of Flowers in India's Western Ghats, which is the Lotus map. Her real name was revealed in a dossier written by Fade, who was then known only as the 'blackmailer'."
+  },
+  {
+   "name": "Breach",
+   "real_name": "Erik Torsten",
+   "hometown": null,
+   "power": "Technology",
+   "lore": "Breach is Agent 13, a Swede who was born without arms. He wears heavy prosthetic arms that he built himself, and Raze later upgraded them. The two are friendly, and her voice lines offer him 'tune-ups'. He comes from the Torsten family of criminals. When the family was prosecuted, a judge went easy on him because of his disability. He took that as an insult and committed a string of crimes to prove he was as dangerous as his relatives. This came out in the dossier that Fade (the 'blackmailer') wrote on him."
+  },
+  {
+   "name": "Brimstone",
+   "real_name": "Liam Byrne",
+   "hometown": "Baltimore, USA",
+   "power": "Technology",
+   "lore": "Brimstone is Agent 01 and the commander of the VALORANT Protocol, and Viper (Agent 02) is his second-in-command. Before the Protocol he was a firefighter with the Baltimore Fire Department (Engine 8). He then served in Special Forces and later worked for K-SEC, the security arm of the Kingdom Corporation. He has no powers and relies on military gear. The dossier Fade wrote on him mentions a friend, Tariq Porter, whose death he witnessed."
+  },
+  {
+   "name": "Chamber",
+   "real_name": "Vincent Fabron",
+   "hometown": null,
+   "power": "Technology",
+   "lore": "Chamber is Agent 18, a Frenchman who served as a marksman in the French military and then with a private military company. After that he worked in Kingdom's weapons-design department. Riot's Fracture reveal trailer, narrated by Chamber, shows that he and his Omega Earth double destroyed the Large Radian Collider at the Everett-Linde research site in New Mexico, knowing it would kill the scientists there. That site is the Fracture map. He then got into the Protocol by offering Brimstone and Viper help with their Omega Earth project, although they don't trust him. He also has a secret deal with his own Omega counterpart."
+  },
+  {
+   "name": "Clove",
+   "real_name": null,
+   "hometown": "Edinburgh, Scotland",
+   "power": "Radiant",
+   "lore": "Clove is Agent 25, a young Radiant whose power lets them come back from death. Riot calls them an Edinburgh native and uses they/them pronouns. Omen was on a break from the Protocol when he found Clove in Edinburgh, along with a journal belonging to a secret group called the Scions of Hourglass, and he brought them in. Deadlock confirmed that the new recruit had arrived safely. Astra has said she is worried because immortality among Radiants is unheard of, and in one voice line Clove offers to help Reyna's sister Lucia."
+  },
+  {
+   "name": "Cypher",
+   "real_name": "Amir El Amari",
+   "hometown": "Rabat, Morocco",
+   "power": "Technology",
+   "lore": "Cypher is Agent 05, a Moroccan information broker from Rabat, the city where the Bind map is set. He hides his face even from his fellow agents. According to Fade's dossier, he also hides it from his wife Nora and their child. Some of his voice lines, such as 'Nora, I will see you again', leave it unclear whether his family is still alive. He tracked the anonymous 'blackmailer' to Turkey and later pushed for her, Fade, to join the Protocol. He also backed recruiting Iso."
+  },
+  {
+   "name": "Deadlock",
+   "real_name": "Iselin",
+   "hometown": null,
+   "power": "Technology",
+   "lore": "Agent 23. Before the Protocol she was an elite hunter in Ståljeger, a Norwegian private security force, on its 'Ursa' team. Kingdom hired her team to escort a scientist to 'The Vault' on Svalbard to collect a radivore bear for Project Landfall, but the bear killed her teammates and the scientist. She destroyed it with the chamber's energy purge but lost her arm, then sent a distress beacon that Sova picked up. Killjoy fitted her with a high-tech prosthetic arm, and because of what happened she distrusts Gekko's radivore creatures.",
+   "unsure": "Her first name comes from one of her own voice lines ('Iselin, dette får du til!'). Wikis give her full name as Iselin Solem, but the surname was first posted by a leaks account in May 2025 and I couldn't find a Riot source for it. Only her country (Norway) is given, not a hometown. The cinematic implies Sova rescued her but doesn't show it outright. Her hatred of radivores is backed by voice lines and wikis."
+  },
+  {
+   "name": "Fade",
+   "real_name": "Hazal Eyletmez",
+   "hometown": "Istanbul",
+   "power": "Radiant",
+   "lore": "Agent 20, a Turkish Radiant who worked as a bounty hunter and had worked for REALM. When someone close to her, only ever called 'him', went missing, she blamed the VALORANT Protocol and blackmailed it by leaking dossiers that exposed the agents' real names and pasts. Cypher traced her to Istanbul, where a Protocol strike team captured her, and it turned out the Protocol had nothing to do with the disappearance. Cypher backed recruiting her while Jett objected, and she joined to help scout Omega Earth while still searching for 'him'. She treats her fear powers as a separate being she calls 'Nightmare'.",
+   "unsure": "Every wiki and outlet has used the name Hazal Eyletmez since 2022, but I couldn't trace the original Riot post or in-game item that revealed it. Istanbul is where she lived, worked and was caught, and Riot's design notes tie her to it, but her birthplace is never stated. Who 'him' is remains unknown, and her exact role at REALM is unknown too."
+  },
+  {
+   "name": "Gekko",
+   "real_name": "Mateo Armendáriz De la Fuente",
+   "hometown": "Los Angeles",
+   "power": "Radivore-powered",
+   "lore": "Agent 22, born and raised in Los Angeles. He lives with his mother, a vet, and speaks English and Spanish. His four radivore creatures, Wingman, Dizzy, Mosh and Thrash, were originally Kingdom (K-SEC) property from its LA facility, and the Protocol helped him get away from Kingdom security and recruited him. In the Sunset map trailer, Wingman carried Deadlock's device into Kingdom's Project Landfall portal in LA and destroyed it, coming back shrunk. Deadlock distrusts his creatures, Harbor coaches him at swimming, and he is close to Reyna.",
+   "unsure": "I couldn't open the original Riot source for his full name, but wikis and outlets have used it since his 2023 launch; his nickname is 'Teo'. How he first got the radivores and earned their trust is not explained. It's not confirmed whether Gekko himself is a Radiant. His mother being a vet comes from an in-universe radio interview Riot released."
+  },
+  {
+   "name": "Harbor",
+   "real_name": "Varun Batra",
+   "hometown": null,
+   "power": "Other: ancient water-controlling artifact (bracelet and rings), not a Radiant",
+   "lore": "Agent 21. He was a REALM operative who recovered stolen relics. On a REALM mission in India, an ancient artifact (a bracelet with rings) bonded to his wrist and gave him control over water. His commander, Captain Greaves, tried to take it at gunpoint, then branded him a rogue, and REALM hunted him for about two months. In his reveal trailer, Brimstone rescues him from Greaves mid-chase and brings him into the Protocol. He coaches Gekko at swimming, and Astra is curious about his artifact.",
+   "unsure": "His real name first appeared in an in-game email between Fade and Brimstone. Riot only says he comes from India's coast. A Mumbai hometown is fan speculation, and wikis disagree on where in India he found the artifact (one says Mumbai). A link between the artifact and Astra's Astral Guardians is hinted at but not confirmed."
+  },
+  {
+   "name": "Hush",
+   "real_name": null,
+   "hometown": "Guangdong (province)",
+   "power": "Radiant",
+   "lore": "Agent 31, a Radiant with telekinesis from Guangdong province, China. Before joining the Protocol she worked in what Riot calls 'some of the more shadowed halls' of Kingdom Corp. Her mother is the most important person in her life: she calls her every day, even in the middle of a fight, and her 'RISE AND FALL' trailer shows exactly that. Sage is her closest friend in the Protocol, and the two often share Cantonese chicken hotpot.",
+   "unsure": "Her lore is thin. No real name has been revealed, and how she got her powers isn't explained. A fan wiki, citing a Nylon Singapore interview I couldn't find, says her mother is a Kingdom executive and that Hush worked for a 'Kingdom Bureau of Inquiry'; I couldn't confirm either. Riot calls her Agent 31, but some news sites call her the 30th agent, because there is no playable Agent 8."
+  },
+  {
+   "name": "Iso",
+   "real_name": "Li Zhao Yu",
+   "hometown": "Chongqing",
+   "power": "Radiant",
+   "lore": "Agent 24, a Radiant who shapes raw radianite energy into solid shields and other constructs. He was an elite hitman for a secret group called the Scions of Hourglass. His reveal trailer shows him killing a Kingdom Project Landfall scientist and her guards, after which the Scions named Omen as his next target. He joined the Protocol asking for protection from the Scions while secretly planning to kill Omen. Cypher found out but let him make his own choice, and Iso turned on the Scions instead, helping the Protocol raid their base in Jakarta.",
+   "unsure": "Riot revealed his real name in an official VALORANT post (a player-card teaser for 'The Hourglass Turns'). Chongqing comes from Riot's launch event there, its design work with Chongqing artists and a teaser; his official bio only says 'Chinese'. Why he served the Scions in the first place is unknown."
+  },
+  {
+   "name": "Jett",
+   "real_name": "Han Sunwoo (written \"Sunwoo Han\" in her dossier)",
+   "hometown": "Seoul",
+   "power": "Radiant",
+   "lore": "Jett, Agent 10 of the VALORANT Protocol, is a South Korean Radiant who controls the wind. Before joining she was a chef at her family's restaurant in Seoul, until a 'freak storm' all but destroyed it and she went on the run. Later her Omega Earth double caused the Venice disaster that raised the city (now the Ascent map). Because the public doesn't know Omega Earth exists, the real Jett got the blame and was branded a dangerous Radiant, so she has to wear disguises in public. She has a friendly speed rivalry with Neon, trades banter with Phoenix and Raze, and objected when Fade, the hacker who had blackmailed the Protocol, was recruited.",
+   "unsure": "A playercard and wiki writers suggest the restaurant storm came from a fight with Omega Jett, but that is only implied, so I left it out. 'Family' restaurant, culinary school and high-school track come from Riot's 2025 Masters Toronto lore panel, which I saw only through wiki citations of a fan summary. Riot's own bio says only 'South Korea'; Seoul comes from a playercard and the wikis. An early scrapped voice line called her 'Joon-Hee'; that name was retconned."
+  },
+  {
+   "name": "KAY/O",
+   "real_name": null,
+   "hometown": null,
+   "power": "Robot",
+   "lore": "KAY/O is a combat robot from an alternate future where humans and Radiants fought a devastating war. He was built to kill Radiants, using polarized radianite that shuts down their powers. In that war he fought beside his timeline's Brimstone, his closest friend, whom he failed to save, and beside Sova, and he says he killed that world's Reyna. He travelled back to the present through a portal on the island seen in the Breeze map and became Agent 17. He still struggles to separate today's Brimstone from his memories, distrusts Reyna, and lets Killjoy maintain his core.",
+   "unsure": "His dossier lists NAME as 'None' and calls him an 'Anti-Yield Operative', from a Kingdom project that was rejected and never built. Fans expand KAY/O as 'Kingdom Anti-Yield Operative', but Riot never stated that expansion outright. Who built him (possibly Thurston Wolf, whose logo is on him) and exactly how far in the future he comes from are not confirmed."
+  },
+  {
+   "name": "Killjoy",
+   "real_name": "Klara Böhringer",
+   "hometown": null,
+   "power": "Technology",
+   "lore": "Killjoy is a German genius inventor with no powers; all her abilities are gadgets and robots she built herself. She was nominated for a Distinguished Inventor award and became head of Kingdom's research and development at 18. Her callsign started as a joke from teammates about how good she was, and she joined as Agent 4. She is Brimstone's protégé and built the Protocol's teleporter to Omega Earth, using Neon's electricity as a power source. Riot has confirmed she is dating Raze, and her dossier names Zehra and Emil, later confirmed as her parents.",
+   "unsure": "No home city has been given, only Germany. Riot said only one parent is German. The confirmation that Zehra and Emil are her parents, and her Turkish heritage on her mother's side, appear to come from Riot's 2025 Masters Toronto lore panel, which I saw only through wiki citations. Reyna clearly hates her, but the reason is only hinted."
+  },
+  {
+   "name": "Miks",
+   "real_name": null,
+   "hometown": null,
+   "power": "Radiant",
+   "lore": "Miks is a Croatian Radiant who gives off sonic energy and channels it through high-tech gloves. Riot says music was a big part of his life before the Protocol, with roots in Croatia's underground EDM scene. Clove and Killjoy saw him perform months earlier, and Clove later pitched him to Brimstone as a radiant 'healing guy'. He joined as Agent 30 while Omega's Legion was attacking hard, volunteering as healing backup for Sage, whose crystallization is getting worse. At HQ he runs a recording studio (he spent over four hours recording KAY/O's sounds), jams with Raze, and has had noise complaints from Vyse.",
+   "unsure": "Both wikis give his real name as Adrijan Vidović. The earliest source I found is a leaks account on X (8 Apr 2026), and I could not find Riot confirming it, so I left it null. The same goes for 'co-founder of the Sonic Collective'. A Riot teaser showing Clove and Killjoy tracking him gave coordinates that point to Zagreb, but Riot never called Zagreb his hometown. His lore is thin; how he got his powers is not stated."
+  },
+  {
+   "name": "Neon",
+   "real_name": "Tala Nicole Dimaapi Valdez",
+   "hometown": "Taguig, Metro Manila",
+   "power": "Radiant",
+   "lore": "Neon is a Filipino Radiant whose bioelectric powers are so strong she wears a Surge Protector pack to keep them under control. The pack was designed by her scientist father, Nathaniel Valdez, whose Radiant-support tech went on to help millions; her dossier says her mother served her community through justice and law. Before the Protocol she worked for Kingdom's security arm K-SEC, where she fell out with Chamber. Chamber still recommended her, and she joined as Agent 19, partly to power Killjoy's Alpha-to-Omega teleporter. Sage and Reyna both mentor her, she has a speed rivalry with Jett, and she played basketball in high school.",
+   "unsure": "An early interview claimed she was found as a baby after a lightning rift near Mount Pulag and adopted; Riot had that removed, so it isn't confirmed canon. Her father's first name comes from an in-game email on the Icebox map, as cited by the Lore Wiki; I did not see it directly."
+  },
+  {
+   "name": "Omen",
+   "real_name": null,
+   "hometown": null,
+   "power": "Radiant",
+   "lore": "Omen's true name is unknown; Fade's dossier found only aliases (John, Fred, Marcus, Yohan, Dimitri). He was once 'Ghost', a top assassin for the Scions of Hourglass, a secret group trying to keep radianite from being rediscovered, and was sent to kill the scientist Sabine Callas (Viper). She fought back, trapped him in a test chamber and switched it on, turning him into a shadowy phantom with no memories. As Agent 3 he spent years searching for his past and only learned the truth in Jakarta (the RECKONING cinematic) after fellow ex-Hourglass assassin Iso joined; Viper had known all along. He took leave, has since returned, knits to help himself focus, and is close to Sage.",
+   "unsure": "His dossier marks his classification as 'Radiant*' with an asterisk: his powers came from the lab accident, not from birth. Whether Sage helped stabilise him afterwards is only hinted. No country or hometown is known."
+  },
+  {
+   "name": "Phoenix",
+   "real_name": "Jamie Adeyemi",
+   "hometown": "Peckham, London",
+   "power": "Radiant",
+   "lore": "Phoenix is Agent 9, a fire Radiant from Peckham in South London who went to a performing arts school there. His dossier says he was raised by women who were always worried about his safety, and as kids he and his younger sister Mary were on a London rooftop when First Light hit. Mary is now a singer, and 2025 voicemails show him missing her calls and her debut show of her song 'EGO'. On his first solo mission, in Venice, he failed to stop a Spike, and in Rabat he came face to face with his own double from Omega Earth. Sage runs his Radiant training, and he is close friends with Jett and KAY/O.",
+   "unsure": "That his mum is Nigerian comes from a Riot creative director's tweet. That she was in the fire service comes from a 2025 Riot lore panel, reported second-hand. The burning building on his 'Firestarter' card is often said to be his school, but that isn't confirmed.",
+   "sources": [
+    "https://valorant-lore.fandom.com/wiki/Phoenix",
+    "https://valorant.fandom.com/wiki/Phoenix",
+    "https://valorant.fandom.com/wiki/VALORANT_Protocol",
+    "https://valorant.fandom.com/wiki/Range/Lore/V25",
+    "https://valorant.fandom.com/wiki/Range/Lore/EP6",
+    "https://valorant.fandom.com/wiki/Cinematics/Season"
+   ]
+  },
+  {
+   "name": "Raze",
+   "real_name": "Tayane Alves",
+   "hometown": "Salvador, Bahia",
+   "power": "Technology",
+   "lore": "Raze is Agent 12, an engineer and explosives expert with no powers, and her friends call her 'Tatá'. Back home in Bahia she helped drive Kingdom Corporation out and splashed paint over the sites they abandoned, and her dossier warns that Kingdom could return while she's away. Her Boom Bot started as an Alarmbot she borrowed from Killjoy. She and Killjoy are officially a couple and built the training robot Max Bot together. Breach is an old partner-in-crime from before the Protocol, and after a wild concert in Berlin she woke up stranded on the deserted Breeze island and rigged a junk satellite dish to call Brimstone.",
+   "unsure": "An early Cypher voice line, since removed, called her 'Izzy'; Tayane is the official name. Her history with Breach comes only from voice lines ('together again and we're not even breaking the law'). How she got to Breeze is still unexplained.",
+   "sources": [
+    "https://valorant-lore.fandom.com/wiki/Raze",
+    "https://valorant.fandom.com/wiki/Raze",
+    "https://valorant.fandom.com/wiki/Raze/Quotes",
+    "https://valorant.fandom.com/wiki/VALORANT_Protocol",
+    "https://valorant.fandom.com/wiki/Range/Lore/EP4",
+    "https://valorant.fandom.com/wiki/Range/Lore/EP5"
+   ]
+  },
+  {
+   "name": "Reyna",
+   "real_name": "Zyanya Mondragón",
+   "hometown": null,
+   "power": "Radiant",
+   "lore": "Reyna is Agent 11, a Mexican Radiant who survives and grows stronger by absorbing the life energy (souls) of the people she kills. Before joining she built the Sanctuary, a community for people and children she rescued from Kingdom's experiments, and she is its protector. Her younger sister Lucia, who was with her when First Light hit, can only stay alive on life energy. Viper built equipment that passes the souls Reyna collects to Lucia, but much of it is lost along the way. Neon trains with both her and Sage, she is very protective of Gekko, and in 2026 the Omega Legion attacked agents eating at her Sanctuary compound in Mexico.",
+   "unsure": "The city or region she's from isn't revealed. Why Lucia needs life energy isn't confirmed: one wiki says it's her own Radiance, the other calls that a theory. KAY/O's lines suggest she leads the Radiants in his future war, and one of her lines suggests Killjoy's machines once hurt someone close to her, but both are only hinted.",
+   "sources": [
+    "https://valorant-lore.fandom.com/wiki/Reyna",
+    "https://valorant.fandom.com/wiki/Reyna",
+    "https://valorant.fandom.com/wiki/Reyna/Quotes",
+    "https://valorant.fandom.com/wiki/VALORANT_Protocol",
+    "https://valorant.fandom.com/wiki/Range/Lore/EP4",
+    "https://valorant.fandom.com/wiki/Range/Lore/V25",
+    "https://valorant.fandom.com/wiki/Cinematics/Season"
+   ]
+  },
+  {
+   "name": "Sage",
+   "real_name": "Ling Ying Wei",
+   "hometown": "Shaanxi province",
+   "power": "Radiant",
+   "lore": "Sage is Agent 7, a Radiant monk whose dossier calls her 'the Balm of Shaanxi' and mentions the monastery that taught her about balance. Her Radiance lets her heal and even bring the dead back to life, and she channels it through orbs of pure crystallised Radianite. She quickly rose to lead the Protocol's Radiant training: she recruited Skye, welcomed Neon, coaches Phoenix and has spent long sessions helping Omen recover his memories. Riot says she knew Viper and Omen before the Protocol, and Viper refuses her offers of help. Using resurrection again and again (including bringing back Killjoy in 2025 and Brimstone in 2026) has made painful crystals grow on her body, and the Omega Legion is now targeting her on purpose.",
+   "unsure": "The dossier spells her name 'Ling Ying Wei'; in Chinese order that would be Wei Ling Ying. Shaanxi is where the dossier links her and her monastery, but it isn't stated as her birthplace. The 2026 crystal storyline is still unfolding, and the wiki I checked only covers it up to patch 12.09.",
+   "sources": [
+    "https://valorant-lore.fandom.com/wiki/Sage",
+    "https://valorant.fandom.com/wiki/Sage",
+    "https://valorant.fandom.com/wiki/VALORANT_Protocol",
+    "https://valorant.fandom.com/wiki/Range/Lore/EP6",
+    "https://valorant.fandom.com/wiki/Template:Latest_Range_Lore",
+    "https://valorant.fandom.com/wiki/Cinematics/Season"
+   ]
+  },
+  {
+   "name": "Skye",
+   "real_name": "Kirra Foster",
+   "hometown": "Nimbin, New South Wales",
+   "power": "Radiant",
+   "lore": "Skye is Agent 14, a Radiant who spent years fighting Kingdom's projects across eastern Australia (Blue Mountains, Sawn Rocks, Kangaroo Valley), earning the nickname 'the Great Reclaimer'. Her power brings carved wooden totems to life as her animal pack and lets her heal others; Riot says the power comes from her will, not the carvings. She didn't want to leave her land unprotected, but Sage recruited her by showing her a huge rift near her home and telling her more were opening around the world. With the Protocol she tracked REALM in India, held off ATLAS troops alone so Harbor and Astra could reach Omega's City of Flowers, and later identified ATLAS as the new threat. She is good friends with Sage and works out with Breach, but argues with Viper and Killjoy over pollution and tech, and has told Brimstone he's too soft on Kingdom.",
+   "unsure": "Nimbin comes from Riot's Discord Q&A and social posts. Her dossier only lists Nimbin among her anti-Kingdom campaigns.",
+   "sources": [
+    "https://valorant-lore.fandom.com/wiki/Skye",
+    "https://valorant.fandom.com/wiki/Skye",
+    "https://valorant.fandom.com/wiki/VALORANT_Protocol",
+    "https://valorant.fandom.com/wiki/Range/Lore/EP6"
+   ]
+  },
+  {
+   "name": "Sova",
+   "real_name": "Sasha Novikov",
+   "hometown": "Severomorsk, Murmansk Oblast",
+   "power": "Technology",
+   "lore": "Sova is Agent 6, a Russian archer who was famous long before the Protocol as 'Filin, Brother of Steel and String' and 'the man who never missed a shot', although his dossier says he has missed. He has no powers: he uses a custom bow, Radianite-tech arrows, an owl drone and a bionic right eye. He has travelled through rifts, and when he first met his Omega Earth double he spared his life but cut out his right eye. In 2026 that double joined Omega Viper's takeover of the Legion. He is one of Brimstone's most trusted agents: he helped lead the Istanbul team that captured Fade, found and rescued Deadlock in Norway, and freed Omen in Jakarta with a Hunter's Fury shot.",
+   "unsure": "'Alexander' is a common fan expansion of Sasha and one wiki uses it, but only 'Sasha Novikov' is official. How he lost his own right eye isn't revealed, and Cypher says the story in his file isn't true. His hometown comes from a Riot narrative lead's Discord Q&A, not from in-game text."
+  },
+  {
+   "name": "Tejo",
+   "real_name": null,
+   "hometown": null,
+   "power": "Technology",
+   "lore": "Tejo is Agent 27, a veteran soldier and formerly retired intelligence consultant who once had clients in weapons R&D. He and Brimstone go back years: an incident involving them both left people dead, Tejo refuses to apologise for it, and he calls Brimstone 'cucho' (old man) while mocking him for watching baseball instead of football. He turned up at Protocol HQ uninvited to warn that Omega forces were raiding Earth unnoticed, which led to the fight with Atlas. Before the Protocol he did paid contract jobs as a three-person crew with Waylay and Veto, and he got both of them recruited; Veto says Tejo 'gave me everything'. His missiles and drone come from a wrist launcher and targeting glasses, not powers.",
+   "unsure": "Real name is redacted. What the deadly incident with Brimstone was hasn't been revealed. Fan ideas that he got his gear at Kingdom's K-SEC with Brimstone, or that his scars are radivore scars, are unconfirmed."
+  },
+  {
+   "name": "Veto",
+   "real_name": null,
+   "hometown": null,
+   "power": "Radivore-powered",
+   "lore": "Veto is Agent 29. Before the Protocol he did contract work in a crew with Tejo and Waylay; on one mission an enemy grenade went off right above him, and he now has a mutated blue left arm and eye. In a voice line to Gekko he links his arm to radivores ('All kinds of Radivore nonsense here today. My arm, your crew.'). Tejo got him hired as undercover bodyguard for Phoenix's sister Mary Adeyemi at the First Light Expo in Paris, where he kept her safe through Atlas's attack and helped stop it, then joined the Protocol. He speaks French and Wolof, collects fragrances and oils, and HQ's biometric locks keep shutting him out.",
+   "unsure": "Riot's own text only says 'DNA mutation'. The radivore link comes from his Gekko voice line, and how the mutation happened has never been shown. Both wikis still label him a Radiant. His home city in Senegal hasn't been revealed."
+  },
+  {
+   "name": "Viper",
+   "real_name": "Sabine Callas",
+   "hometown": null,
+   "power": "Technology",
+   "lore": "Viper is Agent 2. She co-founded the Protocol with Brimstone and is his second-in-command. As Dr. Sabine Callas she was an award-winning Kingdom chemist, the first Chief Scientific Officer on its board, and one of the first people to study radianite. The Scions of Hourglass sent their assassin 'Ghost' to kill her, but she hit him with chemicals and trapped him in a test chamber that turned him into Omen; she hid this from him for years, and things between them have been tense since he found out. She used to work in healing before an unexplained incident turned her towards poisons and revenge; she says Sage once failed her, and she has worked with Reyna to keep Reyna's sister Lucia alive.",
+   "unsure": "Her hometown isn't given (a player card links her to Seattle). The incident that changed her and how Sage failed her are never explained."
+  },
+  {
+   "name": "Vyse",
+   "real_name": null,
+   "hometown": null,
+   "power": "Radiant",
+   "lore": "Vyse is Agent 26, a Radiant with a radianite-infused liquid-metal alloy flowing through her. More than a decade ago she led a team researching the Interverse. The Scions of Hourglass later held her in a super-cold containment cell at their base under Jan Mayen (the Abyss map) and ran tests on her; she says what they did can't be undone, and something happened to her old team. When the Protocol stormed the base she broke free, destroyed several Hourglass hideouts in revenge, and agreed to join after a Protocol team caught up with her in Seoul. She now runs the Protocol's Interverse research, knew Viper before ('We saved the world once, Sabine'), and openly admires Omen.",
+   "unsure": "No real name or country has been revealed. The wikis call her an ex-Kingdom researcher; that's inferred from voice lines (one blames Kingdom for taking her funding), not stated directly. What happened to her old team isn't revealed."
+  },
+  {
+   "name": "Waylay",
+   "real_name": "Ariya Saengkaew",
+   "hometown": null,
+   "power": "Radiant",
+   "lore": "Waylay is Agent 28. For years she did contract jobs in a crew with Tejo, who taught her ('You taught a shark to swim, T'), and Veto. Her past is on the wrong side of the law: she tells Breach about the jobs they could have pulled together, and Veto asked Brimstone to get her cleared from arrest lists in several territories. Tejo called her in to rescue a Protocol strike team pinned down by Atlas at Bangkok Port, and she was recruited afterwards, having been drifting while she looked for a place to call home. In the Protocol she trains the younger agents, like Phoenix and Jett, to fight as a team.",
+   "unsure": "Her name comes from a sign written in the Scions alphabet in Riot's official 'Last Shot' Champions 2025 music video. Riot hasn't spelled it out in plain text, and wiki editors weighed Saengkaew against Saungkaew before adding it. Her home city and how she got her light powers are unknown."
+  },
+  {
+   "name": "Yoru",
+   "real_name": "Ryo Kiritani",
+   "hometown": "Tokyo",
+   "power": "Radiant",
+   "lore": "Yoru is Agent 15. He is obsessed with his samurai ancestors, and his search led him to break into Kingdom's S22 facility (the Icebox map) and steal an Edo-era samurai mask full of radianite that lets him see into another dimension; the Protocol recruited him later. Fade's dossier says he left a trail of broken bones across Tokyo and Yokohama, and that his temper wrecks every friendship and romance. Against Brimstone's orders he kept returning to the old Japanese warship at S22, fell through a rift that felt like going back in time, and heard a woman's voice he recognised. He has a friendly rivalry with Phoenix, and Riot says he was once kicked out of a boy band after a week for punching the lead singer.",
+   "unsure": "The wikis also write his name in Japanese order as Kiritani Ryo. Tokyo as his hometown comes from a Riot Instagram lore quiz, not in-game text. Who the woman's voice belonged to hasn't been revealed."
+  }
+ ]
+}
