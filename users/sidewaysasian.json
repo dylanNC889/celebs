@@ -13,7 +13,10 @@
     },
     {
      "name": "Charlie Gordon",
-     "details": {}
+     "details": {
+      "Book": "Flowers for Algernon",
+      "Author": "Daniel Keyes"
+     }
     }
    ],
    "answers": {}
