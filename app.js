@@ -472,7 +472,12 @@ function fieldsPage(params) {  // a topic's fields: add, rename, type, filter, c
     `<label class="check"><input type="checkbox" name="allowNames" value="1"${topic.noNewNames ? "" : " checked"}> Players can add names</label>` +
     '<div class="row"><button class="btn primary">Save</button></div></form></section>'
     : (topic.noNewNames ? '<section class="adminsec"><h3>Names</h3><p class="note">This topic has a fixed list of names.</p></section>' : "");
-  const content = '<div class="fields-layout"><div class="col-add">' + add + settings + "</div>" +
+  const count = `${topic.entries.length} name${topic.entries.length === 1 ? "" : "s"}`;
+  const remove = mine(topic) ? '<section class="adminsec"><h3>Delete topic</h3>' +
+    `<p class="note">Deletes ${esc(category)} and its ${count}${editingBase() ? ", for everyone" : ""}.</p>` +
+    `<form data-op="removeTopic" data-confirm="Delete ${esc(category)} and its ${count}${editingBase() ? " for everyone" : ""}? This can't be undone here.">` +
+    `${hidden({ c: category })}<button class="btn danger">Delete ${esc(category)}</button></form></section>` : "";
+  const content = '<div class="fields-layout"><div class="col-add">' + add + settings + remove + "</div>" +
     `<div class="col-list"><section class="adminsec"><h3>Fields of ${esc(category)}</h3>${rows || '<p class="missing">No fields yet.</p>'}</section></div></div>` +
     `<datalist id="groups">${groups.map(g => `<option value="${esc(g)}">`).join("")}</datalist>`;
   return { title: `Fields · ${category}`, category, header, content, init: initEntry };
@@ -594,12 +599,12 @@ const OPS = {
     d.topics.push(Object.assign({ name, note, fields: [], entries: [] }, ownFlag()));
     return { url: listUrl(name), message: `Add topic ${name}` };
   },
-  removeTopic(d, f) {
+  removeTopic(d, f) {  // deletes the topic with all its names (players: only their own topics)
     const t = topicOf(d, f.c);
     mustOwn(t, t.name);
-    if (t.entries.length) throw new Bad(`${t.name} still has names. Remove them first.`);
     d.topics.splice(d.topics.indexOf(t), 1);
-    return { url: "?", message: `Remove topic ${t.name}` };
+    const n = `${t.entries.length} name${t.entries.length === 1 ? "" : "s"}`;
+    return { url: "?", message: `Delete topic ${t.name} (${n})`, note: `Deleted ${t.name} and its ${n}` };
   },
   addName(d, f) {  // one name per line; ones already there are skipped
     const t = topicOf(d, f.c);

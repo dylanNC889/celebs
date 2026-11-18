@@ -60,6 +60,7 @@ How a player's login works, and why it isn't secure:
   - put fields under a filter tab, and rename, reorder and remove them;
   - switch a field between one value and several, which converts the existing values.
   - turn "Players can add names" off for topics with a fixed list of names, like Valorant. Players can change this only on their own topics, and admins on shared ones.
+  - **Delete topic**: deletes a topic and all its names, after a confirmation. Players can delete only their own topics; admins on the shared topics and the owner can also delete shared topics. A deleted topic can still be restored from the repo's history.
   - A field in the **Questions** tab is a question, with one-tap answer buttons on each name's page.
 - **Questions with several answers** (tick "Several answers" when asking, or make it "Several values" on the fields page): each answer button toggles that answer on or off, and the filter matches names that have all the chosen answers.
 
