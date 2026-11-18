@@ -13,18 +13,33 @@ randomly pick from, and a profile page per name. Live at **https://dylannc889.gi
   - `img/trimmed/` holds 1200px WebP copies cropped to the figure, for profiles and Random pick.
   - `sized` in `data.json` lists which pictures have those copies.
 
-## Editing
+## Logins and editing
 
-Anyone can look. To edit, tap **Sign in to edit** at the bottom of the page and paste a GitHub token that can write to this repo (a fine-grained token with Contents: read and write). The token stays in that browser only.
+Anyone can look at the shared topics. There are two ways to edit.
 
-Once signed in you can:
-- add topics (**+ Topic**) and names (**Add name**);
-- rename or remove names;
-- ask questions on any name's page.
+**Players log in** with **Log in** at the bottom of the page.
+
+- Each player has their own additions on top of the shared topics, and only they see them:
+  - their own topics;
+  - names added to shared topics;
+  - their own questions, with answers for any name.
+- Players can't rename or remove shared names, topics or questions.
+- A player's additions are saved in `users/<name>.json` on the **`userdata`** branch, which GitHub Pages doesn't build, so saving is instant.
+- Players can change their password from the bottom of the page.
+- To add a player or reset a password, run `python3 tools/users.py TOKEN_FILE Name Password` in the repo folder. It needs the Python `cryptography` package. Then commit `users.json`.
+
+**The owner signs in** with **Owner sign-in** and a GitHub token. This edits the shared topics in `data.json`, for everyone.
+
+How a player's login works, and why it isn't secure:
+
+- `users.json` holds one shared GitHub token (fine-grained, this repo only, Contents: read and write), encrypted separately with each player's password (PBKDF2-SHA256 and AES-GCM).
+- Logging in decrypts it in the browser, which keeps it until logging out. Each change is then one commit through the GitHub API.
+- This keeps players' additions apart, but it is not real security:
+  - the repo is public, so anyone can read everyone's `users/*.json`;
+  - anyone who guesses a password gets the token, which can change anything in this repo.
+- If that happens, revoke the token on GitHub, make a new one, and re-run `tools/users.py` for each player.
 
 Every question becomes a filter of its answers, with "Not answered" for names without one. Tap a question to answer it for every name, or to rename or remove it.
-
-Each change is one commit to `data.json`. You see your own changes at once; everyone else sees them once GitHub Pages rebuilds, usually within a minute or two.
 
 ## Fields
 

@@ -4,21 +4,37 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Celebrity Heads</title>
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body data-category="">
 <header id="head"><h1>Celebrity Heads</h1></header>
 <main id="main"><p class="count">Loading…</p></main>
 <footer class="foot" id="foot"></footer>
 <div id="status" class="status" role="status" hidden></div>
-<dialog class="add" id="signin-box" aria-label="Sign in to edit">
-  <h2>Sign in to edit</h2>
+<dialog class="add" id="login-box" aria-label="Log in">
+  <h2>Log in</h2>
+  <form class="form" id="login-form">
+    <label>Username<input class="field" id="login-name" autocomplete="username" autocapitalize="off" required></label>
+    <label>Password<input class="field" id="login-password" type="password" autocomplete="current-password" required></label>
+    <div class="row"><button class="btn primary">Log in</button><button type="button" class="btn" id="login-cancel">Cancel</button></div>
+  </form>
+</dialog>
+<dialog class="add" id="password-box" aria-label="Change password">
+  <h2>Change password</h2>
+  <form class="form" id="password-form">
+    <label>New password<input class="field" id="new-password" type="password" autocomplete="new-password" required></label>
+    <label>New password again<input class="field" id="new-password-again" type="password" autocomplete="new-password" required></label>
+    <div class="row"><button class="btn primary">Change</button><button type="button" class="btn" id="password-cancel">Cancel</button></div>
+  </form>
+</dialog>
+<dialog class="add" id="signin-box" aria-label="Owner sign-in">
+  <h2>Owner sign-in</h2>
   <form class="form" id="signin-form">
-    <p class="note">Paste a GitHub token that can change dylanNC889/celebs (Contents: read and write). It stays in this browser only; sign out at the bottom of the page to remove it.</p>
+    <p class="note">For changing the shared topics for everyone. Paste a GitHub token that can change dylanNC889/celebs (Contents: read and write). It stays in this browser only; sign out at the bottom of the page to remove it.</p>
     <input class="field" id="token" type="password" autocomplete="off" required placeholder="github_pat_…" aria-label="GitHub token">
     <div class="row"><button class="btn primary">Sign in</button><button type="button" class="btn" id="signin-cancel">Cancel</button></div>
   </form>
 </dialog>
-<script src="app.js?v=1"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

@@ -6,18 +6,25 @@
 // are keyed by field name. "sized" lists the image paths (without extension) that have a small WebP copy
 // in img/thumbs/ (cards, avatars) or img/trimmed/ (profile art, random pick).
 //
-// Anyone can look. Editing (add a topic or name, ask and answer questions, rename and remove) needs a
-// GitHub token that can write to the repo (Contents: read and write). It is kept in this browser only
-// (localStorage) and each change is one commit of data.json through the GitHub API; when signed in the
-// page reads data.json through the API too, so your own changes show at once (others see them after
-// GitHub Pages rebuilds, about a minute). A question is a text field in the "Questions" group with a
-// filter and no card, so each one becomes a filter of its answers.
+// Anyone can look at the shared topics. There are two ways to edit (add a topic or name, ask and answer
+// questions, rename and remove); either way each change is one commit through the GitHub API:
+//  - Log in (users.json): each player has a username and password and their own additions on top of the
+//    shared topics: their own topics, names added to shared topics, and questions with answers. They're
+//    kept in users/<name>.json on the "userdata" branch (not built by Pages), and only that player sees
+//    them. The password unlocks, in this browser, a shared GitHub token stored in users.json encrypted
+//    with it (PBKDF2-SHA256 + AES-GCM). This is simple, not secure: the repo is public, so anyone can
+//    read users' files, and anyone who guesses a password gets the token, which can change the repo.
+//  - Owner sign-in: a GitHub token typed in; changes the shared topics (data.json on main) for everyone.
+// Tokens stay in this browser (localStorage) until logging out. A question is a text field in the
+// "Questions" group with a filter and no card, so each one becomes a filter of its answers.
 //
 // One page, chosen by the query string:  ?c=Topic (list)  ?c=Topic&n=Name (profile)
 //   ?c=Topic&ask=Question (answer one question for every name)  ?new (add a topic)
 "use strict";
 
 const OWNER = "dylanNC889", REPO = "celebs", BRANCH = "main", FILE = "data.json";
+const USERS_FILE = "users.json", USER_BRANCH = "userdata", ITERATIONS = 250000;
+const userFile = name => `users/${name.toLowerCase()}.json`;
 const API = "https://api.github.com";
 const TYPES = ["text", "tags", "list", "long", "image"];
 const SELECT_OVER = 8;      // a text filter with more values than this is a drop-down instead of chips
@@ -28,9 +35,18 @@ const LIMITS = { topic: 60, note: 300, name: 80, question: 120, answer: 80 };
 const RIOT_NOTICE = "Celebrity Heads was created under Riot Games' \"Legal Jibber Jabber\" policy using assets " +
   "owned by Riot Games. Riot Games does not endorse or sponsor this project.";
 
-let DATA = null;   // data.json as loaded
-let SHA = null;    // its blob sha on GitHub (when read through the API), needed to save
-let TOKEN = null;  // GitHub token when signed in
+let MODE = "view";  // "view" (looking only), "user" (logged in player) or "admin" (owner, GitHub token)
+let USER = null;    // the logged-in player's name
+let TOKEN = null;   // GitHub token: typed in by the owner, or unlocked by a player's password
+let BASE = null;    // data.json: the shared topics
+let SHA = null;     // its blob sha on GitHub (when read through the API), needed to save it
+let OVER = null;    // the player's own additions (users/<name>.json on the userdata branch)
+let OVER_SHA = null;
+let DATA = null;    // what the pages show: BASE, or BASE with the player's additions merged in
+
+const canEdit = () => MODE !== "view";
+const mine = x => MODE === "admin" || (MODE === "user" && !!x && !!x.own);  // may rename or remove it
+const ownFlag = () => (MODE === "user" ? { own: true } : {});
 
 class Bad extends Error {}  // a change that can't be made; the message is shown as is
 
@@ -60,6 +76,7 @@ function fieldSpecs(raw) {
       group: String(f.group || ""),
       section: String(f.section || ""),
       question: kind === "text" && f.group === QUESTIONS && !f.section,
+      own: !!f.own,
     };
   });
 }
@@ -114,7 +131,7 @@ function tabs(current) {
   const links = DATA.topics.map(t =>
     `<a href="${esc(listUrl(t.name))}"${current && t.name === current ? ' aria-current="page"' : ""}>` +
     `${esc(t.name)}<span>${t.entries.length}</span></a>`);
-  if (TOKEN) links.push('<a class="add" href="?new">+ Topic</a>');
+  if (canEdit()) links.push('<a class="add" href="?new">+ Topic</a>');
   return `<nav class="tabs">${links.join("")}</nav>`;
 }
 
@@ -208,7 +225,7 @@ const notFound = (title, message) => ({
 function listPage(params) {
   if (!DATA.topics.length) {
     return { title: "Celebrity Heads", category: "", header: "<h1>Celebrity Heads</h1>" + tabs(null),
-      content: `<p class="empty">No topics yet.${TOKEN ? ' <a href="?new">Add a topic</a>' : ""}</p>` };
+      content: `<p class="empty">No topics yet.${canEdit() ? ' <a href="?new">Add a topic</a>' : ""}</p>` };
   }
   const wanted = params.get("c") || DATA.topics[0].name;
   const topic = findTopic(DATA, wanted);
@@ -218,13 +235,13 @@ function listPage(params) {
   const specs = fieldSpecs(topic.fields);
   const entries = sortedEntries(topic);
   if (!entries.length) {
-    if (!TOKEN) return { title: "Celebrity Heads", category, header: title, content: `<p class="empty">Nothing in ${esc(category)} yet.</p>` };
+    if (!canEdit()) return { title: "Celebrity Heads", category, header: title, content: `<p class="empty">Nothing in ${esc(category)} yet.</p>` };
     return { title: "Celebrity Heads", category, header: title,
       content: `<div class="empty">Nothing in ${esc(category)} yet. Add the first name, then ask questions on its page.` +
-        nameForm(category) + "</div>" +
+        nameForm(category) + "</div>" + (mine(topic) ?
         '<details class="edit" style="margin-top:12px"><summary>Remove this topic</summary>' +
         `<form data-op="removeTopic" data-confirm="Remove the topic ${esc(category)}?">${hidden({ c: category })}` +
-        `<button class="btn danger">Remove ${esc(category)}</button></form></details>` };
+        `<button class="btn danger">Remove ${esc(category)}</button></form></details>` : "") };
   }
   const header = title + '<input type="search" id="q" placeholder="Search" autocomplete="off">' +
     (topic.note ? `<p class="note">${esc(topic.note)}</p>` : "") + filters(specs, entries);
@@ -244,10 +261,10 @@ function listPage(params) {
       `data-s="${esc(text)}"${artAttr}><span class="text"><span class="name">${esc(name)}</span>` +
       (meta ? `<span class="meta">${esc(meta)}</span>` : "") + `</span>${thumb}</a>`;
   });
-  const adding = TOKEN ? `<dialog class="add" id="add" aria-label="Add a name"><h2>Add to ${esc(category)}</h2>` +
+  const adding = canEdit() ? `<dialog class="add" id="add" aria-label="Add a name"><h2>Add to ${esc(category)}</h2>` +
     nameForm(category, '<button type="button" class="btn" id="addclose">Cancel</button>') + "</dialog>" : "";
   const content = '<div class="tools"><p class="count" id="count"></p><div class="row">' +
-    (TOKEN ? '<button type="button" class="btn" id="addbtn">Add name</button>' : "") +
+    (canEdit() ? '<button type="button" class="btn" id="addbtn">Add name</button>' : "") +
     '<button type="button" class="btn primary" id="random">Random pick</button></div></div>' +
     '<div class="grid">' + cards.join("") + "</div>" + adding +
     '<dialog class="pick" id="pick" aria-label="Random pick"><img class="pick-art" alt="" hidden>' +
@@ -333,7 +350,7 @@ function entryPage(params) {
       `<img src="${esc(sizedSrc(value, "trimmed"))}" alt="${esc(name)} ${esc(s.name.toLowerCase())}"></a></figure>`);
     layout = "profile has-art";
   }
-  if (TOKEN) {
+  if (mine(entry)) {
     sections.push(`<details class="edit"><summary>Rename or remove ${esc(name)}</summary>` +
       `<form data-op="renameName" class="form">${hidden({ c: category, n: name })}` +
       `<label>New name<input class="field" name="to" value="${esc(name)}" required maxlength="${LIMITS.name}" ` +
@@ -347,7 +364,7 @@ function entryPage(params) {
 
 function questionsSection(category, name, specs, details, everyone) {
   const asked = specs.filter(s => s.question);
-  if (!TOKEN) {  // looking only: the answered questions
+  if (!canEdit()) {  // looking only: the answered questions
     const rows = asked.filter(s => values(s, details).length)
       .map(s => `<dt>${esc(s.name)}</dt><dd>${esc(values(s, details)[0])}</dd>`).join("");
     return rows ? `<section class="questions" id="questions"><h2>Questions</h2><dl>${rows}</dl></section>` : "";
@@ -390,12 +407,12 @@ function questionPage(params) {
     const current = got.length ? got[0] : "";
     const state = current ? "" : '<span class="missing">Not answered</span>';
     return `<div class="qrow" id="n${j}"><p class="qtext"><a href="${esc(entryUrl(category, name))}">${esc(name)}</a>${state}</p>` +
-      (TOKEN ? answerControls(category, name, spec, current, options, "question") : `<p>${esc(current)}</p>`) + "</div>";
+      (canEdit() ? answerControls(category, name, spec, current, options, "question") : `<p>${esc(current)}</p>`) + "</div>";
   });
   const header = `<a class="back" href="${esc(listUrl(category))}">‹ ${esc(category)}</a><h1>${esc(spec.name)}</h1>` +
     `<p class="note">Answered for ${answered} of ${everyone.length}.` +
-    (TOKEN ? " Tap an answer for each name; it saves straight away." : "") + "</p>";
-  const edit = TOKEN ? '<details class="edit"><summary>Rename or remove this question</summary>' +
+    (canEdit() ? " Tap an answer for each name; it saves straight away." : "") + "</p>";
+  const edit = mine(spec) ? '<details class="edit"><summary>Rename or remove this question</summary>' +
     `<form data-op="renameQuestion" class="form">${hidden({ c: category, q: spec.name })}` +
     `<label>Question<input class="field" name="to" value="${esc(spec.name)}" required maxlength="${LIMITS.question}" ` +
     'autocomplete="off"></label><div class="row"><button class="btn primary">Rename</button></div></form>' +
@@ -408,7 +425,7 @@ function questionPage(params) {
 
 function newTopicPage() {
   const header = "<h1>Celebrity Heads</h1>" + tabs(null) + "<h2>New topic</h2>";
-  if (!TOKEN) return { title: "New topic · Celebrity Heads", category: "", header, content: '<p class="empty">Sign in to edit (at the bottom of the page) to add a topic.</p>' };
+  if (!canEdit()) return { title: "New topic · Celebrity Heads", category: "", header, content: '<p class="empty">Log in (at the bottom of the page) to add a topic.</p>' };
   const content = '<form data-op="addTopic" class="form">' +
     `<label>Topic<input class="field" name="name" required maxlength="${LIMITS.topic}" autocomplete="off" ` +
     'placeholder="e.g. Harry Potter characters"></label>' +
@@ -441,6 +458,9 @@ function entryOf(topic, wanted) {
   return e;
 }
 const sortEntries = topic => topic.entries.sort((a, b) => byLower(a.name, b.name));
+function mustOwn(thing, what) {
+  if (MODE === "user" && !thing.own) throw new Bad(`${what} is shared with everyone, so it can't be changed here. You can add your own names, topics and questions.`);
+}
 
 const OPS = {
   addTopic(d, f) {
@@ -448,11 +468,12 @@ const OPS = {
     if (!name) throw new Bad("The topic needs a name.");
     const there = findTopic(d, name);
     if (there) return { url: listUrl(there.name) };
-    d.topics.push({ name, note, fields: [], entries: [] });
+    d.topics.push(Object.assign({ name, note, fields: [], entries: [] }, ownFlag()));
     return { url: listUrl(name), message: `Add topic ${name}` };
   },
   removeTopic(d, f) {
     const t = topicOf(d, f.c);
+    mustOwn(t, t.name);
     if (t.entries.length) throw new Bad(`${t.name} still has names. Remove them first.`);
     d.topics.splice(d.topics.indexOf(t), 1);
     return { url: "?", message: `Remove topic ${t.name}` };
@@ -463,7 +484,7 @@ const OPS = {
     const t = topicOf(d, f.c);
     const there = findEntry(t, name);
     if (there) return { url: entryUrl(t.name, there.name) };
-    t.entries.push({ name, details: {} });
+    t.entries.push(Object.assign({ name, details: {} }, ownFlag()));
     sortEntries(t);
     return { url: entryUrl(t.name, name), message: `Add ${name} to ${t.name}` };
   },
@@ -471,6 +492,7 @@ const OPS = {
     const to = tidy(f.to, "name");
     if (!to) throw new Bad("The name can't be empty.");
     const t = topicOf(d, f.c), e = entryOf(t, f.n);
+    mustOwn(e, e.name);
     if (t.entries.some(x => x !== e && same(x.name, to))) throw new Bad(`${t.name} already has ${to}.`);
     const old = e.name;
     e.name = to;
@@ -479,6 +501,7 @@ const OPS = {
   },
   removeName(d, f) {
     const t = topicOf(d, f.c), e = entryOf(t, f.n);
+    mustOwn(e, e.name);
     t.entries.splice(t.entries.indexOf(e), 1);
     return { url: listUrl(t.name), message: `Remove ${e.name} from ${t.name}` };
   },
@@ -493,7 +516,7 @@ const OPS = {
     let match = t.fields.find(x => questionKey(fieldName(x)) === questionKey(question));
     if (match && !isQuestion(match)) throw new Bad(`${t.name} already has a field called ${fieldName(match)}, which isn't a question.`);
     if (!match && !clearing) {
-      match = { name: question, type: "text", filter: true, card: false, group: QUESTIONS };
+      match = Object.assign({ name: question, type: "text", filter: true, card: false, group: QUESTIONS }, ownFlag());
       t.fields.push(match);
     }
     if (match) question = fieldName(match);
@@ -523,6 +546,7 @@ const OPS = {
     const t = topicOf(d, f.c), old = f.q || "";
     const i = t.fields.findIndex(x => fieldName(x) === old && isQuestion(x));
     if (i < 0) throw new Bad(`There's no question ${old} in ${t.name}.`);
+    mustOwn(t.fields[i], `"${old}"`);
     if (t.fields.some((x, j) => j !== i && questionKey(fieldName(x)) === questionKey(to))) throw new Bad(`${t.name} already has ${to}.`);
     t.fields[i] = Object.assign({}, t.fields[i], { name: to });
     for (const e of t.entries) {
@@ -532,6 +556,8 @@ const OPS = {
   },
   removeQuestion(d, f) {
     const t = topicOf(d, f.c), old = f.q || "";
+    const field = t.fields.find(x => fieldName(x) === old && isQuestion(x));
+    if (field) mustOwn(field, `"${old}"`);
     const kept = t.fields.filter(x => !(fieldName(x) === old && isQuestion(x)));
     if (kept.length === t.fields.length) throw new Bad(`There's no question ${old} in ${t.name}.`);
     t.fields = kept;
@@ -562,42 +588,199 @@ function gh(method, path, body) {
   });
 }
 
-async function loadData() {
-  if (TOKEN) {
-    const r = await gh("GET", `/repos/${OWNER}/${REPO}/contents/${FILE}?ref=${BRANCH}`);
-    if (r.ok) {
-      const j = await r.json();
-      DATA = JSON.parse(b64decode(j.content));
-      SHA = j.sha;
-      return;
+// A player's additions: {topics: [their own topics], extra: {<shared topic>: {fields: [their questions],
+// entries: [names they added], answers: {<shared name>: {<question>: answer, or null for cleared}}}}}.
+const emptyOver = () => ({ topics: [], extra: {} });
+const copyOf = x => JSON.parse(JSON.stringify(x));
+const strip = x => { const y = copyOf(x); delete y.own; return y; };
+
+function merge(base, over) {  // the shared topics with a player's additions, their own things marked own
+  const data = { topics: [], sized: base.sized };
+  for (const t of base.topics) {
+    const x = (over.extra || {})[t.name] || {};
+    const answers = x.answers || {};
+    const topic = { name: t.name, note: t.note, fields: copyOf(t.fields), entries: [] };
+    for (const f of x.fields || []) topic.fields.push(Object.assign(copyOf(f), { own: true }));
+    for (const e of t.entries) {
+      const details = copyOf(e.details);
+      for (const [q, v] of Object.entries(answers[e.name] || {})) { if (v === null) delete details[q]; else details[q] = v; }
+      topic.entries.push({ name: e.name, details });
     }
-    if (r.status === 401) { signOut(); flash("Your GitHub token no longer works, so editing is off. Sign in again to edit.", true); }
+    for (const e of x.entries || []) {
+      if (!topic.entries.some(y => same(y.name, e.name))) topic.entries.push({ name: e.name, details: copyOf(e.details), own: true });
+    }
+    data.topics.push(topic);
+  }
+  for (const t of over.topics || []) {
+    if (data.topics.some(y => same(y.name, t.name))) continue;
+    const topic = copyOf(t);
+    topic.own = true;
+    topic.fields = topic.fields.map(f => (typeof f === "string" ? { name: f, own: true } : Object.assign(f, { own: true })));
+    topic.entries.forEach(e => { e.own = true; });
+    data.topics.push(topic);
+  }
+  return data;
+}
+
+function split(base, data) {  // the reverse of merge: just the player's additions
+  const over = emptyOver();
+  for (const t of data.topics) {
+    const b = !t.own && base.topics.find(x => x.name === t.name);
+    if (!b) {
+      over.topics.push(Object.assign(strip(t), { fields: t.fields.map(strip), entries: t.entries.map(strip) }));
+      continue;
+    }
+    const baseFields = new Set(b.fields.map(fieldName));
+    const fields = t.fields.filter(f => !baseFields.has(fieldName(f))).map(strip);
+    const asked = t.fields.filter(isQuestion).map(fieldName);
+    const entries = [], answers = {};
+    for (const e of t.entries) {
+      const be = !e.own && b.entries.find(x => x.name === e.name);
+      if (!be) { entries.push(strip(e)); continue; }
+      const changed = {};
+      for (const q of asked) {
+        const now = e.details[q], was = be.details[q];
+        if (now !== was) changed[q] = now === undefined ? null : now;
+      }
+      if (Object.keys(changed).length) answers[e.name] = changed;
+    }
+    if (fields.length || entries.length || Object.keys(answers).length) over.extra[t.name] = { fields, entries, answers };
+  }
+  return over;
+}
+
+async function readFile(path, ref) {  // {data, sha} through the API, or null if it isn't there
+  const r = await gh("GET", `/repos/${OWNER}/${REPO}/contents/${path}?ref=${ref}`);
+  if (r.status === 404) return null;
+  if (r.status === 401) throw Object.assign(new Error("token"), { expired: true });
+  if (!r.ok) throw new Error(`GitHub answered HTTP ${r.status} for ${path}.`);
+  const j = await r.json();
+  return { data: JSON.parse(b64decode(j.content)), sha: j.sha };
+}
+
+async function loadData() {
+  if (MODE !== "view") {
+    try {
+      const base = await readFile(FILE, BRANCH);
+      BASE = base.data;
+      SHA = base.sha;
+      if (MODE === "user") {
+        const over = await readFile(userFile(USER), USER_BRANCH);
+        OVER = over ? over.data : emptyOver();
+        OVER_SHA = over ? over.sha : null;
+        DATA = merge(BASE, OVER);
+      } else {
+        DATA = BASE;
+      }
+      return;
+    } catch (err) {
+      if (!err.expired) throw err;
+      logOut();
+      flash("The saved login no longer works with GitHub, so editing is off. Log in again.", true);
+    }
   }
   const r = await fetch(FILE, { cache: "no-cache" });
-  DATA = await r.json();
+  BASE = DATA = await r.json();
   SHA = null;
+}
+
+async function put(path, branch, data, sha, message) {
+  const body = { message, content: b64encode(serialise(data)), branch };
+  if (sha) body.sha = sha;
+  return gh("PUT", `/repos/${OWNER}/${REPO}/contents/${path}`, body);
 }
 
 async function commit(change) {
   for (let attempt = 0; attempt < 3; attempt++) {
-    if (!SHA) await loadData();
-    const copy = JSON.parse(JSON.stringify(DATA));
+    if (attempt || !BASE || (MODE === "admin" && !SHA) || (MODE === "user" && !OVER)) await loadData();
+    const copy = MODE === "user" ? merge(BASE, OVER) : copyOf(BASE);
     const result = change(copy);  // throws Bad before anything is sent
-    if (serialise(copy) === serialise(DATA)) return result;  // nothing to save
-    const r = await gh("PUT", `/repos/${OWNER}/${REPO}/contents/${FILE}`,
-      { message: result.message || "Update", content: b64encode(serialise(copy)), sha: SHA, branch: BRANCH });
-    if (r.ok) {
-      DATA = copy;
-      SHA = (await r.json()).content.sha;
-      return result;
+    let r;
+    if (MODE === "user") {
+      const next = split(BASE, copy);
+      if (serialise(next) === serialise(OVER)) return result;  // nothing to save
+      r = await put(userFile(USER), USER_BRANCH, next, OVER_SHA, `${USER}: ${result.message || "update"}`);
+      if (r.ok) {
+        OVER = next;
+        OVER_SHA = (await r.json()).content.sha;
+        DATA = merge(BASE, OVER);
+        return result;
+      }
+    } else {
+      if (serialise(copy) === serialise(BASE)) return result;
+      r = await put(FILE, BRANCH, copy, SHA, result.message || "Update");
+      if (r.ok) {
+        BASE = DATA = copy;
+        SHA = (await r.json()).content.sha;
+        return result;
+      }
     }
-    if (r.status === 409) { SHA = null; continue; }  // someone saved first: redo it on the newest copy
-    if ([401, 403, 404, 422].includes(r.status)) {
-      throw new Error(`GitHub refused it (HTTP ${r.status}). The token may have expired or lack Contents: read and write on ${OWNER}/${REPO}.`);
+    if (r.status === 409 || r.status === 422) continue;  // someone saved first (or the file is new): reload, redo
+    if ([401, 403, 404].includes(r.status)) {
+      throw new Error(`GitHub refused it (HTTP ${r.status}). The token may have expired or lost Contents: read and write on ${OWNER}/${REPO}.`);
     }
     throw new Error(`GitHub answered HTTP ${r.status}.`);
   }
-  throw new Error("Someone else kept saving at the same moment. Try again.");
+  throw new Error("Couldn't save after a few tries (someone else saving at the same moment?). Try again.");
+}
+
+// ---- Player logins (users.json: [{name, salt, iter, iv, key}], the token AES-GCM-encrypted per password) ----
+
+const bytes64 = b => btoa(String.fromCharCode(...b));
+const unbytes64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+async function passwordKey(password, salt, iterations) {
+  const raw = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt, iterations }, raw,
+    { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+}
+
+async function unlock(user, password) {  // the token, or null for a wrong password
+  const key = await passwordKey(password, unbytes64(user.salt), user.iter);
+  try {
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unbytes64(user.iv),
+      additionalData: new TextEncoder().encode(user.name.toLowerCase()) }, key, unbytes64(user.key));
+    return new TextDecoder().decode(plain);
+  } catch (e) { return null; }
+}
+
+async function lock(name, password, token) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await passwordKey(password, salt, ITERATIONS);
+  const sealed = await crypto.subtle.encrypt({ name: "AES-GCM", iv, additionalData: new TextEncoder().encode(name.toLowerCase()) },
+    key, new TextEncoder().encode(token));
+  return { name, salt: bytes64(salt), iter: ITERATIONS, iv: bytes64(iv), key: bytes64(new Uint8Array(sealed)) };
+}
+
+async function readUsers() {  // the newest users.json (the API, so a changed password works at once), else Pages' copy
+  try {
+    const r = await fetch(`${API}/repos/${OWNER}/${REPO}/contents/${USERS_FILE}?ref=${BRANCH}`, { cache: "no-store" });
+    if (r.ok) { const j = await r.json(); return { data: JSON.parse(b64decode(j.content)), sha: j.sha }; }
+  } catch (e) {}
+  const r = await fetch(USERS_FILE, { cache: "no-cache" });
+  if (!r.ok) throw new Error("Couldn't load the list of players.");
+  return { data: await r.json(), sha: null };
+}
+
+async function logIn(name, password) {
+  const users = (await readUsers()).data.users || [];
+  const user = users.find(u => same(u.name, name.trim()));
+  const token = user && await unlock(user, password);
+  if (!token) throw new Error("Wrong username or password.");
+  MODE = "user"; USER = user.name; TOKEN = token;
+  store("ch-mode", "user"); store("ch-user", user.name); store("ch-token", token); store("ch-login", null);
+  OVER = null;
+  await loadData();
+}
+
+async function changePassword(password) {
+  const users = await readUsers();
+  const list = users.data.users || [];
+  const i = list.findIndex(u => same(u.name, USER));
+  if (i < 0) throw new Error("You're not in the list of players any more.");
+  list[i] = await lock(list[i].name, password, TOKEN);
+  const r = await put(USERS_FILE, BRANCH, users.data, users.sha, `${USER}: change password`);
+  if (!r.ok) throw new Error(`GitHub answered HTTP ${r.status}. Try again.`);
 }
 
 // ---- The page ----
@@ -622,8 +805,9 @@ function render() {
   $("head").innerHTML = page.header;
   $("main").innerHTML = page.content;
   const login = store("ch-login");
-  $("foot").innerHTML = (TOKEN ? `Editing is on${login ? ` (GitHub: ${esc(login)})` : ""} · <a href="#" id="signout">Sign out</a>`
-    : '<a href="#" id="signin">Sign in to edit</a>') + `<br>${esc(RIOT_NOTICE)}`;
+  $("foot").innerHTML = (MODE === "user" ? `Logged in as ${esc(USER)} · <a href="#" id="password">Change password</a> · <a href="#" id="signout">Log out</a>`
+    : MODE === "admin" ? `Editing the shared topics${login ? ` (GitHub: ${esc(login)})` : ""} · <a href="#" id="signout">Sign out</a>`
+    : '<a href="#" id="login">Log in</a> · <a href="#" id="signin">Owner sign-in</a>') + `<br>${esc(RIOT_NOTICE)}`;
   if (page.init) page.init();
   const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
   if (target) target.scrollIntoView();
@@ -785,7 +969,7 @@ function initList() {
 }
 
 async function save(op, form) {
-  if (!TOKEN) { flash("Sign in to edit first (at the bottom of the page).", true); return; }
+  if (!canEdit()) { flash("Log in first (at the bottom of the page).", true); return; }
   for (const b of document.querySelectorAll("main button, header button")) b.disabled = true;
   flash("Saving…");
   try {
@@ -798,19 +982,18 @@ async function save(op, form) {
   }
 }
 
-function signOut() {
-  TOKEN = null;
-  SHA = null;
-  store("ch-token", null);
-  store("ch-login", null);
+function logOut() {
+  MODE = "view"; USER = null; TOKEN = null; SHA = null; OVER = null; OVER_SHA = null;
+  DATA = BASE;
+  for (const k of ["ch-mode", "ch-user", "ch-token", "ch-login"]) store(k, null);
 }
 
 async function signIn(token) {
   const headers = { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" };
   const r = await fetch(`${API}/repos/${OWNER}/${REPO}/contents/${FILE}?ref=${BRANCH}`, { headers, cache: "no-store" });
   if (!r.ok) throw new Error(r.status === 401 ? "GitHub doesn't accept that token." : `That token can't read ${OWNER}/${REPO} (HTTP ${r.status}).`);
-  TOKEN = token;
-  store("ch-token", token);
+  MODE = "admin"; USER = null; TOKEN = token;
+  store("ch-mode", "admin"); store("ch-user", null); store("ch-token", token);
   try {
     const me = await fetch(`${API}/user`, { headers, cache: "no-store" });
     if (me.ok) store("ch-login", (await me.json()).login);
@@ -820,10 +1003,14 @@ async function signIn(token) {
 
 function start() {
   TOKEN = store("ch-token") || null;
+  MODE = TOKEN ? (store("ch-mode") === "user" && store("ch-user") ? "user" : "admin") : "view";
+  USER = MODE === "user" ? store("ch-user") : null;
   document.addEventListener("click", e => {
     const a = e.target.closest("a");
+    if (a && a.id === "login") { e.preventDefault(); $("login-box").showModal(); $("login-name").focus(); return; }
     if (a && a.id === "signin") { e.preventDefault(); $("signin-box").showModal(); $("token").focus(); return; }
-    if (a && a.id === "signout") { e.preventDefault(); signOut(); render(); flash("Signed out. Editing is off on this device.", false, 2500); return; }
+    if (a && a.id === "password") { e.preventDefault(); $("password-box").showModal(); $("new-password").focus(); return; }
+    if (a && a.id === "signout") { e.preventDefault(); logOut(); render(); flash("Logged out. Editing is off on this device.", false, 2500); return; }
     // Links within the page (?c=…) render here without reloading.
     const href = a && a.getAttribute("href");
     if (!href || !href.startsWith("?") || a.target || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
@@ -856,6 +1043,32 @@ function start() {
     } catch (err) { flash(err.message, true); }
   });
   $("signin-cancel").addEventListener("click", () => $("signin-box").close());
+  $("login-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    flash("Logging in…");
+    try {
+      await logIn($("login-name").value, $("login-password").value);
+      $("login-box").close();
+      $("login-password").value = "";
+      render();
+      flash(`Logged in as ${USER}.`, false, 2500);
+    } catch (err) { flash(err.message, true); }
+  });
+  $("login-cancel").addEventListener("click", () => $("login-box").close());
+  $("password-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const a = $("new-password").value, b = $("new-password-again").value;
+    if (a.length < 6) { flash("Use at least 6 characters.", true); return; }
+    if (a !== b) { flash("The two passwords don't match.", true); return; }
+    flash("Saving the new password…");
+    try {
+      await changePassword(a);
+      $("password-box").close();
+      $("new-password").value = $("new-password-again").value = "";
+      flash("Password changed. Use it next time you log in.", false, 3000);
+    } catch (err) { flash(err.message, true); }
+  });
+  $("password-cancel").addEventListener("click", () => $("password-box").close());
   loadData().then(render).catch(err => {
     $("main").innerHTML = `<p class="empty">Couldn't load the data: ${esc(err.message)}</p>`;
   });
@@ -863,7 +1076,8 @@ function start() {
 
 if (typeof module !== "undefined") {  // tests (Node)
   module.exports = { fieldSpecs, values, filters, listPage, entryPage, questionPage, newTopicPage, OPS, Bad, serialise,
-    answerOptions, set: (data, token) => { DATA = data; TOKEN = token; } };
+    answerOptions, merge, split, lock, unlock,
+    set: (data, token, mode, user) => { DATA = data; TOKEN = token; MODE = mode || (token ? "admin" : "view"); USER = user || null; } };
 } else {
   start();
 }
