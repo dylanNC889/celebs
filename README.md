@@ -98,6 +98,10 @@ The other keys:
 
 Questions are `text` fields with `"group": "Questions"`.
 
+## Development
+
+Notes for developers (and AI agents) picking this up are in [`CLAUDE.md`](CLAUDE.md). Tests: `sh tests/run.sh` (see [`tests/README.md`](tests/README.md)).
+
 ## archive/
 
 `archive/home-server/` holds the code and database from when this ran on a home server, retired on 2026-11-18.
