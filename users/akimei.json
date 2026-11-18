@@ -91,7 +91,72 @@
    "name": "City of Bones",
    "note": "",
    "fields": [],
-   "entries": []
+   "entries": [
+    {
+     "name": "Alec Lightwood",
+     "details": {}
+    },
+    {
+     "name": "Camille Belcourt",
+     "details": {}
+    },
+    {
+     "name": "Clary Fray",
+     "details": {}
+    },
+    {
+     "name": "Hodge Starkweather",
+     "details": {}
+    },
+    {
+     "name": "Imogen Herondale",
+     "details": {}
+    },
+    {
+     "name": "Isabelle Lightwood",
+     "details": {}
+    },
+    {
+     "name": "Jace Herondale",
+     "details": {}
+    },
+    {
+     "name": "Jocelyn Fray",
+     "details": {}
+    },
+    {
+     "name": "Luke Garroway",
+     "details": {}
+    },
+    {
+     "name": "Magnus Bane",
+     "details": {}
+    },
+    {
+     "name": "Maia Roberts",
+     "details": {}
+    },
+    {
+     "name": "Meliorn",
+     "details": {}
+    },
+    {
+     "name": "Raphael Santiago",
+     "details": {}
+    },
+    {
+     "name": "Sebastian Verlac",
+     "details": {}
+    },
+    {
+     "name": "Simon Lewis",
+     "details": {}
+    },
+    {
+     "name": "Valentine Morgenstern",
+     "details": {}
+    }
+   ]
   }
  ],
  "extra": {}
