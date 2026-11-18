@@ -369,7 +369,48 @@
    "name": "Mcdonalds",
    "note": "",
    "fields": [],
-   "entries": []
+   "entries": [
+    {
+     "name": "Birdie the Early Bird",
+     "details": {}
+    },
+    {
+     "name": "Captain Crook",
+     "details": {}
+    },
+    {
+     "name": "Grimace",
+     "details": {}
+    },
+    {
+     "name": "Mayor McCheese",
+     "details": {}
+    },
+    {
+     "name": "Officer Big Mac",
+     "details": {}
+    },
+    {
+     "name": "Ray Kroc",
+     "details": {}
+    },
+    {
+     "name": "Ronald McDonald",
+     "details": {}
+    },
+    {
+     "name": "The Fry Kids",
+     "details": {}
+    },
+    {
+     "name": "The Hamburglar",
+     "details": {}
+    },
+    {
+     "name": "Travis Scott",
+     "details": {}
+    }
+   ]
   }
  ],
  "extra": {}
