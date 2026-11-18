@@ -34,7 +34,8 @@ const SELECT_OVER = 8;      // a text filter with more values than this is a dro
 const NONE = "(none)";      // filter value for entries with nothing in that field
 const QUESTIONS = "Questions";
 const YES_NO = ["Yes", "No"];
-const LIMITS = { topic: 60, note: 300, name: 80, question: 120, answer: 80 };
+const LIMITS = { topic: 60, note: 300, name: 80, question: 120, answer: 80, answers: 240, detail: 200, item: 600, long: 10000 };
+const TYPE_LABELS = { text: "One value", tags: "Several values", list: "List", long: "Paragraphs", image: "Picture" };
 const RIOT_NOTICE = "Celebrity Heads was created under Riot Games' \"Legal Jibber Jabber\" policy using assets " +
   "owned by Riot Games. Riot Games does not endorse or sponsor this project.";
 
@@ -83,7 +84,8 @@ function fieldSpecs(raw) {
       card: ("card" in f ? !!f.card : kind === "text") && shortish,
       group: String(f.group || ""),
       section: String(f.section || ""),
-      question: kind === "text" && f.group === QUESTIONS && !f.section,
+      question: (kind === "text" || kind === "tags") && f.group === QUESTIONS && !f.section,
+      multi: kind === "tags",  // several values (for a question: several answers)
       own: !!f.own,
     };
   });
@@ -111,6 +113,7 @@ function answerOrder(a, b) {  // Yes, then No, then the rest A to Z
 
 function answerOptions(spec, allDetails) {  // Yes/No until a question has other answers, then the answers used
   const used = [...new Set(allDetails.flatMap(d => values(spec, d)))].sort(answerOrder);
+  if (spec.multi) return used;  // several answers: just the ones used so far
   return used.every(v => YES_NO.includes(v)) ? YES_NO.slice() : used;
 }
 
@@ -120,6 +123,7 @@ const link = params => "?" + new URLSearchParams(params).toString();
 const listUrl = c => link({ c });
 const entryUrl = (c, n) => link({ c, n });
 const questionUrl = (c, ask) => link({ c, ask });
+const fieldsUrl = c => link({ c, fields: "1" });
 const isUrl = v => /^https?:\/\//.test(v);
 const pathUrl = p => p.split("/").map(encodeURIComponent).join("/");
 
@@ -149,21 +153,24 @@ function hidden(fields) {
 
 function nameForm(category, cancel = "") {
   return `<form data-op="addName" class="form">${hidden({ c: category })}` +
-    `<label>Name<input class="field" name="n" required maxlength="${LIMITS.name}" autocomplete="off" ` +
-    `placeholder="e.g. Harry Potter"></label><div class="row">` +
+    '<label>Names, one per line<textarea class="field" name="n" rows="4" required autocomplete="off" ' +
+    'placeholder="e.g. Harry Potter&#10;Hermione Granger"></textarea></label><div class="row">' +
     `<button class="btn primary">Add</button>${cancel}</div></form>`;
 }
 
-function answerControls(category, name, spec, current, options, back) {  // one-tap answers, Clear, Other…
+function answerControls(category, name, spec, got, options, back) {  // one-tap answers, Clear, Other…
+  // got: the name's answers (one, or several for a several-answers question, where buttons toggle)
   const keep = hidden({ c: category, n: name, q: spec.name, back });
-  const shown = options.concat(current && !options.includes(current) ? [current] : []);
-  let chips = shown.map(o => `<button class="chip" name="pick" value="${esc(o)}" aria-pressed="${o === current}">` +
+  const shown = options.concat(got.filter(v => !options.includes(v)));
+  let chips = shown.map(o => `<button class="chip" name="pick" value="${esc(o)}" aria-pressed="${got.includes(o)}">` +
     `${esc(o)}</button>`).join("");
-  if (current) chips += '<button class="chip clear" name="clear" value="1">Clear</button>';
-  return `<form data-op="answer" class="chips">${keep}${chips}</form>` +
-    `<details class="other"><summary>Other answer…</summary><form data-op="answer">${keep}` +
-    `<input class="field" name="a" maxlength="${LIMITS.answer}" required placeholder="Type an answer" ` +
-    `aria-label="Other answer"><button class="btn">Save</button></form></details>`;
+  if (got.length) chips += '<button class="chip clear" name="clear" value="1">Clear</button>';
+  const other = spec.multi ? "Add answers…" : "Other answer…";
+  return (chips ? `<form data-op="answer" class="chips">${keep}${chips}</form>` : "") +
+    `<details class="other"${chips ? "" : " open"}><summary>${other}</summary><form data-op="answer">${keep}` +
+    `<input class="field" name="a" maxlength="${spec.multi ? LIMITS.answers : LIMITS.answer}" required ` +
+    `placeholder="${spec.multi ? "Type answers, commas between" : "Type an answer"}" aria-label="${spec.multi ? "Add answers" : "Other answer"}">` +
+    '<button class="btn">Save</button></form></details>';
 }
 
 function filters(specs, entries) {
@@ -245,7 +252,8 @@ function listPage(params) {
   if (!entries.length) {
     if (!canEdit()) return { title: "Celebrity Heads", category, header: title, content: `<p class="empty">Nothing in ${esc(category)} yet.</p>` };
     return { title: "Celebrity Heads", category, header: title,
-      content: `<div class="empty">Nothing in ${esc(category)} yet. Add the first name, then ask questions on its page.` +
+      content: `<div class="empty">Nothing in ${esc(category)} yet. Add names, then ask questions on their pages ` +
+        `or set up the topic's <a href="${esc(fieldsUrl(category))}">fields &amp; filters</a>.` +
         nameForm(category) + "</div>" + (mine(topic) ?
         '<details class="edit" style="margin-top:12px"><summary>Remove this topic</summary>' +
         `<form data-op="removeTopic" data-confirm="Remove the topic ${esc(category)}?">${hidden({ c: category })}` +
@@ -269,10 +277,11 @@ function listPage(params) {
       `data-s="${esc(text)}"${artAttr}><span class="text"><span class="name">${esc(name)}</span>` +
       (meta ? `<span class="meta">${esc(meta)}</span>` : "") + `</span>${thumb}</a>`;
   });
-  const adding = canEdit() ? `<dialog class="add" id="add" aria-label="Add a name"><h2>Add to ${esc(category)}</h2>` +
+  const adding = canEdit() ? `<dialog class="add" id="add" aria-label="Add names"><h2>Add to ${esc(category)}</h2>` +
     nameForm(category, '<button type="button" class="btn" id="addclose">Cancel</button>') + "</dialog>" : "";
   const content = '<div class="tools"><p class="count" id="count"></p><div class="row">' +
-    (canEdit() ? '<button type="button" class="btn" id="addbtn">Add name</button>' : "") +
+    (canEdit() ? '<button type="button" class="btn" id="addbtn">Add names</button>' +
+      `<a class="btn" href="${esc(fieldsUrl(category))}">Fields &amp; filters</a>` : "") +
     '<button type="button" class="btn primary" id="random">Random pick</button></div></div>' +
     '<div class="grid">' + cards.join("") + "</div>" + adding +
     '<dialog class="pick" id="pick" aria-label="Random pick"><img class="pick-art" alt="" hidden>' +
@@ -307,6 +316,7 @@ function entryPage(params) {
     const rows = facts.map(s => `<dt>${esc(s.name)}</dt><dd>${esc(values(s, details).join(", ")) || missing}</dd>`).join("");
     sections.push(`<section class="details"><h2>Details</h2><dl>${rows}</dl></section>`);
   }
+  if (canEdit()) sections.push(detailsEditor(topic, entry, specs));
   sections.push(questionsSection(category, name, specs, details, topic.entries.map(e => e.details)));
   let side = null;  // the first non-avatar picture (e.g. full art): shown right of the info
   const done = new Set();
@@ -370,28 +380,107 @@ function entryPage(params) {
   return { title: `${name} · ${category}`, category, header, content, init: initEntry };
 }
 
+function detailsEditor(topic, entry, specs) {  // the "Edit details" form: every field this login may change
+  const category = topic.name;
+  const link = `<a href="${esc(fieldsUrl(category))}">Fields &amp; filters</a>`;
+  const fields = specs.filter(s => s.type !== "image" && !s.question);
+  const editable = fields.filter(s => editingBase() || entry.own || s.own);
+  if (!editable.length) {
+    return '<details class="edit" id="edit-details"><summary>Edit details</summary><p class="note">' +
+      (fields.length ? "These details are shared, so only an admin working on the shared topics can change them. " : "") +
+      `Add your own fields on the topic's ${link} page.</p></details>`;
+  }
+  const everyone = topic.entries.map(e => e.details);
+  const inputs = editable.map((s, i) => {
+    const got = values(s, entry.details), key = esc("f:" + s.name);
+    if (s.type === "list") {
+      return `<label>${esc(s.name)} <span class="missing">one per line</span>` +
+        `<textarea class="field" name="${key}" rows="4">${esc(got.join("\n"))}</textarea></label>`;
+    }
+    if (s.type === "long") return `<label>${esc(s.name)}<textarea class="field" name="${key}" rows="6">${esc(got.join("\n\n"))}</textarea></label>`;
+    const known = [...new Set(everyone.flatMap(d => values(s, d)))].sort(byLower).slice(0, 200);
+    return `<label>${esc(s.name)}${s.multi ? ' <span class="missing">commas between</span>' : ""}` +
+      `<input class="field" name="${key}" value="${esc(got.join(", "))}" autocomplete="off"` +
+      (known.length ? ` list="dl${i}"` : "") + `></label>` +
+      (known.length ? `<datalist id="dl${i}">${known.map(v => `<option value="${esc(v)}">`).join("")}</datalist>` : "");
+  }).join("");
+  const shared = fields.length > editable.length ? '<p class="note">Shared details can only be changed by an admin working on the shared topics.</p>' : "";
+  return '<details class="edit" id="edit-details"><summary>Edit details</summary>' +
+    `<form data-op="editDetails" class="form">${hidden({ c: category, n: entry.name })}${inputs}${shared}` +
+    `<div class="row"><button class="btn primary">Save</button></div></form>` +
+    `<p class="note">Add or change fields on the ${link} page.</p></details>`;
+}
+
+function fieldsPage(params) {  // a topic's fields: add, rename, type, filter, card, filter tab, order, remove
+  const topic = findTopic(DATA, params.get("c"));
+  if (!topic) return notFound(null, `No topic called ${esc(params.get("c") || "")}.`);
+  const category = topic.name;
+  const specs = fieldSpecs(topic.fields);
+  const header = `<a class="back" href="${esc(listUrl(category))}">‹ ${esc(category)}</a><h1>Fields &amp; filters</h1>` +
+    '<p class="note">Fields are the details each name can have. Ones with <b>Filter</b> on appear in the filter panel, ' +
+    'under their filter tab. A field in the <b>Questions</b> tab gets one-tap answer buttons on each name\'s page.</p>';
+  if (!canEdit()) return { title: `Fields · ${category}`, category, header, content: '<p class="empty">Log in to change fields.</p>' };
+  const groups = [...new Set(specs.map(s => s.group).filter(Boolean).concat([QUESTIONS]))];
+  const rows = specs.map((s, i) => {
+    const flags = [TYPE_LABELS[s.type], s.filter ? "filter" : "", s.card ? "on cards" : "",
+      s.group ? `tab: ${s.group}` : "", s.section ? `section: ${s.section}` : ""].filter(Boolean).join(" · ");
+    if (!mine(topic.fields[i])) {
+      return `<div class="frow" id="f${i}"><p class="qtext">${esc(s.name)}<br><span class="missing">${esc(flags)} · shared</span></p></div>`;
+    }
+    const keep = hidden({ c: category, field: s.name });
+    const short = s.type === "text" || s.type === "tags";
+    const type = short
+      ? '<select name="type" class="field">' + ["text", "tags"].map(t =>
+        `<option value="${t}"${t === s.type ? " selected" : ""}>${TYPE_LABELS[t]}</option>`).join("") + "</select>"
+      : `<input type="hidden" name="type" value="${esc(s.type)}"> <span class="missing">${TYPE_LABELS[s.type]}</span>`;
+    return `<div class="frow" id="f${i}"><form data-op="updateField" class="form">${keep}` +
+      `<label>Name<input class="field" name="to" value="${esc(s.name)}" required maxlength="${LIMITS.question}" autocomplete="off"></label>` +
+      `<label>Type${type}</label>` +
+      (short ? `<label class="check"><input type="checkbox" name="filter" value="1"${s.filter ? " checked" : ""}> Filter</label>` +
+        `<label class="check"><input type="checkbox" name="card" value="1"${s.card ? " checked" : ""}> Show on cards</label>` +
+        `<label>Filter tab<input class="field" name="group" value="${esc(s.group)}" list="groups" maxlength="${LIMITS.topic}" ` +
+        'autocomplete="off" placeholder="(none)"></label>' : `<input type="hidden" name="group" value="${esc(s.group)}">`) +
+      '<div class="row"><button class="btn primary">Save</button></div></form><div class="row">' +
+      `<form data-op="moveField">${keep}${hidden({ dir: "up" })}<button class="btn" aria-label="Move ${esc(s.name)} up">↑</button></form>` +
+      `<form data-op="moveField">${keep}${hidden({ dir: "down" })}<button class="btn" aria-label="Move ${esc(s.name)} down">↓</button></form>` +
+      (s.question ? `<a class="btn" href="${esc(questionUrl(category, s.name))}">Answer for every name</a>` : "") +
+      `<form data-op="removeField" data-confirm="Remove ${esc(s.name)} and its values from every name?">${keep}` +
+      '<button class="btn danger">Remove</button></form></div></div>';
+  }).join("");
+  const add = `<section class="adminsec"><h3>Add a field</h3><form data-op="addField" class="form">${hidden({ c: category })}` +
+    `<label>Name<input class="field" name="name" required maxlength="${LIMITS.question}" autocomplete="off" placeholder="e.g. House, Powers, Can they fly?"></label>` +
+    '<label>Type<select name="type" class="field">' + ["text", "tags", "list", "long"].map(t => `<option value="${t}">${TYPE_LABELS[t]}</option>`).join("") + "</select></label>" +
+    '<label class="check"><input type="checkbox" name="filter" value="1" checked> Filter (for one value or several values)</label>' +
+    '<label class="check"><input type="checkbox" name="card" value="1"> Show on cards</label>' +
+    `<label>Filter tab<input class="field" name="group" list="groups" maxlength="${LIMITS.topic}" autocomplete="off" placeholder="e.g. Questions"></label>` +
+    '<div class="row"><button class="btn primary">Add field</button></div></form></section>';
+  const content = `<section class="adminsec"><h3>Fields of ${esc(category)}</h3>${rows || '<p class="missing">No fields yet.</p>'}</section>` +
+    add + `<datalist id="groups">${groups.map(g => `<option value="${esc(g)}">`).join("")}</datalist>`;
+  return { title: `Fields · ${category}`, category, header, content, init: initEntry };
+}
+
 function questionsSection(category, name, specs, details, everyone) {
   const asked = specs.filter(s => s.question);
   if (!canEdit()) {  // looking only: the answered questions
     const rows = asked.filter(s => values(s, details).length)
-      .map(s => `<dt>${esc(s.name)}</dt><dd>${esc(values(s, details)[0])}</dd>`).join("");
+      .map(s => `<dt>${esc(s.name)}</dt><dd>${esc(values(s, details).join(", "))}</dd>`).join("");
     return rows ? `<section class="questions" id="questions"><h2>Questions</h2><dl>${rows}</dl></section>` : "";
   }
   const rows = asked.map((s, i) => {
     const got = values(s, details);
-    const current = got.length ? got[0] : "";
-    const state = current ? "" : '<span class="missing">Not answered</span>';
+    const state = got.length ? "" : '<span class="missing">Not answered</span>';
     return `<div class="qrow" id="q${i}"><p class="qtext"><a href="${esc(questionUrl(category, s.name))}" ` +
       `title="Answer for every name">${esc(s.name)}</a>${state}</p>` +
-      answerControls(category, name, s, current, answerOptions(s, everyone), "entry") + "</div>";
+      answerControls(category, name, s, got, answerOptions(s, everyone), "entry") + "</div>";
   });
   const known = asked.map(s => `<option value="${esc(s.name)}">`).join("");
   const add = '<div class="addq"><h3>Ask a new question</h3>' +
     `<form data-op="answer" class="form">${hidden({ c: category, n: name, back: "entry" })}` +
     `<input class="field" name="q" list="asked" required maxlength="${LIMITS.question}" autocomplete="off" ` +
     `placeholder="Question, e.g. Can they fly?" aria-label="Question"><datalist id="asked">${known}</datalist>` +
-    `<input class="field" name="a" maxlength="${LIMITS.answer}" autocomplete="off" ` +
+    `<input class="field" name="a" maxlength="${LIMITS.answers}" autocomplete="off" ` +
     'placeholder="Answer: type one, or tap Yes or No" aria-label="Answer">' +
+    '<label class="check"><input type="checkbox" name="multi" value="1"> Several answers (e.g. powers): type them with commas between</label>' +
     // Save comes first so Enter in a box saves what was typed rather than pressing Yes.
     '<div class="row"><button class="btn primary">Save</button>' +
     YES_NO.map(v => `<button class="chip" name="pick" value="${v}">${v}</button>`).join("") + "</div></form></div>";
@@ -412,10 +501,9 @@ function questionPage(params) {
   const answered = everyone.filter(e => values(spec, e.details).length).length;
   const rows = everyone.map(({ name, details }, j) => {
     const got = values(spec, details);
-    const current = got.length ? got[0] : "";
-    const state = current ? "" : '<span class="missing">Not answered</span>';
+    const state = got.length ? "" : '<span class="missing">Not answered</span>';
     return `<div class="qrow" id="n${j}"><p class="qtext"><a href="${esc(entryUrl(category, name))}">${esc(name)}</a>${state}</p>` +
-      (canEdit() ? answerControls(category, name, spec, current, options, "question") : `<p>${esc(current)}</p>`) + "</div>";
+      (canEdit() ? answerControls(category, name, spec, got, options, "question") : `<p>${esc(got.join(", "))}</p>`) + "</div>";
   });
   const header = `<a class="back" href="${esc(listUrl(category))}">‹ ${esc(category)}</a><h1>${esc(spec.name)}</h1>` +
     `<p class="note">Answered for ${answered} of ${everyone.length}.` +
@@ -466,6 +554,10 @@ function entryOf(topic, wanted) {
   return e;
 }
 const sortEntries = topic => topic.entries.sort((a, b) => byLower(a.name, b.name));
+function fieldNameOk(topic, name, except) {  // a new or changed field name must be usable and different
+  if (!questionKey(name) || questionKey(name) === "name") throw new Bad("That can't be a field's name.");
+  if (topic.fields.some((x, j) => j !== except && questionKey(fieldName(x)) === questionKey(name))) throw new Bad(`${topic.name} already has ${name}.`);
+}
 function mustOwn(thing, what) {
   if (!editingBase() && !thing.own) throw new Bad(`${what} is shared with everyone, so it can't be changed here. You can add your own names, topics and questions.`);
 }
@@ -486,15 +578,25 @@ const OPS = {
     d.topics.splice(d.topics.indexOf(t), 1);
     return { url: "?", message: `Remove topic ${t.name}` };
   },
-  addName(d, f) {
-    const name = tidy(f.n, "name");
-    if (!name) throw new Bad("The name can't be empty.");
+  addName(d, f) {  // one name per line; ones already there are skipped
     const t = topicOf(d, f.c);
-    const there = findEntry(t, name);
-    if (there) return { url: entryUrl(t.name, there.name) };
-    t.entries.push(Object.assign({ name, details: {} }, ownFlag()));
+    const names = String(f.n || "").split(/\r?\n/).map(line => tidy(line, "name")).filter(Boolean);
+    if (!names.length) throw new Bad("Type at least one name.");
+    if (names.length > 300) throw new Bad("That's more than 300 names. Add them in smaller batches.");
+    const added = [], there = [];
+    for (const name of names) {
+      const old = findEntry(t, name);
+      if (old) { if (!there.includes(old.name)) there.push(old.name); continue; }
+      t.entries.push(Object.assign({ name, details: {} }, ownFlag()));
+      added.push(name);
+    }
     sortEntries(t);
-    return { url: entryUrl(t.name, name), message: `Add ${name} to ${t.name}` };
+    if (names.length === 1) {
+      const e = findEntry(t, names[0]);
+      return { url: entryUrl(t.name, e.name), message: `Add ${e.name} to ${t.name}` };
+    }
+    const note = `Added ${added.length} name${added.length === 1 ? "" : "s"}` + (there.length ? ` (${there.length} already there)` : "");
+    return { url: listUrl(t.name), message: `Add ${added.length} names to ${t.name}`, note };
   },
   renameName(d, f) {
     const to = tidy(f.to, "name");
@@ -515,8 +617,9 @@ const OPS = {
   },
   answer(d, f) {  // sets (or with clear=1 clears) one name's answer, adding the question if it's new
     let question = upperFirst(tidy(f.q, "question"));
-    const typed = tidy(f.a, "answer");
-    const given = typed || tidy(f.pick, "answer");  // a typed answer wins over the button Enter presses
+    const typed = tidy(f.a, "answers");
+    const picked = tidy(f.pick, "answer");
+    const given = typed || picked;  // a typed answer wins over the button Enter presses
     const clearing = f.clear === "1";
     if (!questionKey(question)) throw new Bad("The question can't be empty.");
     const t = topicOf(d, f.c), e = entryOf(t, f.n);
@@ -524,7 +627,7 @@ const OPS = {
     let match = t.fields.find(x => questionKey(fieldName(x)) === questionKey(question));
     if (match && !isQuestion(match)) throw new Bad(`${t.name} already has a field called ${fieldName(match)}, which isn't a question.`);
     if (!match && !clearing) {
-      match = Object.assign({ name: question, type: "text", filter: true, card: false, group: QUESTIONS }, ownFlag());
+      match = Object.assign({ name: question, type: f.multi === "1" ? "tags" : "text", filter: true, card: false, group: QUESTIONS }, ownFlag());
       t.fields.push(match);
     }
     if (match) question = fieldName(match);
@@ -533,11 +636,27 @@ const OPS = {
       delete e.details[question];
       message = `Clear "${question}" for ${e.name}`;
     } else if (given) {
-      const used = new Map();
-      for (const x of t.entries) if (typeof x.details[question] === "string") used.set(x.details[question].toLowerCase(), x.details[question]);
+      const used = new Map();  // answers already given, so "yes" becomes "Yes"
+      for (const x of t.entries) for (const v of [].concat(x.details[question] || [])) if (typeof v === "string") used.set(v.toLowerCase(), v);
       for (const v of YES_NO) used.set(v.toLowerCase(), v);
-      e.details[question] = used.get(given.toLowerCase()) || upperFirst(given);
-      message = `Answer "${question}" for ${e.name}: ${e.details[question]}`;
+      const spell = v => {
+        if (v.length > LIMITS.answer) throw new Bad(`That answer is too long (at most ${LIMITS.answer} characters).`);
+        return used.get(v.toLowerCase()) || upperFirst(v);
+      };
+      if (fieldSpecs([match])[0].multi) {  // several answers: typed ones are added, a button toggles its answer
+        let list = values({ name: question }, e.details);
+        if (typed) {
+          for (const v of typed.split(",").map(x => x.trim()).filter(Boolean)) { const a = spell(v); if (!list.some(x => same(x, a))) list.push(a); }
+        } else {
+          const a = spell(picked);
+          list = list.includes(a) ? list.filter(x => x !== a) : list.concat(a);
+        }
+        if (list.length) e.details[question] = list; else delete e.details[question];
+        message = `Answer "${question}" for ${e.name}: ${list.join(", ") || "none"}`;
+      } else {
+        e.details[question] = spell(given);
+        message = `Answer "${question}" for ${e.name}: ${e.details[question]}`;
+      }
     } else {
       message = `Ask "${question}" in ${t.name}`;
     }
@@ -547,6 +666,85 @@ const OPS = {
     }
     const asked = t.fields.filter(isQuestion).map(fieldName);
     return { url: entryUrl(t.name, e.name) + (asked.includes(question) ? `#q${asked.indexOf(question)}` : "#questions"), message };
+  },
+  editDetails(d, f) {  // the "Edit details" form: f["f:<field>"] for each field it showed
+    const t = topicOf(d, f.c), e = entryOf(t, f.n);
+    const specs = fieldSpecs(t.fields);
+    let changed = 0;
+    for (const s of specs) {
+      const key = "f:" + s.name;
+      if (!(key in f) || s.type === "image" || s.question) continue;
+      if (!(editingBase() || e.own || s.own)) continue;  // shared details stay as they are
+      const text = String(f[key]).replace(/\r/g, "");
+      const long = (v, max) => { if (v.length > max) throw new Bad(`${s.name} is too long (at most ${max} characters).`); return v; };
+      let value;
+      if (s.type === "tags") value = [...new Set(text.split(",").map(v => long(v.split(/\s+/).filter(Boolean).join(" "), LIMITS.detail)).filter(Boolean))];
+      else if (s.type === "list") value = text.split("\n").map(v => long(v.trim(), LIMITS.item)).filter(Boolean);
+      else if (s.type === "long") value = long(text.trim(), LIMITS.long);
+      else value = long(text.split(/\s+/).filter(Boolean).join(" "), LIMITS.detail);
+      const before = JSON.stringify(e.details[s.name]);
+      if (Array.isArray(value) ? !value.length : !value) delete e.details[s.name]; else e.details[s.name] = value;
+      if (JSON.stringify(e.details[s.name]) !== before) changed++;
+    }
+    return { url: entryUrl(t.name, e.name), message: `Edit ${e.name}'s details in ${t.name}`, note: changed ? "Saved" : "Nothing changed" };
+  },
+  addField(d, f) {
+    const t = topicOf(d, f.c);
+    const name = upperFirst(tidy(f.name, "question"));
+    fieldNameOk(t, name, -1);
+    const type = ["text", "tags", "list", "long"].includes(f.type) ? f.type : "text";
+    const short = type === "text" || type === "tags";
+    const group = tidy(f.group, "topic");
+    const field = Object.assign({ name, type, filter: short && f.filter === "1", card: short && f.card === "1" },
+      short && group ? { group } : {}, ownFlag());
+    t.fields.push(field);
+    return { url: fieldsUrl(t.name) + `#f${t.fields.length - 1}`, message: `Add field "${name}" to ${t.name}` };
+  },
+  updateField(d, f) {
+    const t = topicOf(d, f.c);
+    const i = t.fields.findIndex(x => fieldName(x) === f.field);
+    if (i < 0) throw new Bad(`There's no field ${f.field} in ${t.name}.`);
+    mustOwn(typeof t.fields[i] === "string" ? {} : t.fields[i], f.field);
+    const old = typeof t.fields[i] === "string" ? { name: t.fields[i] } : Object.assign({}, t.fields[i]);
+    const was = fieldSpecs([old])[0];
+    const to = upperFirst(tidy(f.to, "question"));
+    fieldNameOk(t, to, i);
+    const short = was.type === "text" || was.type === "tags";
+    const type = short && ["text", "tags"].includes(f.type) ? f.type : was.type;
+    const group = tidy(f.group, "topic");
+    const next = Object.assign(old, { name: to, type, filter: short && f.filter === "1", card: short && f.card === "1" });
+    if (short && group) next.group = group; else if (short) delete next.group;
+    t.fields[i] = next;
+    for (const e of t.entries) {
+      if (!(was.name in e.details)) continue;
+      let v = e.details[was.name];
+      if (type === "tags" && !Array.isArray(v)) v = [String(v)];
+      if (type === "text" && Array.isArray(v)) v = v.join(", ");
+      delete e.details[was.name];
+      e.details[to] = v;
+    }
+    return { url: fieldsUrl(t.name) + `#f${i}`, message: `Change field "${was.name}" in ${t.name}` };
+  },
+  moveField(d, f) {  // swaps with the next field up or down that this login may change
+    const t = topicOf(d, f.c);
+    const i = t.fields.findIndex(x => fieldName(x) === f.field);
+    if (i < 0) throw new Bad(`There's no field ${f.field} in ${t.name}.`);
+    mustOwn(typeof t.fields[i] === "string" ? {} : t.fields[i], f.field);
+    const step = f.dir === "up" ? -1 : 1;
+    let j = i + step;
+    while (j >= 0 && j < t.fields.length && !mine(t.fields[j])) j += step;
+    if (j < 0 || j >= t.fields.length) return { url: fieldsUrl(t.name) + `#f${i}` };
+    [t.fields[i], t.fields[j]] = [t.fields[j], t.fields[i]];
+    return { url: fieldsUrl(t.name) + `#f${j}`, message: `Move field "${f.field}" ${f.dir} in ${t.name}` };
+  },
+  removeField(d, f) {
+    const t = topicOf(d, f.c);
+    const i = t.fields.findIndex(x => fieldName(x) === f.field);
+    if (i < 0) throw new Bad(`There's no field ${f.field} in ${t.name}.`);
+    mustOwn(typeof t.fields[i] === "string" ? {} : t.fields[i], f.field);
+    t.fields.splice(i, 1);
+    for (const e of t.entries) delete e.details[f.field];
+    return { url: fieldsUrl(t.name), message: `Remove field "${f.field}" from ${t.name}` };
   },
   renameQuestion(d, f) {
     const to = upperFirst(tidy(f.to, "question"));
@@ -640,7 +838,7 @@ function split(base, data) {  // the reverse of merge: just the player's additio
     }
     const baseFields = new Set(b.fields.map(fieldName));
     const fields = t.fields.filter(f => !baseFields.has(fieldName(f))).map(strip);
-    const asked = t.fields.filter(isQuestion).map(fieldName);
+    const asked = t.fields.filter(f => isQuestion(f) || f.own).map(fieldName);  // what a player may set on shared names
     const entries = [], answers = {};
     for (const e of t.entries) {
       const be = !e.own && b.entries.find(x => x.name === e.name);
@@ -648,7 +846,7 @@ function split(base, data) {  // the reverse of merge: just the player's additio
       const changed = {};
       for (const q of asked) {
         const now = e.details[q], was = be.details[q];
-        if (now !== was) changed[q] = now === undefined ? null : now;
+        if (JSON.stringify(now) !== JSON.stringify(was)) changed[q] = now === undefined ? null : now;
       }
       if (Object.keys(changed).length) answers[e.name] = changed;
     }
@@ -964,7 +1162,7 @@ function initLogin() {
 function render() {
   const params = new URLSearchParams(location.search);
   const page = MODE === "view" ? loginPage() : params.has("n") ? entryPage(params) : params.has("ask") ? questionPage(params)
-    : params.has("new") ? newTopicPage() : params.has("admin") ? adminPage() : listPage(params);
+    : params.has("new") ? newTopicPage() : params.has("admin") ? adminPage() : params.has("fields") ? fieldsPage(params) : listPage(params);
   document.title = page.title;
   document.body.dataset.category = page.category;
   $("head").innerHTML = page.header;
@@ -1008,7 +1206,7 @@ function initEntry() {
 function initList() {
   const addBox = $("add");
   if (addBox) {
-    $("addbtn").addEventListener("click", () => { addBox.showModal(); addBox.querySelector("input[name=n]").focus(); });
+    $("addbtn").addEventListener("click", () => { addBox.showModal(); addBox.querySelector("[name=n]").focus(); });
     $("addclose").addEventListener("click", () => addBox.close());
     addBox.addEventListener("click", e => { if (e.target === addBox) addBox.close(); });
   }
@@ -1150,7 +1348,7 @@ async function save(op, form) {
   flash("Saving…");
   try {
     const result = await commit(d => OPS[op](d, form));
-    flash("Saved", false, 1500);
+    flash(result.note || "Saved", false, result.note ? 3000 : 1500);
     go(result.url);
   } catch (err) {
     for (const b of document.querySelectorAll("main button, header button")) b.disabled = false;
@@ -1272,7 +1470,7 @@ function start() {
 if (typeof module !== "undefined") {  // tests (Node)
   module.exports = { fieldSpecs, values, filters, listPage, entryPage, questionPage, newTopicPage, OPS, Bad, serialise,
     answerOptions, merge, split, lock, unlock,
-    summary, SHARED,
+    summary, SHARED, fieldsPage,
     set: (data, token, mode, user, admin, target) => { DATA = data; TOKEN = token; MODE = mode || (token ? "admin" : "view");
       USER = user || null; ADMIN = !!admin; TARGET = target || null; } };
 } else {

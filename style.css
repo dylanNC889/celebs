@@ -182,3 +182,12 @@ body { position: relative; }
 .player .row .field { flex: 1; min-width: 140px; width: auto; padding: 6px 10px; }
 .badge { margin-left: 4px; padding: 1px 7px; border-radius: 999px; background: var(--accent); color: var(--on-accent);
   font-size: 0.72rem; font-weight: 600; vertical-align: middle; }
+/* Fields & filters, Edit details, several-answer questions */
+.form label.check { display: flex; align-items: center; gap: 8px; color: var(--text); font-size: 0.95rem; }
+.form label.check input { width: 18px; height: 18px; margin: 0; }
+textarea.field { resize: vertical; font: inherit; }
+select.field { padding: 9px 10px; }
+.frow { padding: 12px 0; border-top: 1px solid var(--line); }
+.frow:first-of-type { border-top: 0; padding-top: 0; }
+.frow > .row { margin-top: 8px; }
+.tools .row { flex-wrap: wrap; justify-content: flex-end; }

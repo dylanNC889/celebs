@@ -48,6 +48,20 @@ How a player's login works, and why it isn't secure:
   - anyone who guesses a password gets the token, which can change anything in this repo.
 - If that happens, revoke the token on GitHub, make a new one, and re-run `tools/users.py` for each player.
 
+**Adding and changing things**, once logged in:
+
+- **Add names:** paste several, one per line. Names that are already there are skipped.
+- **Edit details** on a name's page fills in any field you're allowed to change:
+  - players: their own fields, and every field of names they added;
+  - admins working on the shared topics, and the owner: everything.
+- **Fields & filters** on each topic's list page:
+  - add fields of four types: one value, several values, a list, or paragraphs;
+  - turn each field's filter and "show on cards" on or off;
+  - put fields under a filter tab, and rename, reorder and remove them;
+  - switch a field between one value and several, which converts the existing values.
+  - A field in the **Questions** tab is a question, with one-tap answer buttons on each name's page.
+- **Questions with several answers** (tick "Several answers" when asking, or make it "Several values" on the fields page): each answer button toggles that answer on or off, and the filter matches names that have all the chosen answers.
+
 Every question becomes a filter of its answers, with "Not answered" for names without one. Tap a question to answer it for every name, or to rename or remove it.
 
 ## Fields
